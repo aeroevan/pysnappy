@@ -1,13 +1,24 @@
 #!/usr/bin/env python
 from setuptools import setup, Extension
-from Cython.Build import cythonize
+have_cython = False
+try:
+    from Cython.Build import cythonize
+    have_cython = True
+except ImportError:
+    pass
 
-ext_modules=[
-    Extension("pysnappy",
-              sources=["pysnappy.pyx"],
-              libraries=["snappy"]
+
+ext_modules=[]
+if have_cython:
+    ext_modules.append(
+        Extension("pysnappy", sources=["pysnappy/pysnappy.pyx"],
+                  libraries=["snappy"])
     )
-]
+else:
+    ext_modules.append(
+        Extension("pysnappy", sources=["pysnappy/pysnappy.c"],
+                  libraries=["snappy"])
+    )
 
 
 setup(
