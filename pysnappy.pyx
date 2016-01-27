@@ -10,7 +10,6 @@ def uncompress(bytes compressed):
         compressed, n, &m)
     if status != 0:
         raise Exception("Could not determine uncompressed length")
-    print(m)
     uncompressed = <char*>malloc(m * sizeof(char*))
     if uncompressed == NULL:
         raise MemoryError("Could not allocate uncompressed buffer")
@@ -19,3 +18,17 @@ def uncompress(bytes compressed):
         free(uncompressed)
         raise Exception("Could not uncompress")
     return uncompressed
+
+def compress(bytes uncompressed):
+    cdef size_t n = len(uncompressed)
+    cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)
+    cdef pysnappy_c.snappy_status status
+    cdef char* compressed = NULL
+    compressed = <char*>malloc(m * sizeof(char*))
+    if compressed == NULL:
+        raise MemoryError("Could not allocate compressed buffer")
+    status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+    if status != 0:
+        free(compressed)
+        raise Exception("Could not compress")
+    return compressed[:m]
