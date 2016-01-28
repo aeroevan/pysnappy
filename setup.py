@@ -23,5 +23,6 @@ else:
 
 setup(
     name='pysnappy',
+    test_suite="tests",
     ext_modules=ext_modules,
 )
