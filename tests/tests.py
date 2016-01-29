@@ -23,3 +23,19 @@ class RawTests(unittest.TestCase):
         compressed = pysnappy.compress(self.uncompressed)
         self.assertEqual(self.compressed, compressed,
                          'Compressed test failure')
+
+class HadoopTests(unittest.TestCase):
+
+    def setUp(self):
+        comp = os.path.join(os.path.dirname(__file__), 'iris.hadoop.snappy')
+        with open(comp, 'rb') as fh:
+            self.compressed = fh.read()
+        uncomp = os.path.join(os.path.dirname(__file__), 'iris.csv')
+        with open(uncomp, 'rb') as fh:
+            self.uncompressed = fh.read()
+
+    def test_uncompress(self):
+        h = pysnappy.HadoopStreamDecompressor()
+        uncompressed = h.decompress(self.compressed)
+        self.assertEqual(self.uncompressed, uncompressed,
+                         'Uncompressed test failure')

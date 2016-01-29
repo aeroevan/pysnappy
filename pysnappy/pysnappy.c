@@ -1253,13 +1253,14 @@ static int __pyx_pf_8pysnappy_24HadoopStreamDecompressor___init__(struct __pyx_o
  *         self._subblock_size = -1
  * 
  *     cpdef bytes decompress(self, bytes data):             # <<<<<<<<<<<<<<
- *         self._buf += data
  *         cdef bytes output = b""
+ *         cdef bytes buf
  */
 
 static PyObject *__pyx_pw_8pysnappy_24HadoopStreamDecompressor_3decompress(PyObject *__pyx_v_self, PyObject *__pyx_v_data); /*proto*/
 static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor_decompress(struct __pyx_obj_8pysnappy_HadoopStreamDecompressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch) {
-  CYTHON_UNUSED PyObject *__pyx_v_output = 0;
+  PyObject *__pyx_v_output = 0;
+  PyObject *__pyx_v_buf = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1267,6 +1268,8 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor_decompress(struct 
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
+  Py_ssize_t __pyx_t_6;
+  int __pyx_t_7;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1317,11 +1320,21 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor_decompress(struct 
   /* "pysnappy.pyx":51
  * 
  *     cpdef bytes decompress(self, bytes data):
- *         self._buf += data             # <<<<<<<<<<<<<<
- *         cdef bytes output = b""
- *         while True:
+ *         cdef bytes output = b""             # <<<<<<<<<<<<<<
+ *         cdef bytes buf
+ *         self._buf += data
  */
-  __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_self->_buf, __pyx_v_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_INCREF(__pyx_kp_b__6);
+  __pyx_v_output = __pyx_kp_b__6;
+
+  /* "pysnappy.pyx":53
+ *         cdef bytes output = b""
+ *         cdef bytes buf
+ *         self._buf += data             # <<<<<<<<<<<<<<
+ *         while True:
+ *             buf = self._decompress_block()
+ */
+  __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_self->_buf, __pyx_v_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_buf);
@@ -1329,37 +1342,99 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor_decompress(struct 
   __pyx_v_self->_buf = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pysnappy.pyx":52
- *     cpdef bytes decompress(self, bytes data):
+  /* "pysnappy.pyx":54
+ *         cdef bytes buf
  *         self._buf += data
- *         cdef bytes output = b""             # <<<<<<<<<<<<<<
- *         while True:
- *             pass
- */
-  __Pyx_INCREF(__pyx_kp_b__6);
-  __pyx_v_output = __pyx_kp_b__6;
-
-  /* "pysnappy.pyx":53
- *         self._buf += data
- *         cdef bytes output = b""
  *         while True:             # <<<<<<<<<<<<<<
- *             pass
- * 
+ *             buf = self._decompress_block()
+ *             if len(buf) > 0:
  */
   while (1) {
+
+    /* "pysnappy.pyx":55
+ *         self._buf += data
+ *         while True:
+ *             buf = self._decompress_block()             # <<<<<<<<<<<<<<
+ *             if len(buf) > 0:
+ *                 output += buf
+ */
+    __pyx_t_1 = ((struct __pyx_vtabstruct_8pysnappy_HadoopStreamDecompressor *)__pyx_v_self->__pyx_vtab)->_decompress_block(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_buf, ((PyObject*)__pyx_t_1));
+    __pyx_t_1 = 0;
+
+    /* "pysnappy.pyx":56
+ *         while True:
+ *             buf = self._decompress_block()
+ *             if len(buf) > 0:             # <<<<<<<<<<<<<<
+ *                 output += buf
+ *             else:
+ */
+    if (unlikely(__pyx_v_buf == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_v_buf); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = ((__pyx_t_6 > 0) != 0);
+    if (__pyx_t_7) {
+
+      /* "pysnappy.pyx":57
+ *             buf = self._decompress_block()
+ *             if len(buf) > 0:
+ *                 output += buf             # <<<<<<<<<<<<<<
+ *             else:
+ *                 break
+ */
+      __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_output, __pyx_v_buf); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF_SET(__pyx_v_output, ((PyObject*)__pyx_t_1));
+      __pyx_t_1 = 0;
+
+      /* "pysnappy.pyx":56
+ *         while True:
+ *             buf = self._decompress_block()
+ *             if len(buf) > 0:             # <<<<<<<<<<<<<<
+ *                 output += buf
+ *             else:
+ */
+      goto __pyx_L5;
+    }
+
+    /* "pysnappy.pyx":59
+ *                 output += buf
+ *             else:
+ *                 break             # <<<<<<<<<<<<<<
+ *         return output
+ * 
+ */
+    /*else*/ {
+      goto __pyx_L4_break;
+    }
+    __pyx_L5:;
   }
+  __pyx_L4_break:;
+
+  /* "pysnappy.pyx":60
+ *             else:
+ *                 break
+ *         return output             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef bytes _decompress_block(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_output);
+  __pyx_r = __pyx_v_output;
+  goto __pyx_L0;
 
   /* "pysnappy.pyx":50
  *         self._subblock_size = -1
  * 
  *     cpdef bytes decompress(self, bytes data):             # <<<<<<<<<<<<<<
- *         self._buf += data
  *         cdef bytes output = b""
+ *         cdef bytes buf
  */
 
   /* function exit code */
-  __pyx_r = ((PyObject*)Py_None); __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
@@ -1370,6 +1445,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor_decompress(struct 
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_output);
+  __Pyx_XDECREF(__pyx_v_buf);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -1422,8 +1498,8 @@ static PyObject *__pyx_pf_8pysnappy_24HadoopStreamDecompressor_2decompress(struc
   return __pyx_r;
 }
 
-/* "pysnappy.pyx":56
- *             pass
+/* "pysnappy.pyx":62
+ *         return output
  * 
  *     cpdef bytes _decompress_block(self):             # <<<<<<<<<<<<<<
  *         cdef bytes buf
@@ -1452,7 +1528,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_decompress_block); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_decompress_block); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8pysnappy_24HadoopStreamDecompressor_5_decompress_block)) {
       __Pyx_XDECREF(__pyx_r);
@@ -1468,14 +1544,14 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_r = ((PyObject*)__pyx_t_2);
       __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -1484,7 +1560,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "pysnappy.pyx":58
+  /* "pysnappy.pyx":64
  *     cpdef bytes _decompress_block(self):
  *         cdef bytes buf
  *         if self._block_size < 0:             # <<<<<<<<<<<<<<
@@ -1494,7 +1570,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
   __pyx_t_5 = ((__pyx_v_self->_block_size < 0) != 0);
   if (__pyx_t_5) {
 
-    /* "pysnappy.pyx":59
+    /* "pysnappy.pyx":65
  *         cdef bytes buf
  *         if self._block_size < 0:
  *             if len(self._buf) <= 4:             # <<<<<<<<<<<<<<
@@ -1505,14 +1581,14 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = ((__pyx_t_6 <= 4) != 0);
     if (__pyx_t_5) {
 
-      /* "pysnappy.pyx":60
+      /* "pysnappy.pyx":66
  *         if self._block_size < 0:
  *             if len(self._buf) <= 4:
  *                 return b""             # <<<<<<<<<<<<<<
@@ -1524,7 +1600,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
       __pyx_r = __pyx_kp_b__6;
       goto __pyx_L0;
 
-      /* "pysnappy.pyx":59
+      /* "pysnappy.pyx":65
  *         cdef bytes buf
  *         if self._block_size < 0:
  *             if len(self._buf) <= 4:             # <<<<<<<<<<<<<<
@@ -1533,20 +1609,20 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     }
 
-    /* "pysnappy.pyx":61
+    /* "pysnappy.pyx":67
  *             if len(self._buf) <= 4:
  *                 return b""
  *             self._block_size = pystruct.unpack(             # <<<<<<<<<<<<<<
  *                 ">i", self._buf[:4])[0]
  *             self._buf = self._buf[4:]
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unpack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unpack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "pysnappy.pyx":62
+    /* "pysnappy.pyx":68
  *                 return b""
  *             self._block_size = pystruct.unpack(
  *                 ">i", self._buf[:4])[0]             # <<<<<<<<<<<<<<
@@ -1555,9 +1631,9 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_buf, 0, 4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_buf, 0, 4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_4 = NULL;
     __pyx_t_6 = 0;
@@ -1571,7 +1647,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
         __pyx_t_6 = 1;
       }
     }
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -1582,17 +1658,17 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "pysnappy.pyx":61
+    /* "pysnappy.pyx":67
  *             if len(self._buf) <= 4:
  *                 return b""
  *             self._block_size = pystruct.unpack(             # <<<<<<<<<<<<<<
@@ -1601,7 +1677,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     __pyx_v_self->_block_size = __pyx_t_8;
 
-    /* "pysnappy.pyx":63
+    /* "pysnappy.pyx":69
  *             self._block_size = pystruct.unpack(
  *                 ">i", self._buf[:4])[0]
  *             self._buf = self._buf[4:]             # <<<<<<<<<<<<<<
@@ -1610,9 +1686,9 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, 4, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, 4, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->_buf);
@@ -1620,7 +1696,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
     __pyx_v_self->_buf = ((PyObject*)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pysnappy.pyx":58
+    /* "pysnappy.pyx":64
  *     cpdef bytes _decompress_block(self):
  *         cdef bytes buf
  *         if self._block_size < 0:             # <<<<<<<<<<<<<<
@@ -1629,7 +1705,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
   }
 
-  /* "pysnappy.pyx":64
+  /* "pysnappy.pyx":70
  *                 ">i", self._buf[:4])[0]
  *             self._buf = self._buf[4:]
  *         cdef bytes output = b""             # <<<<<<<<<<<<<<
@@ -1639,7 +1715,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
   __Pyx_INCREF(__pyx_kp_b__6);
   __pyx_v_output = __pyx_kp_b__6;
 
-  /* "pysnappy.pyx":65
+  /* "pysnappy.pyx":71
  *             self._buf = self._buf[4:]
  *         cdef bytes output = b""
  *         while self._block_read < self._block_size:             # <<<<<<<<<<<<<<
@@ -1650,19 +1726,19 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
     __pyx_t_5 = ((__pyx_v_self->_block_read < __pyx_v_self->_block_size) != 0);
     if (!__pyx_t_5) break;
 
-    /* "pysnappy.pyx":66
+    /* "pysnappy.pyx":72
  *         cdef bytes output = b""
  *         while self._block_read < self._block_size:
  *             buf = self._decompress_subblock()             # <<<<<<<<<<<<<<
  *             if len(buf) > 0:
  *                 output += buf
  */
-    __pyx_t_3 = ((struct __pyx_vtabstruct_8pysnappy_HadoopStreamDecompressor *)__pyx_v_self->__pyx_vtab)->_decompress_subblock(__pyx_v_self, 0); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = ((struct __pyx_vtabstruct_8pysnappy_HadoopStreamDecompressor *)__pyx_v_self->__pyx_vtab)->_decompress_subblock(__pyx_v_self, 0); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_XDECREF_SET(__pyx_v_buf, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "pysnappy.pyx":67
+    /* "pysnappy.pyx":73
  *         while self._block_read < self._block_size:
  *             buf = self._decompress_subblock()
  *             if len(buf) > 0:             # <<<<<<<<<<<<<<
@@ -1671,25 +1747,25 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     if (unlikely(__pyx_v_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_v_buf); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_v_buf); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_5 = ((__pyx_t_6 > 0) != 0);
     if (__pyx_t_5) {
 
-      /* "pysnappy.pyx":68
+      /* "pysnappy.pyx":74
  *             buf = self._decompress_subblock()
  *             if len(buf) > 0:
  *                 output += buf             # <<<<<<<<<<<<<<
  *             else:
  *                 # Buffer doesn't contain full subblock.
  */
-      __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_output, __pyx_v_buf); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_output, __pyx_v_buf); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_output, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "pysnappy.pyx":67
+      /* "pysnappy.pyx":73
  *         while self._block_read < self._block_size:
  *             buf = self._decompress_subblock()
  *             if len(buf) > 0:             # <<<<<<<<<<<<<<
@@ -1699,7 +1775,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
       goto __pyx_L7;
     }
 
-    /* "pysnappy.pyx":71
+    /* "pysnappy.pyx":77
  *             else:
  *                 # Buffer doesn't contain full subblock.
  *                 break             # <<<<<<<<<<<<<<
@@ -1713,7 +1789,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
   }
   __pyx_L6_break:;
 
-  /* "pysnappy.pyx":72
+  /* "pysnappy.pyx":78
  *                 # Buffer doesn't contain full subblock.
  *                 break
  *         if self._block_read == self._block_size:             # <<<<<<<<<<<<<<
@@ -1723,7 +1799,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
   __pyx_t_5 = ((__pyx_v_self->_block_read == __pyx_v_self->_block_size) != 0);
   if (__pyx_t_5) {
 
-    /* "pysnappy.pyx":74
+    /* "pysnappy.pyx":80
  *         if self._block_read == self._block_size:
  *             # Finished reading this block, so reinitialize
  *             self._block_read = 0             # <<<<<<<<<<<<<<
@@ -1732,7 +1808,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     __pyx_v_self->_block_read = 0;
 
-    /* "pysnappy.pyx":75
+    /* "pysnappy.pyx":81
  *             # Finished reading this block, so reinitialize
  *             self._block_read = 0
  *             self._block_size = -1             # <<<<<<<<<<<<<<
@@ -1741,7 +1817,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
     __pyx_v_self->_block_size = -1;
 
-    /* "pysnappy.pyx":72
+    /* "pysnappy.pyx":78
  *                 # Buffer doesn't contain full subblock.
  *                 break
  *         if self._block_read == self._block_size:             # <<<<<<<<<<<<<<
@@ -1750,7 +1826,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
  */
   }
 
-  /* "pysnappy.pyx":76
+  /* "pysnappy.pyx":82
  *             self._block_read = 0
  *             self._block_size = -1
  *         return output             # <<<<<<<<<<<<<<
@@ -1762,8 +1838,8 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(
   __pyx_r = __pyx_v_output;
   goto __pyx_L0;
 
-  /* "pysnappy.pyx":56
- *             pass
+  /* "pysnappy.pyx":62
+ *         return output
  * 
  *     cpdef bytes _decompress_block(self):             # <<<<<<<<<<<<<<
  *         cdef bytes buf
@@ -1809,7 +1885,7 @@ static PyObject *__pyx_pf_8pysnappy_24HadoopStreamDecompressor_4_decompress_bloc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_decompress_block", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_block(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1826,7 +1902,7 @@ static PyObject *__pyx_pf_8pysnappy_24HadoopStreamDecompressor_4_decompress_bloc
   return __pyx_r;
 }
 
-/* "pysnappy.pyx":78
+/* "pysnappy.pyx":84
  *         return output
  * 
  *     cpdef bytes _decompress_subblock(self):             # <<<<<<<<<<<<<<
@@ -1856,7 +1932,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_decompress_subblock); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_decompress_subblock); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8pysnappy_24HadoopStreamDecompressor_7_decompress_subblock)) {
       __Pyx_XDECREF(__pyx_r);
@@ -1872,14 +1948,14 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_r = ((PyObject*)__pyx_t_2);
       __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -1888,7 +1964,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "pysnappy.pyx":81
+  /* "pysnappy.pyx":87
  *         cdef bytes compressed
  *         cdef bytes uncompressed
  *         if self._subblock_size < 0:             # <<<<<<<<<<<<<<
@@ -1898,7 +1974,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
   __pyx_t_5 = ((__pyx_v_self->_subblock_size < 0) != 0);
   if (__pyx_t_5) {
 
-    /* "pysnappy.pyx":82
+    /* "pysnappy.pyx":88
  *         cdef bytes uncompressed
  *         if self._subblock_size < 0:
  *             if len(self._buf) <= 4:             # <<<<<<<<<<<<<<
@@ -1909,26 +1985,26 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = ((__pyx_t_6 <= 4) != 0);
     if (__pyx_t_5) {
 
-      /* "pysnappy.pyx":83
+      /* "pysnappy.pyx":89
  *         if self._subblock_size < 0:
  *             if len(self._buf) <= 4:
  *                 return b""             # <<<<<<<<<<<<<<
  *             self._subblock_size = pystruct.unpack(
- *                 ">i", self._buf[:4])
+ *                 ">i", self._buf[:4])[0]
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_kp_b__6);
       __pyx_r = __pyx_kp_b__6;
       goto __pyx_L0;
 
-      /* "pysnappy.pyx":82
+      /* "pysnappy.pyx":88
  *         cdef bytes uncompressed
  *         if self._subblock_size < 0:
  *             if len(self._buf) <= 4:             # <<<<<<<<<<<<<<
@@ -1937,31 +2013,31 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
  */
     }
 
-    /* "pysnappy.pyx":84
+    /* "pysnappy.pyx":90
  *             if len(self._buf) <= 4:
  *                 return b""
  *             self._subblock_size = pystruct.unpack(             # <<<<<<<<<<<<<<
- *                 ">i", self._buf[:4])
+ *                 ">i", self._buf[:4])[0]
  *             self._buf = self._buf[4:]
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unpack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unpack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "pysnappy.pyx":85
+    /* "pysnappy.pyx":91
  *                 return b""
  *             self._subblock_size = pystruct.unpack(
- *                 ">i", self._buf[:4])             # <<<<<<<<<<<<<<
+ *                 ">i", self._buf[:4])[0]             # <<<<<<<<<<<<<<
  *             self._buf = self._buf[4:]
  *         # Only attempt to decompress complete subblocks.
  */
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_buf, 0, 4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_buf, 0, 4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_4 = NULL;
     __pyx_t_6 = 0;
@@ -1975,7 +2051,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
         __pyx_t_6 = 1;
       }
     }
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -1986,42 +2062,45 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "pysnappy.pyx":84
+    /* "pysnappy.pyx":90
  *             if len(self._buf) <= 4:
  *                 return b""
  *             self._subblock_size = pystruct.unpack(             # <<<<<<<<<<<<<<
- *                 ">i", self._buf[:4])
+ *                 ">i", self._buf[:4])[0]
  *             self._buf = self._buf[4:]
  */
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_self->_subblock_size = __pyx_t_8;
 
-    /* "pysnappy.pyx":86
+    /* "pysnappy.pyx":92
  *             self._subblock_size = pystruct.unpack(
- *                 ">i", self._buf[:4])
+ *                 ">i", self._buf[:4])[0]
  *             self._buf = self._buf[4:]             # <<<<<<<<<<<<<<
  *         # Only attempt to decompress complete subblocks.
  *         if len(self._buf) < self._subblock_size:
  */
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_buf, 4, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GIVEREF(__pyx_t_1);
+    __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, 4, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->_buf);
     __Pyx_DECREF(__pyx_v_self->_buf);
-    __pyx_v_self->_buf = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_v_self->_buf = ((PyObject*)__pyx_t_3);
+    __pyx_t_3 = 0;
 
-    /* "pysnappy.pyx":81
+    /* "pysnappy.pyx":87
  *         cdef bytes compressed
  *         cdef bytes uncompressed
  *         if self._subblock_size < 0:             # <<<<<<<<<<<<<<
@@ -2030,25 +2109,25 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
  */
   }
 
-  /* "pysnappy.pyx":88
+  /* "pysnappy.pyx":94
  *             self._buf = self._buf[4:]
  *         # Only attempt to decompress complete subblocks.
  *         if len(self._buf) < self._subblock_size:             # <<<<<<<<<<<<<<
  *             return b""
  *         compressed = self._buf[:self._subblock_size]
  */
-  __pyx_t_1 = __pyx_v_self->_buf;
-  __Pyx_INCREF(__pyx_t_1);
-  if (unlikely(__pyx_t_1 == Py_None)) {
+  __pyx_t_3 = __pyx_v_self->_buf;
+  __Pyx_INCREF(__pyx_t_3);
+  if (unlikely(__pyx_t_3 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_5 = ((__pyx_t_6 < __pyx_v_self->_subblock_size) != 0);
   if (__pyx_t_5) {
 
-    /* "pysnappy.pyx":89
+    /* "pysnappy.pyx":95
  *         # Only attempt to decompress complete subblocks.
  *         if len(self._buf) < self._subblock_size:
  *             return b""             # <<<<<<<<<<<<<<
@@ -2060,7 +2139,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
     __pyx_r = __pyx_kp_b__6;
     goto __pyx_L0;
 
-    /* "pysnappy.pyx":88
+    /* "pysnappy.pyx":94
  *             self._buf = self._buf[4:]
  *         # Only attempt to decompress complete subblocks.
  *         if len(self._buf) < self._subblock_size:             # <<<<<<<<<<<<<<
@@ -2069,7 +2148,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
  */
   }
 
-  /* "pysnappy.pyx":90
+  /* "pysnappy.pyx":96
  *         if len(self._buf) < self._subblock_size:
  *             return b""
  *         compressed = self._buf[:self._subblock_size]             # <<<<<<<<<<<<<<
@@ -2078,93 +2157,94 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
  */
   if (unlikely(__pyx_v_self->_buf == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_buf, 0, __pyx_v_self->_subblock_size); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_compressed = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, 0, __pyx_v_self->_subblock_size); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_compressed = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "pysnappy.pyx":91
+  /* "pysnappy.pyx":97
  *             return b""
  *         compressed = self._buf[:self._subblock_size]
  *         self._buf = self._buf[self._subblock_size:]             # <<<<<<<<<<<<<<
  *         uncompressed = uncompress(compressed)
- *         self._block_read += len(uncompress)
+ *         self._block_read += len(uncompressed)
  */
   if (unlikely(__pyx_v_self->_buf == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_buf, __pyx_v_self->_subblock_size, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, __pyx_v_self->_subblock_size, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_buf);
   __Pyx_DECREF(__pyx_v_self->_buf);
-  __pyx_v_self->_buf = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_v_self->_buf = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "pysnappy.pyx":92
+  /* "pysnappy.pyx":98
  *         compressed = self._buf[:self._subblock_size]
  *         self._buf = self._buf[self._subblock_size:]
  *         uncompressed = uncompress(compressed)             # <<<<<<<<<<<<<<
- *         self._block_read += len(uncompress)
+ *         self._block_read += len(uncompressed)
  *         self._subblock_size = -1
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_uncompress); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_uncompress); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_7 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_3);
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_7)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
   if (!__pyx_t_7) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_compressed); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_compressed); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
   } else {
-    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_7); __pyx_t_7 = NULL;
     __Pyx_INCREF(__pyx_v_compressed);
     __Pyx_GIVEREF(__pyx_v_compressed);
     PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_compressed);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 92; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_v_uncompressed = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (!(likely(PyBytes_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_3)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 98; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_v_uncompressed = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "pysnappy.pyx":93
+  /* "pysnappy.pyx":99
  *         self._buf = self._buf[self._subblock_size:]
  *         uncompressed = uncompress(compressed)
- *         self._block_read += len(uncompress)             # <<<<<<<<<<<<<<
+ *         self._block_read += len(uncompressed)             # <<<<<<<<<<<<<<
  *         self._subblock_size = -1
  *         return uncompressed
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_uncompress); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(__pyx_v_uncompressed == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __pyx_t_6 = PyBytes_GET_SIZE(__pyx_v_uncompressed); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 99; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_self->_block_read = (__pyx_v_self->_block_read + __pyx_t_6);
 
-  /* "pysnappy.pyx":94
+  /* "pysnappy.pyx":100
  *         uncompressed = uncompress(compressed)
- *         self._block_read += len(uncompress)
+ *         self._block_read += len(uncompressed)
  *         self._subblock_size = -1             # <<<<<<<<<<<<<<
  *         return uncompressed
  */
   __pyx_v_self->_subblock_size = -1;
 
-  /* "pysnappy.pyx":95
- *         self._block_read += len(uncompress)
+  /* "pysnappy.pyx":101
+ *         self._block_read += len(uncompressed)
  *         self._subblock_size = -1
  *         return uncompressed             # <<<<<<<<<<<<<<
  */
@@ -2173,7 +2253,7 @@ static PyObject *__pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblo
   __pyx_r = __pyx_v_uncompressed;
   goto __pyx_L0;
 
-  /* "pysnappy.pyx":78
+  /* "pysnappy.pyx":84
  *         return output
  * 
  *     cpdef bytes _decompress_subblock(self):             # <<<<<<<<<<<<<<
@@ -2220,7 +2300,7 @@ static PyObject *__pyx_pf_8pysnappy_24HadoopStreamDecompressor_6_decompress_subb
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_decompress_subblock", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblock(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8pysnappy_24HadoopStreamDecompressor__decompress_subblock(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;

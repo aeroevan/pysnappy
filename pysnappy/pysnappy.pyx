@@ -48,10 +48,16 @@ cdef class HadoopStreamDecompressor:
         self._subblock_size = -1
 
     cpdef bytes decompress(self, bytes data):
-        self._buf += data
         cdef bytes output = b""
+        cdef bytes buf
+        self._buf += data
         while True:
-            pass
+            buf = self._decompress_block()
+            if len(buf) > 0:
+                output += buf
+            else:
+                break
+        return output
 
     cpdef bytes _decompress_block(self):
         cdef bytes buf
@@ -82,7 +88,7 @@ cdef class HadoopStreamDecompressor:
             if len(self._buf) <= 4:
                 return b""
             self._subblock_size = pystruct.unpack(
-                ">i", self._buf[:4])
+                ">i", self._buf[:4])[0]
             self._buf = self._buf[4:]
         # Only attempt to decompress complete subblocks.
         if len(self._buf) < self._subblock_size:
@@ -90,6 +96,6 @@ cdef class HadoopStreamDecompressor:
         compressed = self._buf[:self._subblock_size]
         self._buf = self._buf[self._subblock_size:]
         uncompressed = uncompress(compressed)
-        self._block_read += len(uncompress)
+        self._block_read += len(uncompressed)
         self._subblock_size = -1
         return uncompressed
