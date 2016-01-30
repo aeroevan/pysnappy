@@ -38,11 +38,13 @@ class HadoopTests(unittest.TestCase):
     def test_uncompress(self):
         h = HadoopDecompressor()
         uncompressed = h.decompress(self.compressed)
+        h.flush()
         self.assertEqual(self.uncompressed, uncompressed,
                          "Uncompressed test failure")
 
     def test_compress(self):
         h = HadoopCompressor()
         compressed = h.compress(self.uncompressed)
+        h.flush()
         self.assertEqual(self.compressed, compressed,
                          "Compressed test failure")

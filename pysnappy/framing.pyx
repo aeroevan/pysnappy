@@ -66,6 +66,10 @@ cdef class HadoopDecompressor:
         self._subblock_size = -1
         return uncompressed
 
+    def flush(self):
+        if len(self._buf) > 0:
+            raise Exception("Chunk truncated")
+
 
 cdef class HadoopCompressor:
     cdef int _buffer_size
