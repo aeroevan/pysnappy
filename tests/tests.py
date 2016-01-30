@@ -29,12 +29,14 @@ class RawTests(unittest.TestCase):
     def test_framed_uncompress(self):
         r = RawDecompressor()
         uncompressed = r.decompress(self.compressed)
+        r.flush()
         self.assertEqual(self.uncompressed, uncompressed,
                          'Uncompressed test failure')
 
     def test_framed_compress(self):
         r = RawCompressor()
         compressed = r.compress(self.uncompressed)
+        r.flush()
         self.assertEqual(self.compressed, compressed,
                          'Compressed test failure')
 
