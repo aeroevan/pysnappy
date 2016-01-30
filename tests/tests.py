@@ -2,7 +2,7 @@
 import os
 import unittest
 import pysnappy
-from pysnappy.framing import HadoopStreamDecompressor
+from pysnappy.framing import HadoopDecompressor, HadoopCompressor
 
 
 class RawTests(unittest.TestCase):
@@ -36,7 +36,13 @@ class HadoopTests(unittest.TestCase):
             self.uncompressed = fh.read()
 
     def test_uncompress(self):
-        h = HadoopStreamDecompressor()
+        h = HadoopDecompressor()
         uncompressed = h.decompress(self.compressed)
         self.assertEqual(self.uncompressed, uncompressed,
-                         'Uncompressed test failure')
+                         "Uncompressed test failure")
+
+    def test_compress(self):
+        h = HadoopCompressor()
+        compressed = h.compress(self.uncompressed)
+        self.assertEqual(self.compressed, compressed,
+                         "Compressed test failure")
