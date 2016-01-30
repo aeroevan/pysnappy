@@ -1,6 +1,18 @@
 import struct as pystruct
 from pysnappy import compress, uncompress
 
+cdef class RawDecompressor:
+    cpdef bytes decompress(self, bytes data):
+        return uncompress(data)
+    def flush(self):
+        pass
+
+cdef class RawCompressor:
+    cpdef bytes compress(self, bytes data):
+        return compress(data)
+    def flush(self):
+        pass
+
 cdef class HadoopDecompressor:
     cdef bytes _buf
     cdef int _block_size
