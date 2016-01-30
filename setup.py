@@ -11,12 +11,20 @@ except ImportError:
 ext_modules=[]
 if have_cython:
     ext_modules.append(
-        Extension("pysnappy", sources=["pysnappy/pysnappy.pyx"],
+        Extension("pysnappy.core", sources=["pysnappy/core.pyx"],
+                  libraries=["snappy"])
+    )
+    ext_modules.append(
+        Extension("pysnappy.framing", sources=["pysnappy/framing.pyx"],
                   libraries=["snappy"])
     )
 else:
     ext_modules.append(
-        Extension("pysnappy", sources=["pysnappy/pysnappy.c"],
+        Extension("pysnappy", sources=["pysnappy/core.c"],
+                  libraries=["snappy"])
+    )
+    ext_modules.append(
+        Extension("pysnappy.framing", sources=["pysnappy/framing.c"],
                   libraries=["snappy"])
     )
 
