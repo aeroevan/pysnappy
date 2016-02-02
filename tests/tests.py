@@ -40,6 +40,7 @@ class RawTests(unittest.TestCase):
         self.assertEqual(self.compressed, compressed,
                          'Compressed test failure')
 
+
 class HadoopTests(unittest.TestCase):
 
     def setUp(self):
