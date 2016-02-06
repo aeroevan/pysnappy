@@ -1,1 +1,2 @@
-recursive-include pysnappy *.pyx *.px[di] *.h *.c
+recursive-include pysnappy *.pyx *.pxd *.c
+include LICENSE
