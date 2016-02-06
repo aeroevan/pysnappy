@@ -18,6 +18,9 @@ if have_cython:
         Extension("pysnappy.framing", sources=["pysnappy/framing.pyx"],
                   libraries=["snappy"])
     )
+    ext_modules.append(
+        Extension("pysnappy.crc32c", sources=["pysnappy/crc32c.pyx"])
+    )
 else:
     ext_modules.append(
         Extension("pysnappy", sources=["pysnappy/core.c"],
@@ -26,6 +29,9 @@ else:
     ext_modules.append(
         Extension("pysnappy.framing", sources=["pysnappy/framing.c"],
                   libraries=["snappy"])
+    )
+    ext_modules.append(
+        Extension("pysnappy.crc32c", sources=["pysnappy/crc32c.c"])
     )
 
 

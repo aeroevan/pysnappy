@@ -1,5 +1,5 @@
 import struct as pystruct
-from zlib import crc32
+from pysnappy.crc32c import crc32c, masked_crc32c
 from pysnappy import compress, uncompress
 
 
@@ -137,6 +137,7 @@ cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
 
 cdef class Decompressor:
     cdef bytes _buf
+    cdef bint _header_found
 
     def __init__(self):
         self._buf = b""
@@ -159,8 +160,8 @@ cdef class Decompressor:
                 if (chunk_type != _IDENTIFIER_CHUNK or size != len(_STREAM_IDENTIFIER)):
                     raise Exception("Stream missing snappy identifier")
                 self._header_found = True
-            if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and _RESERVED_UNSKIPPABLE_RIGHT < chunk_type):
-                raise Exception("Stream received unskippable but unknown chunk")
+            if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):
+                raise Exception("Stream received unskippable but unknown chunk: " + str(chunk_type))
             if len(self._buf) < 4 + size:
                 return output
             chunk, self._buf = self._buf[4:4 + size], self._buf[4 + size:]
@@ -170,13 +171,17 @@ cdef class Decompressor:
                 continue
             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and
                     chunk_type < _RESERVED_SKIPPABLE_RIGHT):
+                print("Skippable")
                 continue
             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
-            stream_crc, chunk = chunk[:4], chunk[4:]
+            stream_crc, chunk = chunk[:4], chunk[4:4 + size]
             if chunk_type == _COMPRESSED_CHUNK:
                 chunk = uncompress(chunk)
-            if pystruct.pack("<L", crc32(chunk)) != stream_crc:
-                raise Exception("crc mismatch")
+            if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
+                raise Exception("crc mismatch: " +
+                                str(pystruct.pack("<L", masked_crc32c(chunk))) +
+                                " expected: " +
+                                str(stream_crc))
             output += chunk
 
     def flush(self):
