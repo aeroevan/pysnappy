@@ -574,8 +574,6 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'cpython.mem' */
 
-/* Module declarations from 'pysnappy.pysnappy_c' */
-
 /* Module declarations from 'pysnappy.core' */
 #define __Pyx_MODULE_NAME "pysnappy.core"
 int __pyx_module_is_main_pysnappy__core = 0;
@@ -631,8 +629,8 @@ static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_codeobj__7;
 static PyObject *__pyx_codeobj__9;
 
-/* "pysnappy/core.pyx":4
- * cimport pysnappy_c
+/* "pysnappy/core.pyx":3
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
  * 
  * def uncompress(bytes compressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(compressed)
@@ -649,7 +647,7 @@ static PyObject *__pyx_pw_8pysnappy_4core_1uncompress(PyObject *__pyx_self, PyOb
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("uncompress (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_compressed), (&PyBytes_Type), 1, "compressed", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_compressed), (&PyBytes_Type), 1, "compressed", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8pysnappy_4core_uncompress(__pyx_self, ((PyObject*)__pyx_v_compressed));
 
   /* function exit code */
@@ -678,40 +676,40 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("uncompress", 0);
 
-  /* "pysnappy/core.pyx":5
+  /* "pysnappy/core.pyx":4
  * 
  * def uncompress(bytes compressed):
  *     cdef size_t n = len(compressed)             # <<<<<<<<<<<<<<
  *     cdef size_t m
- *     cdef pysnappy_c.snappy_status status
+ *     cdef snappy_status status
  */
   if (unlikely(__pyx_v_compressed == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = PyBytes_GET_SIZE(__pyx_v_compressed); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyBytes_GET_SIZE(__pyx_v_compressed); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_n = __pyx_t_1;
 
-  /* "pysnappy/core.pyx":10
+  /* "pysnappy/core.pyx":9
  *     cdef char* uncompressed
- *     status = pysnappy_c.snappy_uncompressed_length(
+ *     status = snappy_uncompressed_length(
  *         compressed, n, &m)             # <<<<<<<<<<<<<<
  *     if status != 0:
  *         raise Exception("Could not determine uncompressed length")
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_compressed); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_compressed); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "pysnappy/core.pyx":9
- *     cdef pysnappy_c.snappy_status status
+  /* "pysnappy/core.pyx":8
+ *     cdef snappy_status status
  *     cdef char* uncompressed
- *     status = pysnappy_c.snappy_uncompressed_length(             # <<<<<<<<<<<<<<
+ *     status = snappy_uncompressed_length(             # <<<<<<<<<<<<<<
  *         compressed, n, &m)
  *     if status != 0:
  */
   __pyx_v_status = snappy_uncompressed_length(__pyx_t_2, __pyx_v_n, (&__pyx_v_m));
 
-  /* "pysnappy/core.pyx":11
- *     status = pysnappy_c.snappy_uncompressed_length(
+  /* "pysnappy/core.pyx":10
+ *     status = snappy_uncompressed_length(
  *         compressed, n, &m)
  *     if status != 0:             # <<<<<<<<<<<<<<
  *         raise Exception("Could not determine uncompressed length")
@@ -720,21 +718,21 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
   __pyx_t_3 = ((__pyx_v_status != 0) != 0);
   if (__pyx_t_3) {
 
-    /* "pysnappy/core.pyx":12
+    /* "pysnappy/core.pyx":11
  *         compressed, n, &m)
  *     if status != 0:
  *         raise Exception("Could not determine uncompressed length")             # <<<<<<<<<<<<<<
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not uncompressed:
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "pysnappy/core.pyx":11
- *     status = pysnappy_c.snappy_uncompressed_length(
+    /* "pysnappy/core.pyx":10
+ *     status = snappy_uncompressed_length(
  *         compressed, n, &m)
  *     if status != 0:             # <<<<<<<<<<<<<<
  *         raise Exception("Could not determine uncompressed length")
@@ -742,7 +740,7 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
  */
   }
 
-  /* "pysnappy/core.pyx":13
+  /* "pysnappy/core.pyx":12
  *     if status != 0:
  *         raise Exception("Could not determine uncompressed length")
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))             # <<<<<<<<<<<<<<
@@ -751,51 +749,51 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_uncompressed = ((char *)PyMem_Malloc((__pyx_v_m * (sizeof(char *)))));
 
-  /* "pysnappy/core.pyx":14
+  /* "pysnappy/core.pyx":13
  *         raise Exception("Could not determine uncompressed length")
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not uncompressed:             # <<<<<<<<<<<<<<
  *         raise MemoryError("Could not allocate uncompressed buffer")
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  */
   __pyx_t_3 = ((!(__pyx_v_uncompressed != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "pysnappy/core.pyx":15
+    /* "pysnappy/core.pyx":14
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not uncompressed:
  *         raise MemoryError("Could not allocate uncompressed buffer")             # <<<<<<<<<<<<<<
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  *     if status != 0:
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "pysnappy/core.pyx":14
+    /* "pysnappy/core.pyx":13
  *         raise Exception("Could not determine uncompressed length")
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not uncompressed:             # <<<<<<<<<<<<<<
  *         raise MemoryError("Could not allocate uncompressed buffer")
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  */
   }
 
-  /* "pysnappy/core.pyx":16
+  /* "pysnappy/core.pyx":15
  *     if not uncompressed:
  *         raise MemoryError("Could not allocate uncompressed buffer")
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)             # <<<<<<<<<<<<<<
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)             # <<<<<<<<<<<<<<
  *     if status != 0:
  *         PyMem_Free(uncompressed)
  */
-  __pyx_t_5 = __Pyx_PyObject_AsString(__pyx_v_compressed); if (unlikely((!__pyx_t_5) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_AsString(__pyx_v_compressed); if (unlikely((!__pyx_t_5) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_status = snappy_uncompress(__pyx_t_5, __pyx_v_n, __pyx_v_uncompressed, (&__pyx_v_m));
 
-  /* "pysnappy/core.pyx":17
+  /* "pysnappy/core.pyx":16
  *         raise MemoryError("Could not allocate uncompressed buffer")
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  *     if status != 0:             # <<<<<<<<<<<<<<
  *         PyMem_Free(uncompressed)
  *         raise Exception("Could not uncompress")
@@ -803,8 +801,8 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
   __pyx_t_3 = ((__pyx_v_status != 0) != 0);
   if (__pyx_t_3) {
 
-    /* "pysnappy/core.pyx":18
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+    /* "pysnappy/core.pyx":17
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  *     if status != 0:
  *         PyMem_Free(uncompressed)             # <<<<<<<<<<<<<<
  *         raise Exception("Could not uncompress")
@@ -812,29 +810,29 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
  */
     PyMem_Free(__pyx_v_uncompressed);
 
-    /* "pysnappy/core.pyx":19
+    /* "pysnappy/core.pyx":18
  *     if status != 0:
  *         PyMem_Free(uncompressed)
  *         raise Exception("Could not uncompress")             # <<<<<<<<<<<<<<
  *     return uncompressed[:m]
  * 
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "pysnappy/core.pyx":17
+    /* "pysnappy/core.pyx":16
  *         raise MemoryError("Could not allocate uncompressed buffer")
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  *     if status != 0:             # <<<<<<<<<<<<<<
  *         PyMem_Free(uncompressed)
  *         raise Exception("Could not uncompress")
  */
   }
 
-  /* "pysnappy/core.pyx":20
+  /* "pysnappy/core.pyx":19
  *         PyMem_Free(uncompressed)
  *         raise Exception("Could not uncompress")
  *     return uncompressed[:m]             # <<<<<<<<<<<<<<
@@ -842,14 +840,14 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
  * def compress(bytes uncompressed):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_uncompressed + 0, __pyx_v_m - 0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_uncompressed + 0, __pyx_v_m - 0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_r = __pyx_t_4;
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "pysnappy/core.pyx":4
- * cimport pysnappy_c
+  /* "pysnappy/core.pyx":3
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
  * 
  * def uncompress(bytes compressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(compressed)
@@ -867,12 +865,12 @@ static PyObject *__pyx_pf_8pysnappy_4core_uncompress(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "pysnappy/core.pyx":22
+/* "pysnappy/core.pyx":21
  *     return uncompressed[:m]
  * 
  * def compress(bytes uncompressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(uncompressed)
- *     cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)
+ *     cdef size_t m = snappy_max_compressed_length(n)
  */
 
 /* Python wrapper */
@@ -885,7 +883,7 @@ static PyObject *__pyx_pw_8pysnappy_4core_3compress(PyObject *__pyx_self, PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compress (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_uncompressed), (&PyBytes_Type), 1, "uncompressed", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_uncompressed), (&PyBytes_Type), 1, "uncompressed", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8pysnappy_4core_2compress(__pyx_self, ((PyObject*)__pyx_v_uncompressed));
 
   /* function exit code */
@@ -913,31 +911,31 @@ static PyObject *__pyx_pf_8pysnappy_4core_2compress(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compress", 0);
 
-  /* "pysnappy/core.pyx":23
+  /* "pysnappy/core.pyx":22
  * 
  * def compress(bytes uncompressed):
  *     cdef size_t n = len(uncompressed)             # <<<<<<<<<<<<<<
- *     cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)
- *     cdef pysnappy_c.snappy_status status
+ *     cdef size_t m = snappy_max_compressed_length(n)
+ *     cdef snappy_status status
  */
   if (unlikely(__pyx_v_uncompressed == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = PyBytes_GET_SIZE(__pyx_v_uncompressed); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyBytes_GET_SIZE(__pyx_v_uncompressed); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_n = __pyx_t_1;
 
-  /* "pysnappy/core.pyx":24
+  /* "pysnappy/core.pyx":23
  * def compress(bytes uncompressed):
  *     cdef size_t n = len(uncompressed)
- *     cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)             # <<<<<<<<<<<<<<
- *     cdef pysnappy_c.snappy_status status
+ *     cdef size_t m = snappy_max_compressed_length(n)             # <<<<<<<<<<<<<<
+ *     cdef snappy_status status
  *     cdef char* compressed
  */
   __pyx_v_m = snappy_max_compressed_length(__pyx_v_n);
 
-  /* "pysnappy/core.pyx":27
- *     cdef pysnappy_c.snappy_status status
+  /* "pysnappy/core.pyx":26
+ *     cdef snappy_status status
  *     cdef char* compressed
  *     compressed = <char*>PyMem_Malloc(m * sizeof(char*))             # <<<<<<<<<<<<<<
  *     if not compressed:
@@ -945,51 +943,51 @@ static PyObject *__pyx_pf_8pysnappy_4core_2compress(CYTHON_UNUSED PyObject *__py
  */
   __pyx_v_compressed = ((char *)PyMem_Malloc((__pyx_v_m * (sizeof(char *)))));
 
-  /* "pysnappy/core.pyx":28
+  /* "pysnappy/core.pyx":27
  *     cdef char* compressed
  *     compressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not compressed:             # <<<<<<<<<<<<<<
  *         raise MemoryError("Could not allocate compressed buffer")
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  */
   __pyx_t_2 = ((!(__pyx_v_compressed != 0)) != 0);
   if (__pyx_t_2) {
 
-    /* "pysnappy/core.pyx":29
+    /* "pysnappy/core.pyx":28
  *     compressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not compressed:
  *         raise MemoryError("Could not allocate compressed buffer")             # <<<<<<<<<<<<<<
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  *     if status != 0:
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "pysnappy/core.pyx":28
+    /* "pysnappy/core.pyx":27
  *     cdef char* compressed
  *     compressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not compressed:             # <<<<<<<<<<<<<<
  *         raise MemoryError("Could not allocate compressed buffer")
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  */
   }
 
-  /* "pysnappy/core.pyx":30
+  /* "pysnappy/core.pyx":29
  *     if not compressed:
  *         raise MemoryError("Could not allocate compressed buffer")
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)             # <<<<<<<<<<<<<<
+ *     status = snappy_compress(uncompressed, n, compressed, &m)             # <<<<<<<<<<<<<<
  *     if status != 0:
  *         PyMem_Free(compressed)
  */
-  __pyx_t_4 = __Pyx_PyObject_AsString(__pyx_v_uncompressed); if (unlikely((!__pyx_t_4) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 30; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_AsString(__pyx_v_uncompressed); if (unlikely((!__pyx_t_4) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_status = snappy_compress(__pyx_t_4, __pyx_v_n, __pyx_v_compressed, (&__pyx_v_m));
 
-  /* "pysnappy/core.pyx":31
+  /* "pysnappy/core.pyx":30
  *         raise MemoryError("Could not allocate compressed buffer")
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  *     if status != 0:             # <<<<<<<<<<<<<<
  *         PyMem_Free(compressed)
  *         raise Exception("Could not compress")
@@ -997,8 +995,8 @@ static PyObject *__pyx_pf_8pysnappy_4core_2compress(CYTHON_UNUSED PyObject *__py
   __pyx_t_2 = ((__pyx_v_status != 0) != 0);
   if (__pyx_t_2) {
 
-    /* "pysnappy/core.pyx":32
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+    /* "pysnappy/core.pyx":31
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  *     if status != 0:
  *         PyMem_Free(compressed)             # <<<<<<<<<<<<<<
  *         raise Exception("Could not compress")
@@ -1006,47 +1004,47 @@ static PyObject *__pyx_pf_8pysnappy_4core_2compress(CYTHON_UNUSED PyObject *__py
  */
     PyMem_Free(__pyx_v_compressed);
 
-    /* "pysnappy/core.pyx":33
+    /* "pysnappy/core.pyx":32
  *     if status != 0:
  *         PyMem_Free(compressed)
  *         raise Exception("Could not compress")             # <<<<<<<<<<<<<<
  *     return compressed[:m]
  * 
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "pysnappy/core.pyx":31
+    /* "pysnappy/core.pyx":30
  *         raise MemoryError("Could not allocate compressed buffer")
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  *     if status != 0:             # <<<<<<<<<<<<<<
  *         PyMem_Free(compressed)
  *         raise Exception("Could not compress")
  */
   }
 
-  /* "pysnappy/core.pyx":34
+  /* "pysnappy/core.pyx":33
  *         PyMem_Free(compressed)
  *         raise Exception("Could not compress")
  *     return compressed[:m]             # <<<<<<<<<<<<<<
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_compressed + 0, __pyx_v_m - 0); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 34; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_compressed + 0, __pyx_v_m - 0); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "pysnappy/core.pyx":22
+  /* "pysnappy/core.pyx":21
  *     return uncompressed[:m]
  * 
  * def compress(bytes uncompressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(uncompressed)
- *     cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)
+ *     cdef size_t m = snappy_max_compressed_length(n)
  */
 
   /* function exit code */
@@ -1104,8 +1102,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1115,84 +1113,84 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pysnappy/core.pyx":12
+  /* "pysnappy/core.pyx":11
  *         compressed, n, &m)
  *     if status != 0:
  *         raise Exception("Could not determine uncompressed length")             # <<<<<<<<<<<<<<
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not uncompressed:
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Could_not_determine_uncompressed); if (unlikely(!__pyx_tuple_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 12; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Could_not_determine_uncompressed); if (unlikely(!__pyx_tuple_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 11; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "pysnappy/core.pyx":15
+  /* "pysnappy/core.pyx":14
  *     uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not uncompressed:
  *         raise MemoryError("Could not allocate uncompressed buffer")             # <<<<<<<<<<<<<<
- *     status = pysnappy_c.snappy_uncompress(compressed, n, uncompressed, &m)
+ *     status = snappy_uncompress(compressed, n, uncompressed, &m)
  *     if status != 0:
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Could_not_allocate_uncompressed); if (unlikely(!__pyx_tuple__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Could_not_allocate_uncompressed); if (unlikely(!__pyx_tuple__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "pysnappy/core.pyx":19
+  /* "pysnappy/core.pyx":18
  *     if status != 0:
  *         PyMem_Free(uncompressed)
  *         raise Exception("Could not uncompress")             # <<<<<<<<<<<<<<
  *     return uncompressed[:m]
  * 
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Could_not_uncompress); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Could_not_uncompress); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "pysnappy/core.pyx":29
+  /* "pysnappy/core.pyx":28
  *     compressed = <char*>PyMem_Malloc(m * sizeof(char*))
  *     if not compressed:
  *         raise MemoryError("Could not allocate compressed buffer")             # <<<<<<<<<<<<<<
- *     status = pysnappy_c.snappy_compress(uncompressed, n, compressed, &m)
+ *     status = snappy_compress(uncompressed, n, compressed, &m)
  *     if status != 0:
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Could_not_allocate_compressed_bu); if (unlikely(!__pyx_tuple__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 29; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Could_not_allocate_compressed_bu); if (unlikely(!__pyx_tuple__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "pysnappy/core.pyx":33
+  /* "pysnappy/core.pyx":32
  *     if status != 0:
  *         PyMem_Free(compressed)
  *         raise Exception("Could not compress")             # <<<<<<<<<<<<<<
  *     return compressed[:m]
  * 
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_Could_not_compress); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 33; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_Could_not_compress); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "pysnappy/core.pyx":4
- * cimport pysnappy_c
+  /* "pysnappy/core.pyx":3
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
  * 
  * def uncompress(bytes compressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(compressed)
  *     cdef size_t m
  */
-  __pyx_tuple__6 = PyTuple_Pack(5, __pyx_n_s_compressed, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_status, __pyx_n_s_uncompressed); if (unlikely(!__pyx_tuple__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__6 = PyTuple_Pack(5, __pyx_n_s_compressed, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_status, __pyx_n_s_uncompressed); if (unlikely(!__pyx_tuple__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_evan_src_python_pysnappy_p, __pyx_n_s_uncompress, 4, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__6, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_evan_src_python_pysnappy_p, __pyx_n_s_uncompress, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "pysnappy/core.pyx":22
+  /* "pysnappy/core.pyx":21
  *     return uncompressed[:m]
  * 
  * def compress(bytes uncompressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(uncompressed)
- *     cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)
+ *     cdef size_t m = snappy_max_compressed_length(n)
  */
-  __pyx_tuple__8 = PyTuple_Pack(5, __pyx_n_s_uncompressed, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_status, __pyx_n_s_compressed); if (unlikely(!__pyx_tuple__8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__8 = PyTuple_Pack(5, __pyx_n_s_uncompressed, __pyx_n_s_n, __pyx_n_s_m, __pyx_n_s_status, __pyx_n_s_compressed); if (unlikely(!__pyx_tuple__8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_evan_src_python_pysnappy_p, __pyx_n_s_compress, 22, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_evan_src_python_pysnappy_p, __pyx_n_s_compress, 21, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1301,34 +1299,34 @@ PyMODINIT_FUNC PyInit_core(void)
   if (__Pyx_patch_abc() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
 
-  /* "pysnappy/core.pyx":4
- * cimport pysnappy_c
+  /* "pysnappy/core.pyx":3
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
  * 
  * def uncompress(bytes compressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(compressed)
  *     cdef size_t m
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8pysnappy_4core_1uncompress, NULL, __pyx_n_s_pysnappy_core); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8pysnappy_4core_1uncompress, NULL, __pyx_n_s_pysnappy_core); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_uncompress, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_uncompress, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pysnappy/core.pyx":22
+  /* "pysnappy/core.pyx":21
  *     return uncompressed[:m]
  * 
  * def compress(bytes uncompressed):             # <<<<<<<<<<<<<<
  *     cdef size_t n = len(uncompressed)
- *     cdef size_t m = pysnappy_c.snappy_max_compressed_length(n)
+ *     cdef size_t m = snappy_max_compressed_length(n)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8pysnappy_4core_3compress, NULL, __pyx_n_s_pysnappy_core); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8pysnappy_4core_3compress, NULL, __pyx_n_s_pysnappy_core); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compress, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compress, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pysnappy/core.pyx":1
  * from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free             # <<<<<<<<<<<<<<
- * cimport pysnappy_c
  * 
+ * def uncompress(bytes compressed):
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
