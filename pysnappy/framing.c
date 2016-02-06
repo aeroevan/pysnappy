@@ -453,13 +453,27 @@ struct __pyx_obj_8pysnappy_7framing_RawCompressor;
 struct __pyx_obj_8pysnappy_7framing_HadoopDecompressor;
 struct __pyx_obj_8pysnappy_7framing_HadoopCompressor;
 struct __pyx_obj_8pysnappy_7framing_Decompressor;
+struct __pyx_obj_8pysnappy_7framing_Compressor;
+struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk;
+
+/* "pysnappy/framing.pyx":201
+ *         self._header_chunk_written = False
+ * 
+ *     cpdef bytes add_chunk(self, bytes data, compress=None):             # <<<<<<<<<<<<<<
+ *         cdef bytes compressed_chunk
+ *         cdef bytes chunk
+ */
+struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk {
+  int __pyx_n;
+  PyObject *compress;
+};
 
 /* "pysnappy/framing.pyx":6
  * 
  * 
  * cdef class RawDecompressor:             # <<<<<<<<<<<<<<
  *     cpdef bytes decompress(self, bytes data):
- *         return uncompress(data)
+ *         return _uncompress(data)
  */
 struct __pyx_obj_8pysnappy_7framing_RawDecompressor {
   PyObject_HEAD
@@ -472,7 +486,7 @@ struct __pyx_obj_8pysnappy_7framing_RawDecompressor {
  * 
  * cdef class RawCompressor:             # <<<<<<<<<<<<<<
  *     cpdef bytes compress(self, bytes data):
- *         return compress(data)
+ *         return _compress(data)
  */
 struct __pyx_obj_8pysnappy_7framing_RawCompressor {
   PyObject_HEAD
@@ -512,8 +526,8 @@ struct __pyx_obj_8pysnappy_7framing_HadoopCompressor {
 };
 
 
-/* "pysnappy/framing.pyx":138
- * cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
+/* "pysnappy/framing.pyx":141
+ * cdef double _COMPRESSION_THRESHOLD = 0.125
  * 
  * cdef class Decompressor:             # <<<<<<<<<<<<<<
  *     cdef bytes _buf
@@ -527,13 +541,27 @@ struct __pyx_obj_8pysnappy_7framing_Decompressor {
 };
 
 
+/* "pysnappy/framing.pyx":195
+ * 
+ * 
+ * cdef class Compressor:             # <<<<<<<<<<<<<<
+ *     cdef bint _header_chunk_written
+ * 
+ */
+struct __pyx_obj_8pysnappy_7framing_Compressor {
+  PyObject_HEAD
+  struct __pyx_vtabstruct_8pysnappy_7framing_Compressor *__pyx_vtab;
+  int _header_chunk_written;
+};
+
+
 
 /* "pysnappy/framing.pyx":6
  * 
  * 
  * cdef class RawDecompressor:             # <<<<<<<<<<<<<<
  *     cpdef bytes decompress(self, bytes data):
- *         return uncompress(data)
+ *         return _uncompress(data)
  */
 
 struct __pyx_vtabstruct_8pysnappy_7framing_RawDecompressor {
@@ -547,7 +575,7 @@ static struct __pyx_vtabstruct_8pysnappy_7framing_RawDecompressor *__pyx_vtabptr
  * 
  * cdef class RawCompressor:             # <<<<<<<<<<<<<<
  *     cpdef bytes compress(self, bytes data):
- *         return compress(data)
+ *         return _compress(data)
  */
 
 struct __pyx_vtabstruct_8pysnappy_7framing_RawCompressor {
@@ -586,8 +614,8 @@ struct __pyx_vtabstruct_8pysnappy_7framing_HadoopCompressor {
 static struct __pyx_vtabstruct_8pysnappy_7framing_HadoopCompressor *__pyx_vtabptr_8pysnappy_7framing_HadoopCompressor;
 
 
-/* "pysnappy/framing.pyx":138
- * cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
+/* "pysnappy/framing.pyx":141
+ * cdef double _COMPRESSION_THRESHOLD = 0.125
  * 
  * cdef class Decompressor:             # <<<<<<<<<<<<<<
  *     cdef bytes _buf
@@ -598,6 +626,21 @@ struct __pyx_vtabstruct_8pysnappy_7framing_Decompressor {
   PyObject *(*decompress)(struct __pyx_obj_8pysnappy_7framing_Decompressor *, PyObject *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_8pysnappy_7framing_Decompressor *__pyx_vtabptr_8pysnappy_7framing_Decompressor;
+
+
+/* "pysnappy/framing.pyx":195
+ * 
+ * 
+ * cdef class Compressor:             # <<<<<<<<<<<<<<
+ *     cdef bint _header_chunk_written
+ * 
+ */
+
+struct __pyx_vtabstruct_8pysnappy_7framing_Compressor {
+  PyObject *(*add_chunk)(struct __pyx_obj_8pysnappy_7framing_Compressor *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk *__pyx_optional_args);
+  PyObject *(*compress)(struct __pyx_obj_8pysnappy_7framing_Compressor *, PyObject *, int __pyx_skip_dispatch);
+};
+static struct __pyx_vtabstruct_8pysnappy_7framing_Compressor *__pyx_vtabptr_8pysnappy_7framing_Compressor;
 
 /* --- Runtime support code (head) --- */
 #ifndef CYTHON_REFNANNY
@@ -798,6 +841,8 @@ static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_blo
 static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_subblock(struct __pyx_obj_8pysnappy_7framing_HadoopDecompressor *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct __pyx_obj_8pysnappy_7framing_HadoopCompressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __pyx_obj_8pysnappy_7framing_Decompressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_8pysnappy_7framing_10Compressor_add_chunk(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch, struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk *__pyx_optional_args); /* proto*/
+static PyObject *__pyx_f_8pysnappy_7framing_10Compressor_compress(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'pysnappy.framing' */
 static PyTypeObject *__pyx_ptype_8pysnappy_7framing_RawDecompressor = 0;
@@ -805,6 +850,7 @@ static PyTypeObject *__pyx_ptype_8pysnappy_7framing_RawCompressor = 0;
 static PyTypeObject *__pyx_ptype_8pysnappy_7framing_HadoopDecompressor = 0;
 static PyTypeObject *__pyx_ptype_8pysnappy_7framing_HadoopCompressor = 0;
 static PyTypeObject *__pyx_ptype_8pysnappy_7framing_Decompressor = 0;
+static PyTypeObject *__pyx_ptype_8pysnappy_7framing_Compressor = 0;
 static int __pyx_v_8pysnappy_7framing__CHUNK_MAX;
 static int __pyx_v_8pysnappy_7framing__STREAM_TO_STREAM_BLOCK_SIZE;
 static PyObject *__pyx_v_8pysnappy_7framing__STREAM_IDENTIFIER = 0;
@@ -815,20 +861,26 @@ static int __pyx_v_8pysnappy_7framing__RESERVED_UNSKIPPABLE_LEFT;
 static int __pyx_v_8pysnappy_7framing__RESERVED_UNSKIPPABLE_RIGHT;
 static int __pyx_v_8pysnappy_7framing__RESERVED_SKIPPABLE_LEFT;
 static int __pyx_v_8pysnappy_7framing__RESERVED_SKIPPABLE_RIGHT;
+static double __pyx_v_8pysnappy_7framing__COMPRESSION_THRESHOLD;
 #define __Pyx_MODULE_NAME "pysnappy.framing"
 int __pyx_module_is_main_pysnappy__framing = 0;
 
 /* Implementation of 'pysnappy.framing' */
 static PyObject *__pyx_builtin_Exception;
+static PyObject *__pyx_builtin_range;
 static char __pyx_k_[] = "";
 static char __pyx_k_L[] = "<L";
 static char __pyx_k_i[] = ">i";
+static char __pyx_k_LL[] = "<LL";
 static char __pyx_k_end[] = "end";
+static char __pyx_k_data[] = "data";
 static char __pyx_k_file[] = "file";
 static char __pyx_k_main[] = "__main__";
+static char __pyx_k_mode[] = "mode";
 static char __pyx_k_pack[] = "pack";
 static char __pyx_k_test[] = "__test__";
 static char __pyx_k_print[] = "print";
+static char __pyx_k_range[] = "range";
 static char __pyx_k_crc32c[] = "crc32c";
 static char __pyx_k_import[] = "__import__";
 static char __pyx_k_sNaPpY[] = "sNaPpY";
@@ -840,11 +892,14 @@ static char __pyx_k_pysnappy[] = "pysnappy";
 static char __pyx_k_pystruct[] = "pystruct";
 static char __pyx_k_Exception[] = "Exception";
 static char __pyx_k_Skippable[] = "Skippable";
+static char __pyx_k_add_chunk[] = "add_chunk";
+static char __pyx_k_compress_2[] = "_compress";
 static char __pyx_k_decompress[] = "decompress";
 static char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
-static char __pyx_k_uncompress[] = "uncompress";
+static char __pyx_k_uncompress[] = "_uncompress";
 static char __pyx_k_buffer_size[] = "buffer_size";
 static char __pyx_k_crc_mismatch[] = "crc mismatch: ";
+static char __pyx_k_uncompress_2[] = "uncompress";
 static char __pyx_k_masked_crc32c[] = "masked_crc32c";
 static char __pyx_k_Chunk_truncated[] = "Chunk truncated";
 static char __pyx_k_pysnappy_crc32c[] = "pysnappy.crc32c";
@@ -857,14 +912,18 @@ static PyObject *__pyx_kp_b_;
 static PyObject *__pyx_kp_s_Chunk_truncated;
 static PyObject *__pyx_n_s_Exception;
 static PyObject *__pyx_kp_s_L;
+static PyObject *__pyx_kp_s_LL;
 static PyObject *__pyx_n_s_Skippable;
 static PyObject *__pyx_kp_s_Stream_has_invalid_snappy_identi;
 static PyObject *__pyx_kp_s_Stream_missing_snappy_identifier;
 static PyObject *__pyx_kp_s_Stream_received_unskippable_but;
+static PyObject *__pyx_n_s_add_chunk;
 static PyObject *__pyx_n_s_buffer_size;
 static PyObject *__pyx_n_s_compress;
+static PyObject *__pyx_n_s_compress_2;
 static PyObject *__pyx_n_s_crc32c;
 static PyObject *__pyx_kp_s_crc_mismatch;
+static PyObject *__pyx_n_s_data;
 static PyObject *__pyx_n_s_decompress;
 static PyObject *__pyx_n_s_decompress_block;
 static PyObject *__pyx_n_s_decompress_subblock;
@@ -875,16 +934,19 @@ static PyObject *__pyx_kp_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_masked_crc32c;
+static PyObject *__pyx_n_s_mode;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pysnappy;
 static PyObject *__pyx_n_s_pysnappy_crc32c;
 static PyObject *__pyx_n_s_pystruct;
 static PyObject *__pyx_n_s_pyx_vtable;
+static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_b_sNaPpY;
 static PyObject *__pyx_n_s_struct;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_uncompress;
+static PyObject *__pyx_n_s_uncompress_2;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_pf_8pysnappy_7framing_15RawDecompressor_decompress(struct __pyx_obj_8pysnappy_7framing_RawDecompressor *__pyx_v_self, PyObject *__pyx_v_data); /* proto */
 static PyObject *__pyx_pf_8pysnappy_7framing_15RawDecompressor_2flush(CYTHON_UNUSED struct __pyx_obj_8pysnappy_7framing_RawDecompressor *__pyx_v_self); /* proto */
@@ -901,11 +963,17 @@ static PyObject *__pyx_pf_8pysnappy_7framing_16HadoopCompressor_4flush(struct __
 static int __pyx_pf_8pysnappy_7framing_12Decompressor___init__(struct __pyx_obj_8pysnappy_7framing_Decompressor *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_8pysnappy_7framing_12Decompressor_2decompress(struct __pyx_obj_8pysnappy_7framing_Decompressor *__pyx_v_self, PyObject *__pyx_v_data); /* proto */
 static PyObject *__pyx_pf_8pysnappy_7framing_12Decompressor_4flush(struct __pyx_obj_8pysnappy_7framing_Decompressor *__pyx_v_self); /* proto */
+static int __pyx_pf_8pysnappy_7framing_10Compressor___init__(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_8pysnappy_7framing_10Compressor_2add_chunk(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data, PyObject *__pyx_v_compress); /* proto */
+static PyObject *__pyx_pf_8pysnappy_7framing_10Compressor_4compress(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data); /* proto */
+static PyObject *__pyx_pf_8pysnappy_7framing_10Compressor_6flush(CYTHON_UNUSED struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_mode); /* proto */
 static PyObject *__pyx_tp_new_8pysnappy_7framing_RawDecompressor(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_8pysnappy_7framing_RawCompressor(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_8pysnappy_7framing_HadoopDecompressor(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_8pysnappy_7framing_HadoopCompressor(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_8pysnappy_7framing_Decompressor(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_8pysnappy_7framing_Compressor(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_131072;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
@@ -917,7 +985,7 @@ static PyObject *__pyx_tuple__6;
  * 
  * cdef class RawDecompressor:
  *     cpdef bytes decompress(self, bytes data):             # <<<<<<<<<<<<<<
- *         return uncompress(data)
+ *         return _uncompress(data)
  *     def flush(self):
  */
 
@@ -980,7 +1048,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_15RawDecompressor_decompress(CYTHON_
   /* "pysnappy/framing.pyx":8
  * cdef class RawDecompressor:
  *     cpdef bytes decompress(self, bytes data):
- *         return uncompress(data)             # <<<<<<<<<<<<<<
+ *         return _uncompress(data)             # <<<<<<<<<<<<<<
  *     def flush(self):
  *         pass
  */
@@ -1021,7 +1089,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_15RawDecompressor_decompress(CYTHON_
  * 
  * cdef class RawDecompressor:
  *     cpdef bytes decompress(self, bytes data):             # <<<<<<<<<<<<<<
- *         return uncompress(data)
+ *         return _uncompress(data)
  *     def flush(self):
  */
 
@@ -1089,7 +1157,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_15RawDecompressor_decompress(struct
 
 /* "pysnappy/framing.pyx":9
  *     cpdef bytes decompress(self, bytes data):
- *         return uncompress(data)
+ *         return _uncompress(data)
  *     def flush(self):             # <<<<<<<<<<<<<<
  *         pass
  * 
@@ -1124,7 +1192,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_15RawDecompressor_2flush(CYTHON_UNU
  * 
  * cdef class RawCompressor:
  *     cpdef bytes compress(self, bytes data):             # <<<<<<<<<<<<<<
- *         return compress(data)
+ *         return _compress(data)
  *     def flush(self):
  */
 
@@ -1187,12 +1255,12 @@ static PyObject *__pyx_f_8pysnappy_7framing_13RawCompressor_compress(CYTHON_UNUS
   /* "pysnappy/framing.pyx":15
  * cdef class RawCompressor:
  *     cpdef bytes compress(self, bytes data):
- *         return compress(data)             # <<<<<<<<<<<<<<
+ *         return _compress(data)             # <<<<<<<<<<<<<<
  *     def flush(self):
  *         pass
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_compress); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_compress_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -1228,7 +1296,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_13RawCompressor_compress(CYTHON_UNUS
  * 
  * cdef class RawCompressor:
  *     cpdef bytes compress(self, bytes data):             # <<<<<<<<<<<<<<
- *         return compress(data)
+ *         return _compress(data)
  *     def flush(self):
  */
 
@@ -1296,7 +1364,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_13RawCompressor_compress(struct __p
 
 /* "pysnappy/framing.pyx":16
  *     cpdef bytes compress(self, bytes data):
- *         return compress(data)
+ *         return _compress(data)
  *     def flush(self):             # <<<<<<<<<<<<<<
  *         pass
  * 
@@ -2314,7 +2382,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_sub
  *             return b""
  *         compressed = self._buf[:self._subblock_size]             # <<<<<<<<<<<<<<
  *         self._buf = self._buf[self._subblock_size:]
- *         uncompressed = uncompress(compressed)
+ *         uncompressed = _uncompress(compressed)
  */
   if (unlikely(__pyx_v_self->_buf == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -2329,7 +2397,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_sub
  *             return b""
  *         compressed = self._buf[:self._subblock_size]
  *         self._buf = self._buf[self._subblock_size:]             # <<<<<<<<<<<<<<
- *         uncompressed = uncompress(compressed)
+ *         uncompressed = _uncompress(compressed)
  *         self._block_read += len(uncompressed)
  */
   if (unlikely(__pyx_v_self->_buf == Py_None)) {
@@ -2347,7 +2415,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_sub
   /* "pysnappy/framing.pyx":80
  *         compressed = self._buf[:self._subblock_size]
  *         self._buf = self._buf[self._subblock_size:]
- *         uncompressed = uncompress(compressed)             # <<<<<<<<<<<<<<
+ *         uncompressed = _uncompress(compressed)             # <<<<<<<<<<<<<<
  *         self._block_read += len(uncompressed)
  *         self._subblock_size = -1
  */
@@ -2384,7 +2452,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_sub
 
   /* "pysnappy/framing.pyx":81
  *         self._buf = self._buf[self._subblock_size:]
- *         uncompressed = uncompress(compressed)
+ *         uncompressed = _uncompress(compressed)
  *         self._block_read += len(uncompressed)             # <<<<<<<<<<<<<<
  *         self._subblock_size = -1
  *         return uncompressed
@@ -2397,7 +2465,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_18HadoopDecompressor__decompress_sub
   __pyx_v_self->_block_read = (__pyx_v_self->_block_read + __pyx_t_6);
 
   /* "pysnappy/framing.pyx":82
- *         uncompressed = uncompress(compressed)
+ *         uncompressed = _uncompress(compressed)
  *         self._block_read += len(uncompressed)
  *         self._subblock_size = -1             # <<<<<<<<<<<<<<
  *         return uncompressed
@@ -2921,7 +2989,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
  *             if uncompressed_length == 0:
  *                 break             # <<<<<<<<<<<<<<
  *             try:
- *                 buf = compress(buf)
+ *                 buf = _compress(buf)
  */
       goto __pyx_L4_break;
 
@@ -2938,7 +3006,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
  *             if uncompressed_length == 0:
  *                 break
  *             try:             # <<<<<<<<<<<<<<
- *                 buf = compress(buf)
+ *                 buf = _compress(buf)
  *             except:
  */
     {
@@ -2951,11 +3019,11 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
         /* "pysnappy/framing.pyx":114
  *                 break
  *             try:
- *                 buf = compress(buf)             # <<<<<<<<<<<<<<
+ *                 buf = _compress(buf)             # <<<<<<<<<<<<<<
  *             except:
  *                 break
  */
-        __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_compress); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L7_error;}
+        __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_compress_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L7_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __pyx_t_3 = NULL;
         if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2990,7 +3058,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
  *             if uncompressed_length == 0:
  *                 break
  *             try:             # <<<<<<<<<<<<<<
- *                 buf = compress(buf)
+ *                 buf = _compress(buf)
  *             except:
  */
       }
@@ -3007,7 +3075,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
 
       /* "pysnappy/framing.pyx":115
  *             try:
- *                 buf = compress(buf)
+ *                 buf = _compress(buf)
  *             except:             # <<<<<<<<<<<<<<
  *                 break
  *             compressed_length = len(buf)
@@ -3020,7 +3088,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
         __Pyx_GOTREF(__pyx_t_5);
 
         /* "pysnappy/framing.pyx":116
- *                 buf = compress(buf)
+ *                 buf = _compress(buf)
  *             except:
  *                 break             # <<<<<<<<<<<<<<
  *             compressed_length = len(buf)
@@ -3039,7 +3107,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_16HadoopCompressor_compress(struct _
  *             if uncompressed_length == 0:
  *                 break
  *             try:             # <<<<<<<<<<<<<<
- *                 buf = compress(buf)
+ *                 buf = _compress(buf)
  *             except:
  */
       __Pyx_XGIVEREF(__pyx_t_8);
@@ -3319,7 +3387,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_16HadoopCompressor_4flush(struct __
  *         if len(self._buf) > 0:
  *             raise Exception("Chunk truncated")             # <<<<<<<<<<<<<<
  * 
- * cdef int _CHUNK_MAX = 65536
+ * 
  */
     __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
@@ -3357,7 +3425,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_16HadoopCompressor_4flush(struct __
   return __pyx_r;
 }
 
-/* "pysnappy/framing.pyx":142
+/* "pysnappy/framing.pyx":145
  *     cdef bint _header_found
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -3386,7 +3454,7 @@ static int __pyx_pf_8pysnappy_7framing_12Decompressor___init__(struct __pyx_obj_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "pysnappy/framing.pyx":143
+  /* "pysnappy/framing.pyx":146
  * 
  *     def __init__(self):
  *         self._buf = b""             # <<<<<<<<<<<<<<
@@ -3399,7 +3467,7 @@ static int __pyx_pf_8pysnappy_7framing_12Decompressor___init__(struct __pyx_obj_
   __Pyx_DECREF(__pyx_v_self->_buf);
   __pyx_v_self->_buf = __pyx_kp_b_;
 
-  /* "pysnappy/framing.pyx":144
+  /* "pysnappy/framing.pyx":147
  *     def __init__(self):
  *         self._buf = b""
  *         self._header_found = False             # <<<<<<<<<<<<<<
@@ -3408,7 +3476,7 @@ static int __pyx_pf_8pysnappy_7framing_12Decompressor___init__(struct __pyx_obj_
  */
   __pyx_v_self->_header_found = 0;
 
-  /* "pysnappy/framing.pyx":142
+  /* "pysnappy/framing.pyx":145
  *     cdef bint _header_found
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -3422,7 +3490,7 @@ static int __pyx_pf_8pysnappy_7framing_12Decompressor___init__(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "pysnappy/framing.pyx":146
+/* "pysnappy/framing.pyx":149
  *         self._header_found = False
  * 
  *     cpdef bytes decompress(self, bytes data):             # <<<<<<<<<<<<<<
@@ -3457,7 +3525,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_decompress); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_decompress); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8pysnappy_7framing_12Decompressor_3decompress)) {
       __Pyx_XDECREF(__pyx_r);
@@ -3473,21 +3541,21 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_data);
         __Pyx_GIVEREF(__pyx_v_data);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_data);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_r = ((PyObject*)__pyx_t_2);
       __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3496,7 +3564,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "pysnappy/framing.pyx":147
+  /* "pysnappy/framing.pyx":150
  * 
  *     cpdef bytes decompress(self, bytes data):
  *         cdef bytes output = b""             # <<<<<<<<<<<<<<
@@ -3506,14 +3574,14 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
   __Pyx_INCREF(__pyx_kp_b_);
   __pyx_v_output = __pyx_kp_b_;
 
-  /* "pysnappy/framing.pyx":152
+  /* "pysnappy/framing.pyx":155
  *         cdef long chunk_type
  *         cdef int size
  *         self._buf += data             # <<<<<<<<<<<<<<
  *         while True:
  *             if len(self._buf) < 4:
  */
-  __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_self->_buf, __pyx_v_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 152; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_self->_buf, __pyx_v_data); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_buf);
@@ -3521,7 +3589,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
   __pyx_v_self->_buf = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pysnappy/framing.pyx":153
+  /* "pysnappy/framing.pyx":156
  *         cdef int size
  *         self._buf += data
  *         while True:             # <<<<<<<<<<<<<<
@@ -3530,7 +3598,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
   while (1) {
 
-    /* "pysnappy/framing.pyx":154
+    /* "pysnappy/framing.pyx":157
  *         self._buf += data
  *         while True:
  *             if len(self._buf) < 4:             # <<<<<<<<<<<<<<
@@ -3541,14 +3609,14 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_7 = ((__pyx_t_6 < 4) != 0);
     if (__pyx_t_7) {
 
-      /* "pysnappy/framing.pyx":155
+      /* "pysnappy/framing.pyx":158
  *         while True:
  *             if len(self._buf) < 4:
  *                 return output             # <<<<<<<<<<<<<<
@@ -3560,7 +3628,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       __pyx_r = __pyx_v_output;
       goto __pyx_L0;
 
-      /* "pysnappy/framing.pyx":154
+      /* "pysnappy/framing.pyx":157
  *         self._buf += data
  *         while True:
  *             if len(self._buf) < 4:             # <<<<<<<<<<<<<<
@@ -3569,23 +3637,23 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     }
 
-    /* "pysnappy/framing.pyx":156
+    /* "pysnappy/framing.pyx":159
  *             if len(self._buf) < 4:
  *                 return output
  *             chunk_type = pystruct.unpack("<L", self._buf[:4])[0]             # <<<<<<<<<<<<<<
  *             size = (chunk_type >> 8)
  *             chunk_type &= 0xff
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unpack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unpack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_buf, 0, 4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PySequence_GetSlice(__pyx_v_self->_buf, 0, 4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_5 = NULL;
     __pyx_t_6 = 0;
@@ -3599,7 +3667,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
         __pyx_t_6 = 1;
       }
     }
-    __pyx_t_4 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -3610,18 +3678,18 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_6, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_3 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_3); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_chunk_type = __pyx_t_8;
 
-    /* "pysnappy/framing.pyx":157
+    /* "pysnappy/framing.pyx":160
  *                 return output
  *             chunk_type = pystruct.unpack("<L", self._buf[:4])[0]
  *             size = (chunk_type >> 8)             # <<<<<<<<<<<<<<
@@ -3630,7 +3698,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     __pyx_v_size = (__pyx_v_chunk_type >> 8);
 
-    /* "pysnappy/framing.pyx":158
+    /* "pysnappy/framing.pyx":161
  *             chunk_type = pystruct.unpack("<L", self._buf[:4])[0]
  *             size = (chunk_type >> 8)
  *             chunk_type &= 0xff             # <<<<<<<<<<<<<<
@@ -3639,7 +3707,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     __pyx_v_chunk_type = (__pyx_v_chunk_type & 0xff);
 
-    /* "pysnappy/framing.pyx":159
+    /* "pysnappy/framing.pyx":162
  *             size = (chunk_type >> 8)
  *             chunk_type &= 0xff
  *             if not self._header_found:             # <<<<<<<<<<<<<<
@@ -3649,7 +3717,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __pyx_t_7 = ((!(__pyx_v_self->_header_found != 0)) != 0);
     if (__pyx_t_7) {
 
-      /* "pysnappy/framing.pyx":160
+      /* "pysnappy/framing.pyx":163
  *             chunk_type &= 0xff
  *             if not self._header_found:
  *                 if (chunk_type != _IDENTIFIER_CHUNK or size != len(_STREAM_IDENTIFIER)):             # <<<<<<<<<<<<<<
@@ -3666,29 +3734,29 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       __Pyx_INCREF(__pyx_t_3);
       if (unlikely(__pyx_t_3 == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_3); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_9 = ((__pyx_v_size != __pyx_t_6) != 0);
       __pyx_t_7 = __pyx_t_9;
       __pyx_L8_bool_binop_done:;
       if (__pyx_t_7) {
 
-        /* "pysnappy/framing.pyx":161
+        /* "pysnappy/framing.pyx":164
  *             if not self._header_found:
  *                 if (chunk_type != _IDENTIFIER_CHUNK or size != len(_STREAM_IDENTIFIER)):
  *                     raise Exception("Stream missing snappy identifier")             # <<<<<<<<<<<<<<
  *                 self._header_found = True
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):
  */
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_Raise(__pyx_t_3, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-        /* "pysnappy/framing.pyx":160
+        /* "pysnappy/framing.pyx":163
  *             chunk_type &= 0xff
  *             if not self._header_found:
  *                 if (chunk_type != _IDENTIFIER_CHUNK or size != len(_STREAM_IDENTIFIER)):             # <<<<<<<<<<<<<<
@@ -3697,7 +3765,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
       }
 
-      /* "pysnappy/framing.pyx":162
+      /* "pysnappy/framing.pyx":165
  *                 if (chunk_type != _IDENTIFIER_CHUNK or size != len(_STREAM_IDENTIFIER)):
  *                     raise Exception("Stream missing snappy identifier")
  *                 self._header_found = True             # <<<<<<<<<<<<<<
@@ -3706,7 +3774,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
       __pyx_v_self->_header_found = 1;
 
-      /* "pysnappy/framing.pyx":159
+      /* "pysnappy/framing.pyx":162
  *             size = (chunk_type >> 8)
  *             chunk_type &= 0xff
  *             if not self._header_found:             # <<<<<<<<<<<<<<
@@ -3715,7 +3783,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     }
 
-    /* "pysnappy/framing.pyx":163
+    /* "pysnappy/framing.pyx":166
  *                     raise Exception("Stream missing snappy identifier")
  *                 self._header_found = True
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):             # <<<<<<<<<<<<<<
@@ -3733,39 +3801,39 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __pyx_L11_bool_binop_done:;
     if (__pyx_t_7) {
 
-      /* "pysnappy/framing.pyx":164
+      /* "pysnappy/framing.pyx":167
  *                 self._header_found = True
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):
  *                 raise Exception("Stream received unskippable but unknown chunk: " + str(chunk_type))             # <<<<<<<<<<<<<<
  *             if len(self._buf) < 4 + size:
  *                 return output
  */
-      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_chunk_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyInt_From_long(__pyx_v_chunk_type); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_1, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_1, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = PyNumber_Add(__pyx_kp_s_Stream_received_unskippable_but, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyNumber_Add(__pyx_kp_s_Stream_received_unskippable_but, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "pysnappy/framing.pyx":163
+      /* "pysnappy/framing.pyx":166
  *                     raise Exception("Stream missing snappy identifier")
  *                 self._header_found = True
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):             # <<<<<<<<<<<<<<
@@ -3774,7 +3842,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     }
 
-    /* "pysnappy/framing.pyx":165
+    /* "pysnappy/framing.pyx":168
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):
  *                 raise Exception("Stream received unskippable but unknown chunk: " + str(chunk_type))
  *             if len(self._buf) < 4 + size:             # <<<<<<<<<<<<<<
@@ -3785,14 +3853,14 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_6 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_7 = ((__pyx_t_6 < (4 + __pyx_v_size)) != 0);
     if (__pyx_t_7) {
 
-      /* "pysnappy/framing.pyx":166
+      /* "pysnappy/framing.pyx":169
  *                 raise Exception("Stream received unskippable but unknown chunk: " + str(chunk_type))
  *             if len(self._buf) < 4 + size:
  *                 return output             # <<<<<<<<<<<<<<
@@ -3804,7 +3872,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       __pyx_r = __pyx_v_output;
       goto __pyx_L0;
 
-      /* "pysnappy/framing.pyx":165
+      /* "pysnappy/framing.pyx":168
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):
  *                 raise Exception("Stream received unskippable but unknown chunk: " + str(chunk_type))
  *             if len(self._buf) < 4 + size:             # <<<<<<<<<<<<<<
@@ -3813,7 +3881,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     }
 
-    /* "pysnappy/framing.pyx":167
+    /* "pysnappy/framing.pyx":170
  *             if len(self._buf) < 4 + size:
  *                 return output
  *             chunk, self._buf = self._buf[4:4 + size], self._buf[4 + size:]             # <<<<<<<<<<<<<<
@@ -3822,15 +3890,15 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_buf, 4, (4 + __pyx_v_size)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_buf, 4, (4 + __pyx_v_size)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_self->_buf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, (4 + __pyx_v_size), PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 167; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_buf, (4 + __pyx_v_size), PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_XDECREF_SET(__pyx_v_chunk, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
@@ -3840,7 +3908,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __pyx_v_self->_buf = ((PyObject*)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pysnappy/framing.pyx":168
+    /* "pysnappy/framing.pyx":171
  *                 return output
  *             chunk, self._buf = self._buf[4:4 + size], self._buf[4 + size:]
  *             if chunk_type == _IDENTIFIER_CHUNK:             # <<<<<<<<<<<<<<
@@ -3850,31 +3918,31 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __pyx_t_7 = ((__pyx_v_chunk_type == __pyx_v_8pysnappy_7framing__IDENTIFIER_CHUNK) != 0);
     if (__pyx_t_7) {
 
-      /* "pysnappy/framing.pyx":169
+      /* "pysnappy/framing.pyx":172
  *             chunk, self._buf = self._buf[4:4 + size], self._buf[4 + size:]
  *             if chunk_type == _IDENTIFIER_CHUNK:
  *                 if chunk != _STREAM_IDENTIFIER:             # <<<<<<<<<<<<<<
  *                     raise Exception("Stream has invalid snappy identifier")
  *                 continue
  */
-      __pyx_t_7 = (__Pyx_PyBytes_Equals(__pyx_v_chunk, __pyx_v_8pysnappy_7framing__STREAM_IDENTIFIER, Py_NE)); if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = (__Pyx_PyBytes_Equals(__pyx_v_chunk, __pyx_v_8pysnappy_7framing__STREAM_IDENTIFIER, Py_NE)); if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_9 = (__pyx_t_7 != 0);
       if (__pyx_t_9) {
 
-        /* "pysnappy/framing.pyx":170
+        /* "pysnappy/framing.pyx":173
  *             if chunk_type == _IDENTIFIER_CHUNK:
  *                 if chunk != _STREAM_IDENTIFIER:
  *                     raise Exception("Stream has invalid snappy identifier")             # <<<<<<<<<<<<<<
  *                 continue
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and
  */
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_Raise(__pyx_t_3, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-        /* "pysnappy/framing.pyx":169
+        /* "pysnappy/framing.pyx":172
  *             chunk, self._buf = self._buf[4:4 + size], self._buf[4 + size:]
  *             if chunk_type == _IDENTIFIER_CHUNK:
  *                 if chunk != _STREAM_IDENTIFIER:             # <<<<<<<<<<<<<<
@@ -3883,7 +3951,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
       }
 
-      /* "pysnappy/framing.pyx":171
+      /* "pysnappy/framing.pyx":174
  *                 if chunk != _STREAM_IDENTIFIER:
  *                     raise Exception("Stream has invalid snappy identifier")
  *                 continue             # <<<<<<<<<<<<<<
@@ -3892,7 +3960,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
       goto __pyx_L3_continue;
 
-      /* "pysnappy/framing.pyx":168
+      /* "pysnappy/framing.pyx":171
  *                 return output
  *             chunk, self._buf = self._buf[4:4 + size], self._buf[4 + size:]
  *             if chunk_type == _IDENTIFIER_CHUNK:             # <<<<<<<<<<<<<<
@@ -3901,7 +3969,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     }
 
-    /* "pysnappy/framing.pyx":172
+    /* "pysnappy/framing.pyx":175
  *                     raise Exception("Stream has invalid snappy identifier")
  *                 continue
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and             # <<<<<<<<<<<<<<
@@ -3915,7 +3983,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       goto __pyx_L17_bool_binop_done;
     }
 
-    /* "pysnappy/framing.pyx":173
+    /* "pysnappy/framing.pyx":176
  *                 continue
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and
  *                     chunk_type < _RESERVED_SKIPPABLE_RIGHT):             # <<<<<<<<<<<<<<
@@ -3926,7 +3994,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __pyx_t_9 = __pyx_t_7;
     __pyx_L17_bool_binop_done:;
 
-    /* "pysnappy/framing.pyx":172
+    /* "pysnappy/framing.pyx":175
  *                     raise Exception("Stream has invalid snappy identifier")
  *                 continue
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and             # <<<<<<<<<<<<<<
@@ -3935,16 +4003,16 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     if (__pyx_t_9) {
 
-      /* "pysnappy/framing.pyx":174
+      /* "pysnappy/framing.pyx":177
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and
  *                     chunk_type < _RESERVED_SKIPPABLE_RIGHT):
  *                 print("Skippable")             # <<<<<<<<<<<<<<
  *                 continue
  *             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
  */
-      if (__Pyx_PrintOne(0, __pyx_n_s_Skippable) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__Pyx_PrintOne(0, __pyx_n_s_Skippable) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "pysnappy/framing.pyx":175
+      /* "pysnappy/framing.pyx":178
  *                     chunk_type < _RESERVED_SKIPPABLE_RIGHT):
  *                 print("Skippable")
  *                 continue             # <<<<<<<<<<<<<<
@@ -3953,7 +4021,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
       goto __pyx_L3_continue;
 
-      /* "pysnappy/framing.pyx":172
+      /* "pysnappy/framing.pyx":175
  *                     raise Exception("Stream has invalid snappy identifier")
  *                 continue
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and             # <<<<<<<<<<<<<<
@@ -3962,7 +4030,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
  */
     }
 
-    /* "pysnappy/framing.pyx":176
+    /* "pysnappy/framing.pyx":179
  *                 print("Skippable")
  *                 continue
  *             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)             # <<<<<<<<<<<<<<
@@ -3983,45 +4051,45 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       __pyx_L19_bool_binop_done:;
       if (unlikely(!(__pyx_t_9 != 0))) {
         PyErr_SetNone(PyExc_AssertionError);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
     }
     #endif
 
-    /* "pysnappy/framing.pyx":177
+    /* "pysnappy/framing.pyx":180
  *                 continue
  *             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
  *             stream_crc, chunk = chunk[:4], chunk[4:4 + size]             # <<<<<<<<<<<<<<
  *             if chunk_type == _COMPRESSED_CHUNK:
- *                 chunk = uncompress(chunk)
+ *                 chunk = _uncompress(chunk)
  */
-    __pyx_t_3 = PySequence_GetSlice(__pyx_v_chunk, 0, 4); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PySequence_GetSlice(__pyx_v_chunk, 0, 4); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PySequence_GetSlice(__pyx_v_chunk, 4, (4 + __pyx_v_size)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PySequence_GetSlice(__pyx_v_chunk, 4, (4 + __pyx_v_size)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_stream_crc, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
     __Pyx_DECREF_SET(__pyx_v_chunk, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "pysnappy/framing.pyx":178
+    /* "pysnappy/framing.pyx":181
  *             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
  *             stream_crc, chunk = chunk[:4], chunk[4:4 + size]
  *             if chunk_type == _COMPRESSED_CHUNK:             # <<<<<<<<<<<<<<
- *                 chunk = uncompress(chunk)
+ *                 chunk = _uncompress(chunk)
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  */
     __pyx_t_9 = ((__pyx_v_chunk_type == __pyx_v_8pysnappy_7framing__COMPRESSED_CHUNK) != 0);
     if (__pyx_t_9) {
 
-      /* "pysnappy/framing.pyx":179
+      /* "pysnappy/framing.pyx":182
  *             stream_crc, chunk = chunk[:4], chunk[4:4 + size]
  *             if chunk_type == _COMPRESSED_CHUNK:
- *                 chunk = uncompress(chunk)             # <<<<<<<<<<<<<<
+ *                 chunk = _uncompress(chunk)             # <<<<<<<<<<<<<<
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  *                 raise Exception("crc mismatch: " +
  */
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_uncompress); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_uncompress); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_4 = NULL;
       if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -4034,46 +4102,46 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
       } else {
-        __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_chunk);
         __Pyx_GIVEREF(__pyx_v_chunk);
         PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_chunk);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF_SET(__pyx_v_chunk, ((PyObject*)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "pysnappy/framing.pyx":178
+      /* "pysnappy/framing.pyx":181
  *             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
  *             stream_crc, chunk = chunk[:4], chunk[4:4 + size]
  *             if chunk_type == _COMPRESSED_CHUNK:             # <<<<<<<<<<<<<<
- *                 chunk = uncompress(chunk)
+ *                 chunk = _uncompress(chunk)
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  */
     }
 
-    /* "pysnappy/framing.pyx":180
+    /* "pysnappy/framing.pyx":183
  *             if chunk_type == _COMPRESSED_CHUNK:
- *                 chunk = uncompress(chunk)
+ *                 chunk = _uncompress(chunk)
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:             # <<<<<<<<<<<<<<
  *                 raise Exception("crc mismatch: " +
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_pack); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_pack); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_masked_crc32c); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_masked_crc32c); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -4086,16 +4154,16 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_chunk); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_chunk); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
     } else {
-      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_5); __pyx_t_5 = NULL;
       __Pyx_INCREF(__pyx_v_chunk);
       __Pyx_GIVEREF(__pyx_v_chunk);
       PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_v_chunk);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
@@ -4112,7 +4180,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
         __pyx_t_6 = 1;
       }
     }
-    __pyx_t_10 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_10);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -4123,27 +4191,27 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_6, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_9 = (__Pyx_PyBytes_Equals(__pyx_t_1, __pyx_v_stream_crc, Py_NE)); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = (__Pyx_PyBytes_Equals(__pyx_t_1, __pyx_v_stream_crc, Py_NE)); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_9) {
 
-      /* "pysnappy/framing.pyx":182
+      /* "pysnappy/framing.pyx":185
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  *                 raise Exception("crc mismatch: " +
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +             # <<<<<<<<<<<<<<
  *                                 " expected: " +
  *                                 str(stream_crc))
  */
-      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pack); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pack); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_masked_crc32c); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_masked_crc32c); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_4 = NULL;
       if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -4156,16 +4224,16 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
       } else {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
         __Pyx_INCREF(__pyx_v_chunk);
         __Pyx_GIVEREF(__pyx_v_chunk);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_chunk);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
@@ -4182,7 +4250,7 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
           __pyx_t_6 = 1;
         }
       }
-      __pyx_t_5 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       if (__pyx_t_3) {
         __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -4193,112 +4261,112 @@ static PyObject *__pyx_f_8pysnappy_7framing_12Decompressor_decompress(struct __p
       __Pyx_GIVEREF(__pyx_t_2);
       PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_6, __pyx_t_2);
       __pyx_t_2 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_1);
       __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-      /* "pysnappy/framing.pyx":181
- *                 chunk = uncompress(chunk)
+      /* "pysnappy/framing.pyx":184
+ *                 chunk = _uncompress(chunk)
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  *                 raise Exception("crc mismatch: " +             # <<<<<<<<<<<<<<
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
  *                                 " expected: " +
  */
-      __pyx_t_10 = PyNumber_Add(__pyx_kp_s_crc_mismatch, __pyx_t_1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyNumber_Add(__pyx_kp_s_crc_mismatch, __pyx_t_1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "pysnappy/framing.pyx":182
+      /* "pysnappy/framing.pyx":185
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  *                 raise Exception("crc mismatch: " +
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +             # <<<<<<<<<<<<<<
  *                                 " expected: " +
  *                                 str(stream_crc))
  */
-      __pyx_t_1 = PyNumber_Add(__pyx_t_10, __pyx_kp_s_expected); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyNumber_Add(__pyx_t_10, __pyx_kp_s_expected); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-      /* "pysnappy/framing.pyx":184
+      /* "pysnappy/framing.pyx":187
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
  *                                 " expected: " +
  *                                 str(stream_crc))             # <<<<<<<<<<<<<<
  *             output += chunk
  * 
  */
-      __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_INCREF(__pyx_v_stream_crc);
       __Pyx_GIVEREF(__pyx_v_stream_crc);
       PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_v_stream_crc);
-      __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_10, NULL); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-      /* "pysnappy/framing.pyx":183
+      /* "pysnappy/framing.pyx":186
  *                 raise Exception("crc mismatch: " +
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
  *                                 " expected: " +             # <<<<<<<<<<<<<<
  *                                 str(stream_crc))
  *             output += chunk
  */
-      __pyx_t_10 = PyNumber_Add(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 183; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyNumber_Add(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "pysnappy/framing.pyx":181
- *                 chunk = uncompress(chunk)
+      /* "pysnappy/framing.pyx":184
+ *                 chunk = _uncompress(chunk)
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
  *                 raise Exception("crc mismatch: " +             # <<<<<<<<<<<<<<
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
  *                                 " expected: " +
  */
-      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_10);
       PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_10);
       __pyx_t_10 = 0;
-      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_t_5, NULL); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_t_5, NULL); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_10, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "pysnappy/framing.pyx":180
+      /* "pysnappy/framing.pyx":183
  *             if chunk_type == _COMPRESSED_CHUNK:
- *                 chunk = uncompress(chunk)
+ *                 chunk = _uncompress(chunk)
  *             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:             # <<<<<<<<<<<<<<
  *                 raise Exception("crc mismatch: " +
  *                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
  */
     }
 
-    /* "pysnappy/framing.pyx":185
+    /* "pysnappy/framing.pyx":188
  *                                 " expected: " +
  *                                 str(stream_crc))
  *             output += chunk             # <<<<<<<<<<<<<<
  * 
  *     def flush(self):
  */
-    __pyx_t_10 = PyNumber_InPlaceAdd(__pyx_v_output, __pyx_v_chunk); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 185; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = PyNumber_InPlaceAdd(__pyx_v_output, __pyx_v_chunk); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF_SET(__pyx_v_output, ((PyObject*)__pyx_t_10));
     __pyx_t_10 = 0;
     __pyx_L3_continue:;
   }
 
-  /* "pysnappy/framing.pyx":146
+  /* "pysnappy/framing.pyx":149
  *         self._header_found = False
  * 
  *     cpdef bytes decompress(self, bytes data):             # <<<<<<<<<<<<<<
@@ -4336,7 +4404,7 @@ static PyObject *__pyx_pw_8pysnappy_7framing_12Decompressor_3decompress(PyObject
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("decompress (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8pysnappy_7framing_12Decompressor_2decompress(((struct __pyx_obj_8pysnappy_7framing_Decompressor *)__pyx_v_self), ((PyObject*)__pyx_v_data));
 
   /* function exit code */
@@ -4357,7 +4425,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_12Decompressor_2decompress(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("decompress", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8pysnappy_7framing_12Decompressor_decompress(__pyx_v_self, __pyx_v_data, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 146; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_8pysnappy_7framing_12Decompressor_decompress(__pyx_v_self, __pyx_v_data, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4374,7 +4442,7 @@ static PyObject *__pyx_pf_8pysnappy_7framing_12Decompressor_2decompress(struct _
   return __pyx_r;
 }
 
-/* "pysnappy/framing.pyx":187
+/* "pysnappy/framing.pyx":190
  *             output += chunk
  * 
  *     def flush(self):             # <<<<<<<<<<<<<<
@@ -4406,43 +4474,47 @@ static PyObject *__pyx_pf_8pysnappy_7framing_12Decompressor_4flush(struct __pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("flush", 0);
 
-  /* "pysnappy/framing.pyx":188
+  /* "pysnappy/framing.pyx":191
  * 
  *     def flush(self):
  *         if len(self._buf) > 0:             # <<<<<<<<<<<<<<
  *             raise Exception("Chunk truncated")
+ * 
  */
   __pyx_t_1 = __pyx_v_self->_buf;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 191; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "pysnappy/framing.pyx":189
+    /* "pysnappy/framing.pyx":192
  *     def flush(self):
  *         if len(self._buf) > 0:
  *             raise Exception("Chunk truncated")             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "pysnappy/framing.pyx":188
+    /* "pysnappy/framing.pyx":191
  * 
  *     def flush(self):
  *         if len(self._buf) > 0:             # <<<<<<<<<<<<<<
  *             raise Exception("Chunk truncated")
+ * 
  */
   }
 
-  /* "pysnappy/framing.pyx":187
+  /* "pysnappy/framing.pyx":190
  *             output += chunk
  * 
  *     def flush(self):             # <<<<<<<<<<<<<<
@@ -4458,6 +4530,1065 @@ static PyObject *__pyx_pf_8pysnappy_7framing_12Decompressor_4flush(struct __pyx_
   __Pyx_AddTraceback("pysnappy.framing.Decompressor.flush", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pysnappy/framing.pyx":198
+ *     cdef bint _header_chunk_written
+ * 
+ *     def __init__(self):             # <<<<<<<<<<<<<<
+ *         self._header_chunk_written = False
+ * 
+ */
+
+/* Python wrapper */
+static int __pyx_pw_8pysnappy_7framing_10Compressor_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_8pysnappy_7framing_10Compressor_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
+  if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
+    __Pyx_RaiseArgtupleInvalid("__init__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
+  if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__init__", 0))) return -1;
+  __pyx_r = __pyx_pf_8pysnappy_7framing_10Compressor___init__(((struct __pyx_obj_8pysnappy_7framing_Compressor *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_8pysnappy_7framing_10Compressor___init__(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__init__", 0);
+
+  /* "pysnappy/framing.pyx":199
+ * 
+ *     def __init__(self):
+ *         self._header_chunk_written = False             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef bytes add_chunk(self, bytes data, compress=None):
+ */
+  __pyx_v_self->_header_chunk_written = 0;
+
+  /* "pysnappy/framing.pyx":198
+ *     cdef bint _header_chunk_written
+ * 
+ *     def __init__(self):             # <<<<<<<<<<<<<<
+ *         self._header_chunk_written = False
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pysnappy/framing.pyx":201
+ *         self._header_chunk_written = False
+ * 
+ *     cpdef bytes add_chunk(self, bytes data, compress=None):             # <<<<<<<<<<<<<<
+ *         cdef bytes compressed_chunk
+ *         cdef bytes chunk
+ */
+
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_3add_chunk(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8pysnappy_7framing_10Compressor_add_chunk(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch, struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk *__pyx_optional_args) {
+  PyObject *__pyx_v_compress = ((PyObject *)Py_None);
+  PyObject *__pyx_v_compressed_chunk = 0;
+  PyObject *__pyx_v_chunk = 0;
+  long __pyx_v_crc;
+  long __pyx_v_chunk_type;
+  PyObject *__pyx_v_out = 0;
+  int __pyx_v_i;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  Py_ssize_t __pyx_t_5;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *(*__pyx_t_8)(PyObject *);
+  int __pyx_t_9;
+  long __pyx_t_10;
+  int __pyx_t_11;
+  Py_ssize_t __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  PyObject *__pyx_t_14 = NULL;
+  PyObject *__pyx_t_15 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("add_chunk", 0);
+  if (__pyx_optional_args) {
+    if (__pyx_optional_args->__pyx_n > 0) {
+      __pyx_v_compress = __pyx_optional_args->compress;
+    }
+  }
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_chunk); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8pysnappy_7framing_10Compressor_3add_chunk)) {
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+      __pyx_t_5 = 0;
+      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+          __pyx_t_5 = 1;
+        }
+      }
+      __pyx_t_6 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      if (__pyx_t_4) {
+        __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
+      }
+      __Pyx_INCREF(__pyx_v_data);
+      __Pyx_GIVEREF(__pyx_v_data);
+      PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_v_data);
+      __Pyx_INCREF(__pyx_v_compress);
+      __Pyx_GIVEREF(__pyx_v_compress);
+      PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_compress);
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_r = ((PyObject*)__pyx_t_2);
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "pysnappy/framing.pyx":206
+ *         cdef long crc
+ *         cdef long chunk_type
+ *         cdef bytes out = b""             # <<<<<<<<<<<<<<
+ *         cdef int i
+ *         if not self._header_chunk_written:
+ */
+  __Pyx_INCREF(__pyx_kp_b_);
+  __pyx_v_out = __pyx_kp_b_;
+
+  /* "pysnappy/framing.pyx":208
+ *         cdef bytes out = b""
+ *         cdef int i
+ *         if not self._header_chunk_written:             # <<<<<<<<<<<<<<
+ *             self._header_chunk_written = True
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+ */
+  __pyx_t_7 = ((!(__pyx_v_self->_header_chunk_written != 0)) != 0);
+  if (__pyx_t_7) {
+
+    /* "pysnappy/framing.pyx":209
+ *         cdef int i
+ *         if not self._header_chunk_written:
+ *             self._header_chunk_written = True             # <<<<<<<<<<<<<<
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+ *                                  + (len(_STREAM_IDENTIFIER) << 8))
+ */
+    __pyx_v_self->_header_chunk_written = 1;
+
+    /* "pysnappy/framing.pyx":210
+ *         if not self._header_chunk_written:
+ *             self._header_chunk_written = True
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK             # <<<<<<<<<<<<<<
+ *                                  + (len(_STREAM_IDENTIFIER) << 8))
+ *             out += _STREAM_IDENTIFIER
+ */
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pack); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+    /* "pysnappy/framing.pyx":211
+ *             self._header_chunk_written = True
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+ *                                  + (len(_STREAM_IDENTIFIER) << 8))             # <<<<<<<<<<<<<<
+ *             out += _STREAM_IDENTIFIER
+ * 
+ */
+    __pyx_t_2 = __pyx_v_8pysnappy_7framing__STREAM_IDENTIFIER;
+    __Pyx_INCREF(__pyx_t_2);
+    if (unlikely(__pyx_t_2 == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 211; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_5 = PyBytes_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 211; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = PyInt_FromSsize_t((__pyx_v_8pysnappy_7framing__IDENTIFIER_CHUNK + (__pyx_t_5 << 8))); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 211; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_6 = NULL;
+    __pyx_t_5 = 0;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __pyx_t_5 = 1;
+      }
+    }
+    __pyx_t_4 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    if (__pyx_t_6) {
+      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_6); __pyx_t_6 = NULL;
+    }
+    __Pyx_INCREF(__pyx_kp_s_L);
+    __Pyx_GIVEREF(__pyx_kp_s_L);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+__pyx_t_5, __pyx_kp_s_L);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_5, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+    /* "pysnappy/framing.pyx":210
+ *         if not self._header_chunk_written:
+ *             self._header_chunk_written = True
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK             # <<<<<<<<<<<<<<
+ *                                  + (len(_STREAM_IDENTIFIER) << 8))
+ *             out += _STREAM_IDENTIFIER
+ */
+    __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_out, __pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (!(likely(PyBytes_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_3)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 210; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF_SET(__pyx_v_out, ((PyObject*)__pyx_t_3));
+    __pyx_t_3 = 0;
+
+    /* "pysnappy/framing.pyx":212
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+ *                                  + (len(_STREAM_IDENTIFIER) << 8))
+ *             out += _STREAM_IDENTIFIER             # <<<<<<<<<<<<<<
+ * 
+ *         for i in range(0, len(data), _CHUNK_MAX):
+ */
+    __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_out, __pyx_v_8pysnappy_7framing__STREAM_IDENTIFIER); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 212; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF_SET(__pyx_v_out, ((PyObject*)__pyx_t_3));
+    __pyx_t_3 = 0;
+
+    /* "pysnappy/framing.pyx":208
+ *         cdef bytes out = b""
+ *         cdef int i
+ *         if not self._header_chunk_written:             # <<<<<<<<<<<<<<
+ *             self._header_chunk_written = True
+ *             out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+ */
+  }
+
+  /* "pysnappy/framing.pyx":214
+ *             out += _STREAM_IDENTIFIER
+ * 
+ *         for i in range(0, len(data), _CHUNK_MAX):             # <<<<<<<<<<<<<<
+ *             chunk = data[i:i + _CHUNK_MAX]
+ *             crc = masked_crc32c(chunk)
+ */
+  if (unlikely(__pyx_v_data == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __pyx_t_5 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_5 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_8pysnappy_7framing__CHUNK_MAX); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_INCREF(__pyx_int_0);
+  __Pyx_GIVEREF(__pyx_int_0);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_int_0);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_t_1);
+  __pyx_t_3 = 0;
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_4 = __pyx_t_1; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
+    __pyx_t_8 = NULL;
+  } else {
+    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_8)) {
+      if (likely(PyList_CheckExact(__pyx_t_4))) {
+        if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_4)) break;
+        #if CYTHON_COMPILING_IN_CPYTHON
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      } else {
+        if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
+        #if CYTHON_COMPILING_IN_CPYTHON
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      }
+    } else {
+      __pyx_t_1 = __pyx_t_8(__pyx_t_4);
+      if (unlikely(!__pyx_t_1)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_v_i = __pyx_t_9;
+
+    /* "pysnappy/framing.pyx":215
+ * 
+ *         for i in range(0, len(data), _CHUNK_MAX):
+ *             chunk = data[i:i + _CHUNK_MAX]             # <<<<<<<<<<<<<<
+ *             crc = masked_crc32c(chunk)
+ *             if compress is None:
+ */
+    if (unlikely(__pyx_v_data == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_1 = PySequence_GetSlice(__pyx_v_data, __pyx_v_i, (__pyx_v_i + __pyx_v_8pysnappy_7framing__CHUNK_MAX)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 215; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_chunk, ((PyObject*)__pyx_t_1));
+    __pyx_t_1 = 0;
+
+    /* "pysnappy/framing.pyx":216
+ *         for i in range(0, len(data), _CHUNK_MAX):
+ *             chunk = data[i:i + _CHUNK_MAX]
+ *             crc = masked_crc32c(chunk)             # <<<<<<<<<<<<<<
+ *             if compress is None:
+ *                 compressed_chunk = _compress(chunk)
+ */
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_masked_crc32c); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_2 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_2)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_2);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+      }
+    }
+    if (!__pyx_t_2) {
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+    } else {
+      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2); __pyx_t_2 = NULL;
+      __Pyx_INCREF(__pyx_v_chunk);
+      __Pyx_GIVEREF(__pyx_v_chunk);
+      PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_chunk);
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_10 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_10 == (long)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 216; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_v_crc = __pyx_t_10;
+
+    /* "pysnappy/framing.pyx":217
+ *             chunk = data[i:i + _CHUNK_MAX]
+ *             crc = masked_crc32c(chunk)
+ *             if compress is None:             # <<<<<<<<<<<<<<
+ *                 compressed_chunk = _compress(chunk)
+ *                 if (len(compressed_chunk) <=
+ */
+    __pyx_t_7 = (__pyx_v_compress == Py_None);
+    __pyx_t_11 = (__pyx_t_7 != 0);
+    if (__pyx_t_11) {
+
+      /* "pysnappy/framing.pyx":218
+ *             crc = masked_crc32c(chunk)
+ *             if compress is None:
+ *                 compressed_chunk = _compress(chunk)             # <<<<<<<<<<<<<<
+ *                 if (len(compressed_chunk) <=
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+ */
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_compress_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_6 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_6);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_6) {
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+      } else {
+        __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_6); __pyx_t_6 = NULL;
+        __Pyx_INCREF(__pyx_v_chunk);
+        __Pyx_GIVEREF(__pyx_v_chunk);
+        PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_chunk);
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_XDECREF_SET(__pyx_v_compressed_chunk, ((PyObject*)__pyx_t_1));
+      __pyx_t_1 = 0;
+
+      /* "pysnappy/framing.pyx":219
+ *             if compress is None:
+ *                 compressed_chunk = _compress(chunk)
+ *                 if (len(compressed_chunk) <=             # <<<<<<<<<<<<<<
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+ *                     chunk = compressed_chunk
+ */
+      if (unlikely(__pyx_v_compressed_chunk == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      }
+      __pyx_t_12 = PyBytes_GET_SIZE(__pyx_v_compressed_chunk); if (unlikely(__pyx_t_12 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+
+      /* "pysnappy/framing.pyx":220
+ *                 compressed_chunk = _compress(chunk)
+ *                 if (len(compressed_chunk) <=
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):             # <<<<<<<<<<<<<<
+ *                     chunk = compressed_chunk
+ *                     chunk_type = _COMPRESSED_CHUNK
+ */
+      __pyx_t_13 = PyBytes_GET_SIZE(__pyx_v_chunk); if (unlikely(__pyx_t_13 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+
+      /* "pysnappy/framing.pyx":219
+ *             if compress is None:
+ *                 compressed_chunk = _compress(chunk)
+ *                 if (len(compressed_chunk) <=             # <<<<<<<<<<<<<<
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+ *                     chunk = compressed_chunk
+ */
+      __pyx_t_11 = ((__pyx_t_12 <= ((1.0 - __pyx_v_8pysnappy_7framing__COMPRESSION_THRESHOLD) * __pyx_t_13)) != 0);
+      if (__pyx_t_11) {
+
+        /* "pysnappy/framing.pyx":221
+ *                 if (len(compressed_chunk) <=
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+ *                     chunk = compressed_chunk             # <<<<<<<<<<<<<<
+ *                     chunk_type = _COMPRESSED_CHUNK
+ *                 else:
+ */
+        __Pyx_INCREF(__pyx_v_compressed_chunk);
+        __Pyx_DECREF_SET(__pyx_v_chunk, __pyx_v_compressed_chunk);
+
+        /* "pysnappy/framing.pyx":222
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+ *                     chunk = compressed_chunk
+ *                     chunk_type = _COMPRESSED_CHUNK             # <<<<<<<<<<<<<<
+ *                 else:
+ *                     chunk_type = _UNCOMPRESSED_CHUNK
+ */
+        __pyx_v_chunk_type = __pyx_v_8pysnappy_7framing__COMPRESSED_CHUNK;
+
+        /* "pysnappy/framing.pyx":219
+ *             if compress is None:
+ *                 compressed_chunk = _compress(chunk)
+ *                 if (len(compressed_chunk) <=             # <<<<<<<<<<<<<<
+ *                     (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+ *                     chunk = compressed_chunk
+ */
+        goto __pyx_L7;
+      }
+
+      /* "pysnappy/framing.pyx":224
+ *                     chunk_type = _COMPRESSED_CHUNK
+ *                 else:
+ *                     chunk_type = _UNCOMPRESSED_CHUNK             # <<<<<<<<<<<<<<
+ *             elif compress:
+ *                 chunk = _compress(chunk)
+ */
+      /*else*/ {
+        __pyx_v_chunk_type = __pyx_v_8pysnappy_7framing__UNCOMPRESSED_CHUNK;
+      }
+      __pyx_L7:;
+
+      /* "pysnappy/framing.pyx":217
+ *             chunk = data[i:i + _CHUNK_MAX]
+ *             crc = masked_crc32c(chunk)
+ *             if compress is None:             # <<<<<<<<<<<<<<
+ *                 compressed_chunk = _compress(chunk)
+ *                 if (len(compressed_chunk) <=
+ */
+      goto __pyx_L6;
+    }
+
+    /* "pysnappy/framing.pyx":225
+ *                 else:
+ *                     chunk_type = _UNCOMPRESSED_CHUNK
+ *             elif compress:             # <<<<<<<<<<<<<<
+ *                 chunk = _compress(chunk)
+ *                 chunk_type = _COMPRESSED_CHUNK
+ */
+    __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_compress); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (__pyx_t_11) {
+
+      /* "pysnappy/framing.pyx":226
+ *                     chunk_type = _UNCOMPRESSED_CHUNK
+ *             elif compress:
+ *                 chunk = _compress(chunk)             # <<<<<<<<<<<<<<
+ *                 chunk_type = _COMPRESSED_CHUNK
+ *             else:
+ */
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_compress_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_2 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_2)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_2);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_2) {
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_chunk); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+      } else {
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_6);
+        __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2); __pyx_t_2 = NULL;
+        __Pyx_INCREF(__pyx_v_chunk);
+        __Pyx_GIVEREF(__pyx_v_chunk);
+        PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_chunk);
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 226; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF_SET(__pyx_v_chunk, ((PyObject*)__pyx_t_1));
+      __pyx_t_1 = 0;
+
+      /* "pysnappy/framing.pyx":227
+ *             elif compress:
+ *                 chunk = _compress(chunk)
+ *                 chunk_type = _COMPRESSED_CHUNK             # <<<<<<<<<<<<<<
+ *             else:
+ *                 chunk_type = _UNCOMPRESSED_CHUNK
+ */
+      __pyx_v_chunk_type = __pyx_v_8pysnappy_7framing__COMPRESSED_CHUNK;
+
+      /* "pysnappy/framing.pyx":225
+ *                 else:
+ *                     chunk_type = _UNCOMPRESSED_CHUNK
+ *             elif compress:             # <<<<<<<<<<<<<<
+ *                 chunk = _compress(chunk)
+ *                 chunk_type = _COMPRESSED_CHUNK
+ */
+      goto __pyx_L6;
+    }
+
+    /* "pysnappy/framing.pyx":229
+ *                 chunk_type = _COMPRESSED_CHUNK
+ *             else:
+ *                 chunk_type = _UNCOMPRESSED_CHUNK             # <<<<<<<<<<<<<<
+ *             out += pystruct.pack("<LL",
+ *                                  chunk_type + ((len(chunk) + 4) << 8), crc)
+ */
+    /*else*/ {
+      __pyx_v_chunk_type = __pyx_v_8pysnappy_7framing__UNCOMPRESSED_CHUNK;
+    }
+    __pyx_L6:;
+
+    /* "pysnappy/framing.pyx":230
+ *             else:
+ *                 chunk_type = _UNCOMPRESSED_CHUNK
+ *             out += pystruct.pack("<LL",             # <<<<<<<<<<<<<<
+ *                                  chunk_type + ((len(chunk) + 4) << 8), crc)
+ *             out += chunk
+ */
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_pystruct); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_pack); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+    /* "pysnappy/framing.pyx":231
+ *                 chunk_type = _UNCOMPRESSED_CHUNK
+ *             out += pystruct.pack("<LL",
+ *                                  chunk_type + ((len(chunk) + 4) << 8), crc)             # <<<<<<<<<<<<<<
+ *             out += chunk
+ *         return out
+ */
+    if (unlikely(__pyx_v_chunk == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    }
+    __pyx_t_13 = PyBytes_GET_SIZE(__pyx_v_chunk); if (unlikely(__pyx_t_13 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyInt_FromSsize_t((__pyx_v_chunk_type + ((__pyx_t_13 + 4) << 8))); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v_crc); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_14 = NULL;
+    __pyx_t_13 = 0;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_6))) {
+      __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_6);
+      if (likely(__pyx_t_14)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+        __Pyx_INCREF(__pyx_t_14);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_6, function);
+        __pyx_t_13 = 1;
+      }
+    }
+    __pyx_t_15 = PyTuple_New(3+__pyx_t_13); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_15);
+    if (__pyx_t_14) {
+      __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14); __pyx_t_14 = NULL;
+    }
+    __Pyx_INCREF(__pyx_kp_s_LL);
+    __Pyx_GIVEREF(__pyx_kp_s_LL);
+    PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_13, __pyx_kp_s_LL);
+    __Pyx_GIVEREF(__pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_13, __pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_15, 2+__pyx_t_13, __pyx_t_2);
+    __pyx_t_3 = 0;
+    __pyx_t_2 = 0;
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_15, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+    /* "pysnappy/framing.pyx":230
+ *             else:
+ *                 chunk_type = _UNCOMPRESSED_CHUNK
+ *             out += pystruct.pack("<LL",             # <<<<<<<<<<<<<<
+ *                                  chunk_type + ((len(chunk) + 4) << 8), crc)
+ *             out += chunk
+ */
+    __pyx_t_6 = PyNumber_InPlaceAdd(__pyx_v_out, __pyx_t_1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (!(likely(PyBytes_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_6)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 230; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF_SET(__pyx_v_out, ((PyObject*)__pyx_t_6));
+    __pyx_t_6 = 0;
+
+    /* "pysnappy/framing.pyx":232
+ *             out += pystruct.pack("<LL",
+ *                                  chunk_type + ((len(chunk) + 4) << 8), crc)
+ *             out += chunk             # <<<<<<<<<<<<<<
+ *         return out
+ * 
+ */
+    __pyx_t_6 = PyNumber_InPlaceAdd(__pyx_v_out, __pyx_v_chunk); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 232; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF_SET(__pyx_v_out, ((PyObject*)__pyx_t_6));
+    __pyx_t_6 = 0;
+
+    /* "pysnappy/framing.pyx":214
+ *             out += _STREAM_IDENTIFIER
+ * 
+ *         for i in range(0, len(data), _CHUNK_MAX):             # <<<<<<<<<<<<<<
+ *             chunk = data[i:i + _CHUNK_MAX]
+ *             crc = masked_crc32c(chunk)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "pysnappy/framing.pyx":233
+ *                                  chunk_type + ((len(chunk) + 4) << 8), crc)
+ *             out += chunk
+ *         return out             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef bytes compress(self, bytes data):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_out);
+  __pyx_r = __pyx_v_out;
+  goto __pyx_L0;
+
+  /* "pysnappy/framing.pyx":201
+ *         self._header_chunk_written = False
+ * 
+ *     cpdef bytes add_chunk(self, bytes data, compress=None):             # <<<<<<<<<<<<<<
+ *         cdef bytes compressed_chunk
+ *         cdef bytes chunk
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_14);
+  __Pyx_XDECREF(__pyx_t_15);
+  __Pyx_AddTraceback("pysnappy.framing.Compressor.add_chunk", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_compressed_chunk);
+  __Pyx_XDECREF(__pyx_v_chunk);
+  __Pyx_XDECREF(__pyx_v_out);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_3add_chunk(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_3add_chunk(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_data = 0;
+  PyObject *__pyx_v_compress = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("add_chunk (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_data,&__pyx_n_s_compress,0};
+    PyObject* values[2] = {0,0};
+    values[1] = ((PyObject *)Py_None);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_data)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_compress);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_chunk") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_data = ((PyObject*)values[0]);
+    __pyx_v_compress = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("add_chunk", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("pysnappy.framing.Compressor.add_chunk", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_8pysnappy_7framing_10Compressor_2add_chunk(((struct __pyx_obj_8pysnappy_7framing_Compressor *)__pyx_v_self), __pyx_v_data, __pyx_v_compress);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_8pysnappy_7framing_10Compressor_2add_chunk(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data, PyObject *__pyx_v_compress) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk __pyx_t_2;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("add_chunk", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2.__pyx_n = 1;
+  __pyx_t_2.compress = __pyx_v_compress;
+  __pyx_t_1 = __pyx_vtabptr_8pysnappy_7framing_Compressor->add_chunk(__pyx_v_self, __pyx_v_data, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 201; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("pysnappy.framing.Compressor.add_chunk", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pysnappy/framing.pyx":235
+ *         return out
+ * 
+ *     cpdef bytes compress(self, bytes data):             # <<<<<<<<<<<<<<
+ *         return self.add_chunk(data)
+ * 
+ */
+
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_5compress(PyObject *__pyx_v_self, PyObject *__pyx_v_data); /*proto*/
+static PyObject *__pyx_f_8pysnappy_7framing_10Compressor_compress(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("compress", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compress); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_8pysnappy_7framing_10Compressor_5compress)) {
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+      if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_4) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_data); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_5);
+        __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+        __Pyx_INCREF(__pyx_v_data);
+        __Pyx_GIVEREF(__pyx_v_data);
+        PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_data);
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (!(likely(PyBytes_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_2)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_r = ((PyObject*)__pyx_t_2);
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "pysnappy/framing.pyx":236
+ * 
+ *     cpdef bytes compress(self, bytes data):
+ *         return self.add_chunk(data)             # <<<<<<<<<<<<<<
+ * 
+ *     def flush(self, mode=None):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((struct __pyx_vtabstruct_8pysnappy_7framing_Compressor *)__pyx_v_self->__pyx_vtab)->add_chunk(__pyx_v_self, __pyx_v_data, 0, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "pysnappy/framing.pyx":235
+ *         return out
+ * 
+ *     cpdef bytes compress(self, bytes data):             # <<<<<<<<<<<<<<
+ *         return self.add_chunk(data)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("pysnappy.framing.Compressor.compress", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_5compress(PyObject *__pyx_v_self, PyObject *__pyx_v_data); /*proto*/
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_5compress(PyObject *__pyx_v_self, PyObject *__pyx_v_data) {
+  CYTHON_UNUSED int __pyx_lineno = 0;
+  CYTHON_UNUSED const char *__pyx_filename = NULL;
+  CYTHON_UNUSED int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("compress (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_8pysnappy_7framing_10Compressor_4compress(((struct __pyx_obj_8pysnappy_7framing_Compressor *)__pyx_v_self), ((PyObject*)__pyx_v_data));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_8pysnappy_7framing_10Compressor_4compress(struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, PyObject *__pyx_v_data) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("compress", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_8pysnappy_7framing_10Compressor_compress(__pyx_v_self, __pyx_v_data, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 235; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("pysnappy.framing.Compressor.compress", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pysnappy/framing.pyx":238
+ *         return self.add_chunk(data)
+ * 
+ *     def flush(self, mode=None):             # <<<<<<<<<<<<<<
+ *         pass
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_7flush(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8pysnappy_7framing_10Compressor_7flush(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  CYTHON_UNUSED PyObject *__pyx_v_mode = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("flush (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_mode,0};
+    PyObject* values[1] = {0};
+    values[0] = ((PyObject *)Py_None);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_mode);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "flush") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_mode = values[0];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("flush", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 238; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("pysnappy.framing.Compressor.flush", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_8pysnappy_7framing_10Compressor_6flush(((struct __pyx_obj_8pysnappy_7framing_Compressor *)__pyx_v_self), __pyx_v_mode);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_8pysnappy_7framing_10Compressor_6flush(CYTHON_UNUSED struct __pyx_obj_8pysnappy_7framing_Compressor *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_mode) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("flush", 0);
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -4913,6 +6044,95 @@ static PyTypeObject __pyx_type_8pysnappy_7framing_Decompressor = {
   0, /*tp_finalize*/
   #endif
 };
+static struct __pyx_vtabstruct_8pysnappy_7framing_Compressor __pyx_vtable_8pysnappy_7framing_Compressor;
+
+static PyObject *__pyx_tp_new_8pysnappy_7framing_Compressor(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_8pysnappy_7framing_Compressor *p;
+  PyObject *o;
+  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
+    o = (*t->tp_alloc)(t, 0);
+  } else {
+    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
+  }
+  if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_8pysnappy_7framing_Compressor *)o);
+  p->__pyx_vtab = __pyx_vtabptr_8pysnappy_7framing_Compressor;
+  return o;
+}
+
+static void __pyx_tp_dealloc_8pysnappy_7framing_Compressor(PyObject *o) {
+  #if PY_VERSION_HEX >= 0x030400a1
+  if (unlikely(Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
+    if (PyObject_CallFinalizerFromDealloc(o)) return;
+  }
+  #endif
+  (*Py_TYPE(o)->tp_free)(o);
+}
+
+static PyMethodDef __pyx_methods_8pysnappy_7framing_Compressor[] = {
+  {"add_chunk", (PyCFunction)__pyx_pw_8pysnappy_7framing_10Compressor_3add_chunk, METH_VARARGS|METH_KEYWORDS, 0},
+  {"compress", (PyCFunction)__pyx_pw_8pysnappy_7framing_10Compressor_5compress, METH_O, 0},
+  {"flush", (PyCFunction)__pyx_pw_8pysnappy_7framing_10Compressor_7flush, METH_VARARGS|METH_KEYWORDS, 0},
+  {0, 0, 0, 0}
+};
+
+static PyTypeObject __pyx_type_8pysnappy_7framing_Compressor = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "pysnappy.framing.Compressor", /*tp_name*/
+  sizeof(struct __pyx_obj_8pysnappy_7framing_Compressor), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_8pysnappy_7framing_Compressor, /*tp_dealloc*/
+  0, /*tp_print*/
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
+  0, /*tp_doc*/
+  0, /*tp_traverse*/
+  0, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  __pyx_methods_8pysnappy_7framing_Compressor, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  __pyx_pw_8pysnappy_7framing_10Compressor_1__init__, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_8pysnappy_7framing_Compressor, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+};
 
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
@@ -4941,14 +6161,18 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Chunk_truncated, __pyx_k_Chunk_truncated, sizeof(__pyx_k_Chunk_truncated), 0, 0, 1, 0},
   {&__pyx_n_s_Exception, __pyx_k_Exception, sizeof(__pyx_k_Exception), 0, 0, 1, 1},
   {&__pyx_kp_s_L, __pyx_k_L, sizeof(__pyx_k_L), 0, 0, 1, 0},
+  {&__pyx_kp_s_LL, __pyx_k_LL, sizeof(__pyx_k_LL), 0, 0, 1, 0},
   {&__pyx_n_s_Skippable, __pyx_k_Skippable, sizeof(__pyx_k_Skippable), 0, 0, 1, 1},
   {&__pyx_kp_s_Stream_has_invalid_snappy_identi, __pyx_k_Stream_has_invalid_snappy_identi, sizeof(__pyx_k_Stream_has_invalid_snappy_identi), 0, 0, 1, 0},
   {&__pyx_kp_s_Stream_missing_snappy_identifier, __pyx_k_Stream_missing_snappy_identifier, sizeof(__pyx_k_Stream_missing_snappy_identifier), 0, 0, 1, 0},
   {&__pyx_kp_s_Stream_received_unskippable_but, __pyx_k_Stream_received_unskippable_but, sizeof(__pyx_k_Stream_received_unskippable_but), 0, 0, 1, 0},
+  {&__pyx_n_s_add_chunk, __pyx_k_add_chunk, sizeof(__pyx_k_add_chunk), 0, 0, 1, 1},
   {&__pyx_n_s_buffer_size, __pyx_k_buffer_size, sizeof(__pyx_k_buffer_size), 0, 0, 1, 1},
   {&__pyx_n_s_compress, __pyx_k_compress, sizeof(__pyx_k_compress), 0, 0, 1, 1},
+  {&__pyx_n_s_compress_2, __pyx_k_compress_2, sizeof(__pyx_k_compress_2), 0, 0, 1, 1},
   {&__pyx_n_s_crc32c, __pyx_k_crc32c, sizeof(__pyx_k_crc32c), 0, 0, 1, 1},
   {&__pyx_kp_s_crc_mismatch, __pyx_k_crc_mismatch, sizeof(__pyx_k_crc_mismatch), 0, 0, 1, 0},
+  {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
   {&__pyx_n_s_decompress, __pyx_k_decompress, sizeof(__pyx_k_decompress), 0, 0, 1, 1},
   {&__pyx_n_s_decompress_block, __pyx_k_decompress_block, sizeof(__pyx_k_decompress_block), 0, 0, 1, 1},
   {&__pyx_n_s_decompress_subblock, __pyx_k_decompress_subblock, sizeof(__pyx_k_decompress_subblock), 0, 0, 1, 1},
@@ -4959,21 +6183,25 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_masked_crc32c, __pyx_k_masked_crc32c, sizeof(__pyx_k_masked_crc32c), 0, 0, 1, 1},
+  {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pysnappy, __pyx_k_pysnappy, sizeof(__pyx_k_pysnappy), 0, 0, 1, 1},
   {&__pyx_n_s_pysnappy_crc32c, __pyx_k_pysnappy_crc32c, sizeof(__pyx_k_pysnappy_crc32c), 0, 0, 1, 1},
   {&__pyx_n_s_pystruct, __pyx_k_pystruct, sizeof(__pyx_k_pystruct), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
+  {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_b_sNaPpY, __pyx_k_sNaPpY, sizeof(__pyx_k_sNaPpY), 0, 0, 0, 1},
   {&__pyx_n_s_struct, __pyx_k_struct, sizeof(__pyx_k_struct), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_uncompress, __pyx_k_uncompress, sizeof(__pyx_k_uncompress), 0, 0, 1, 1},
+  {&__pyx_n_s_uncompress_2, __pyx_k_uncompress_2, sizeof(__pyx_k_uncompress_2), 0, 0, 1, 1},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4999,40 +6227,42 @@ static int __Pyx_InitCachedConstants(void) {
  *         if len(self._buf) > 0:
  *             raise Exception("Chunk truncated")             # <<<<<<<<<<<<<<
  * 
- * cdef int _CHUNK_MAX = 65536
+ * 
  */
   __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Chunk_truncated); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "pysnappy/framing.pyx":161
+  /* "pysnappy/framing.pyx":164
  *             if not self._header_found:
  *                 if (chunk_type != _IDENTIFIER_CHUNK or size != len(_STREAM_IDENTIFIER)):
  *                     raise Exception("Stream missing snappy identifier")             # <<<<<<<<<<<<<<
  *                 self._header_found = True
  *             if (_RESERVED_UNSKIPPABLE_LEFT <= chunk_type and chunk_type < _RESERVED_UNSKIPPABLE_RIGHT):
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Stream_missing_snappy_identifier); if (unlikely(!__pyx_tuple__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Stream_missing_snappy_identifier); if (unlikely(!__pyx_tuple__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "pysnappy/framing.pyx":170
+  /* "pysnappy/framing.pyx":173
  *             if chunk_type == _IDENTIFIER_CHUNK:
  *                 if chunk != _STREAM_IDENTIFIER:
  *                     raise Exception("Stream has invalid snappy identifier")             # <<<<<<<<<<<<<<
  *                 continue
  *             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_Stream_has_invalid_snappy_identi); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_Stream_has_invalid_snappy_identi); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "pysnappy/framing.pyx":189
+  /* "pysnappy/framing.pyx":192
  *     def flush(self):
  *         if len(self._buf) > 0:
  *             raise Exception("Chunk truncated")             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_Chunk_truncated); if (unlikely(!__pyx_tuple__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_Chunk_truncated); if (unlikely(!__pyx_tuple__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
   __Pyx_RefNannyFinishContext();
@@ -5044,6 +6274,7 @@ static int __Pyx_InitCachedConstants(void) {
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_int_131072 = PyInt_FromLong(131072L); if (unlikely(!__pyx_int_131072)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
@@ -5170,11 +6401,19 @@ PyMODINIT_FUNC PyInit_framing(void)
   __pyx_ptype_8pysnappy_7framing_HadoopCompressor = &__pyx_type_8pysnappy_7framing_HadoopCompressor;
   __pyx_vtabptr_8pysnappy_7framing_Decompressor = &__pyx_vtable_8pysnappy_7framing_Decompressor;
   __pyx_vtable_8pysnappy_7framing_Decompressor.decompress = (PyObject *(*)(struct __pyx_obj_8pysnappy_7framing_Decompressor *, PyObject *, int __pyx_skip_dispatch))__pyx_f_8pysnappy_7framing_12Decompressor_decompress;
-  if (PyType_Ready(&__pyx_type_8pysnappy_7framing_Decompressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_8pysnappy_7framing_Decompressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_8pysnappy_7framing_Decompressor.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_8pysnappy_7framing_Decompressor.tp_dict, __pyx_vtabptr_8pysnappy_7framing_Decompressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "Decompressor", (PyObject *)&__pyx_type_8pysnappy_7framing_Decompressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (__Pyx_SetVtable(__pyx_type_8pysnappy_7framing_Decompressor.tp_dict, __pyx_vtabptr_8pysnappy_7framing_Decompressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "Decompressor", (PyObject *)&__pyx_type_8pysnappy_7framing_Decompressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_8pysnappy_7framing_Decompressor = &__pyx_type_8pysnappy_7framing_Decompressor;
+  __pyx_vtabptr_8pysnappy_7framing_Compressor = &__pyx_vtable_8pysnappy_7framing_Compressor;
+  __pyx_vtable_8pysnappy_7framing_Compressor.add_chunk = (PyObject *(*)(struct __pyx_obj_8pysnappy_7framing_Compressor *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8pysnappy_7framing_10Compressor_add_chunk *__pyx_optional_args))__pyx_f_8pysnappy_7framing_10Compressor_add_chunk;
+  __pyx_vtable_8pysnappy_7framing_Compressor.compress = (PyObject *(*)(struct __pyx_obj_8pysnappy_7framing_Compressor *, PyObject *, int __pyx_skip_dispatch))__pyx_f_8pysnappy_7framing_10Compressor_compress;
+  if (PyType_Ready(&__pyx_type_8pysnappy_7framing_Compressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_type_8pysnappy_7framing_Compressor.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_8pysnappy_7framing_Compressor.tp_dict, __pyx_vtabptr_8pysnappy_7framing_Compressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "Compressor", (PyObject *)&__pyx_type_8pysnappy_7framing_Compressor) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_8pysnappy_7framing_Compressor = &__pyx_type_8pysnappy_7framing_Compressor;
   /*--- Type import code ---*/
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
@@ -5186,7 +6425,7 @@ PyMODINIT_FUNC PyInit_framing(void)
   /* "pysnappy/framing.pyx":1
  * import struct as pystruct             # <<<<<<<<<<<<<<
  * from pysnappy.crc32c import crc32c, masked_crc32c
- * from pysnappy import compress, uncompress
+ * from pysnappy import compress as _compress, uncompress as _uncompress
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_struct, 0, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
@@ -5196,7 +6435,7 @@ PyMODINIT_FUNC PyInit_framing(void)
   /* "pysnappy/framing.pyx":2
  * import struct as pystruct
  * from pysnappy.crc32c import crc32c, masked_crc32c             # <<<<<<<<<<<<<<
- * from pysnappy import compress, uncompress
+ * from pysnappy import compress as _compress, uncompress as _uncompress
  * 
  */
   __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -5223,7 +6462,7 @@ PyMODINIT_FUNC PyInit_framing(void)
   /* "pysnappy/framing.pyx":3
  * import struct as pystruct
  * from pysnappy.crc32c import crc32c, masked_crc32c
- * from pysnappy import compress, uncompress             # <<<<<<<<<<<<<<
+ * from pysnappy import compress as _compress, uncompress as _uncompress             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -5232,24 +6471,24 @@ PyMODINIT_FUNC PyInit_framing(void)
   __Pyx_INCREF(__pyx_n_s_compress);
   __Pyx_GIVEREF(__pyx_n_s_compress);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_compress);
-  __Pyx_INCREF(__pyx_n_s_uncompress);
-  __Pyx_GIVEREF(__pyx_n_s_uncompress);
-  PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_uncompress);
+  __Pyx_INCREF(__pyx_n_s_uncompress_2);
+  __Pyx_GIVEREF(__pyx_n_s_uncompress_2);
+  PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_uncompress_2);
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_pysnappy, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_compress); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compress, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_compress_2, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_uncompress); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_uncompress_2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_uncompress, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pysnappy/framing.pyx":127
- *             raise Exception("Chunk truncated")
+  /* "pysnappy/framing.pyx":128
+ * 
  * 
  * cdef int _CHUNK_MAX = 65536             # <<<<<<<<<<<<<<
  * cdef int _STREAM_TO_STREAM_BLOCK_SIZE = _CHUNK_MAX
@@ -5257,7 +6496,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__CHUNK_MAX = 0x10000;
 
-  /* "pysnappy/framing.pyx":128
+  /* "pysnappy/framing.pyx":129
  * 
  * cdef int _CHUNK_MAX = 65536
  * cdef int _STREAM_TO_STREAM_BLOCK_SIZE = _CHUNK_MAX             # <<<<<<<<<<<<<<
@@ -5266,7 +6505,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__STREAM_TO_STREAM_BLOCK_SIZE = __pyx_v_8pysnappy_7framing__CHUNK_MAX;
 
-  /* "pysnappy/framing.pyx":129
+  /* "pysnappy/framing.pyx":130
  * cdef int _CHUNK_MAX = 65536
  * cdef int _STREAM_TO_STREAM_BLOCK_SIZE = _CHUNK_MAX
  * cdef bytes _STREAM_IDENTIFIER = b"sNaPpY"             # <<<<<<<<<<<<<<
@@ -5278,7 +6517,7 @@ PyMODINIT_FUNC PyInit_framing(void)
   __Pyx_DECREF_SET(__pyx_v_8pysnappy_7framing__STREAM_IDENTIFIER, __pyx_n_b_sNaPpY);
   __Pyx_GIVEREF(__pyx_n_b_sNaPpY);
 
-  /* "pysnappy/framing.pyx":130
+  /* "pysnappy/framing.pyx":131
  * cdef int _STREAM_TO_STREAM_BLOCK_SIZE = _CHUNK_MAX
  * cdef bytes _STREAM_IDENTIFIER = b"sNaPpY"
  * cdef int _COMPRESSED_CHUNK = 0x00             # <<<<<<<<<<<<<<
@@ -5287,7 +6526,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__COMPRESSED_CHUNK = 0x00;
 
-  /* "pysnappy/framing.pyx":131
+  /* "pysnappy/framing.pyx":132
  * cdef bytes _STREAM_IDENTIFIER = b"sNaPpY"
  * cdef int _COMPRESSED_CHUNK = 0x00
  * cdef int _UNCOMPRESSED_CHUNK = 0x01             # <<<<<<<<<<<<<<
@@ -5296,7 +6535,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__UNCOMPRESSED_CHUNK = 0x01;
 
-  /* "pysnappy/framing.pyx":132
+  /* "pysnappy/framing.pyx":133
  * cdef int _COMPRESSED_CHUNK = 0x00
  * cdef int _UNCOMPRESSED_CHUNK = 0x01
  * cdef int _IDENTIFIER_CHUNK = 0xff             # <<<<<<<<<<<<<<
@@ -5305,7 +6544,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__IDENTIFIER_CHUNK = 0xff;
 
-  /* "pysnappy/framing.pyx":133
+  /* "pysnappy/framing.pyx":134
  * cdef int _UNCOMPRESSED_CHUNK = 0x01
  * cdef int _IDENTIFIER_CHUNK = 0xff
  * cdef int _RESERVED_UNSKIPPABLE_LEFT = 0x02  # chunk ranges are [inclusive, exclusive)             # <<<<<<<<<<<<<<
@@ -5314,7 +6553,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__RESERVED_UNSKIPPABLE_LEFT = 0x02;
 
-  /* "pysnappy/framing.pyx":134
+  /* "pysnappy/framing.pyx":135
  * cdef int _IDENTIFIER_CHUNK = 0xff
  * cdef int _RESERVED_UNSKIPPABLE_LEFT = 0x02  # chunk ranges are [inclusive, exclusive)
  * cdef int _RESERVED_UNSKIPPABLE_RIGHT = 0x80             # <<<<<<<<<<<<<<
@@ -5323,7 +6562,7 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__RESERVED_UNSKIPPABLE_RIGHT = 0x80;
 
-  /* "pysnappy/framing.pyx":135
+  /* "pysnappy/framing.pyx":136
  * cdef int _RESERVED_UNSKIPPABLE_LEFT = 0x02  # chunk ranges are [inclusive, exclusive)
  * cdef int _RESERVED_UNSKIPPABLE_RIGHT = 0x80
  * cdef int _RESERVED_SKIPPABLE_LEFT = 0x80             # <<<<<<<<<<<<<<
@@ -5332,19 +6571,28 @@ PyMODINIT_FUNC PyInit_framing(void)
  */
   __pyx_v_8pysnappy_7framing__RESERVED_SKIPPABLE_LEFT = 0x80;
 
-  /* "pysnappy/framing.pyx":136
+  /* "pysnappy/framing.pyx":137
  * cdef int _RESERVED_UNSKIPPABLE_RIGHT = 0x80
  * cdef int _RESERVED_SKIPPABLE_LEFT = 0x80
  * cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff             # <<<<<<<<<<<<<<
  * 
- * cdef class Decompressor:
+ * cdef double _COMPRESSION_THRESHOLD = 0.125
  */
   __pyx_v_8pysnappy_7framing__RESERVED_SKIPPABLE_RIGHT = 0xff;
+
+  /* "pysnappy/framing.pyx":139
+ * cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
+ * 
+ * cdef double _COMPRESSION_THRESHOLD = 0.125             # <<<<<<<<<<<<<<
+ * 
+ * cdef class Decompressor:
+ */
+  __pyx_v_8pysnappy_7framing__COMPRESSION_THRESHOLD = 0.125;
 
   /* "pysnappy/framing.pyx":1
  * import struct as pystruct             # <<<<<<<<<<<<<<
  * from pysnappy.crc32c import crc32c, masked_crc32c
- * from pysnappy import compress, uncompress
+ * from pysnappy import compress as _compress, uncompress as _uncompress
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);

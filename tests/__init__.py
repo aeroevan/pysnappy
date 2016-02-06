@@ -4,7 +4,7 @@ import unittest
 import pysnappy
 from pysnappy.framing import HadoopDecompressor, HadoopCompressor
 from pysnappy.framing import RawDecompressor, RawCompressor
-from pysnappy.framing import Decompressor
+from pysnappy.framing import Decompressor, Compressor
 
 
 class RawTests(unittest.TestCase):
@@ -74,8 +74,14 @@ class Framing2Tests(unittest.TestCase):
         uncomp = os.path.join(os.path.dirname(__file__), 'iris.csv')
         self.uncomp_fh = open(uncomp, 'rb')
 
+    def tearDown(self):
+        self.comp_fh.close()
+        self.uncomp_fh.close()
+
     def test_uncompress(self):
         decompressor = Decompressor()
+        self.comp_fh.seek(0)
+        self.uncomp_fh.seek(0)
         while True:
             buf = self.comp_fh.read(65536)
             if not buf:
@@ -85,3 +91,17 @@ class Framing2Tests(unittest.TestCase):
                 buf2 = self.uncomp_fh.read(len(buf))
                 self.assertEqual(buf, buf2, "Uncompress failure")
         decompressor.flush()
+
+    def test_compress(self):
+        compressor = Compressor()
+        self.comp_fh.seek(0)
+        self.uncomp_fh.seek(0)
+        while True:
+            buf = self.uncomp_fh.read(65536)
+            if not buf:
+                break
+            buf = compressor.compress(buf)
+            if buf:
+                buf2 = self.comp_fh.read(len(buf))
+                self.assertEqual(buf, buf2, "Compress failure")
+        compressor.flush()

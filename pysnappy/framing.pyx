@@ -1,18 +1,18 @@
 import struct as pystruct
 from pysnappy.crc32c import crc32c, masked_crc32c
-from pysnappy import compress, uncompress
+from pysnappy import compress as _compress, uncompress as _uncompress
 
 
 cdef class RawDecompressor:
     cpdef bytes decompress(self, bytes data):
-        return uncompress(data)
+        return _uncompress(data)
     def flush(self):
         pass
 
 
 cdef class RawCompressor:
     cpdef bytes compress(self, bytes data):
-        return compress(data)
+        return _compress(data)
     def flush(self):
         pass
 
@@ -77,7 +77,7 @@ cdef class HadoopDecompressor:
             return b""
         compressed = self._buf[:self._subblock_size]
         self._buf = self._buf[self._subblock_size:]
-        uncompressed = uncompress(compressed)
+        uncompressed = _uncompress(compressed)
         self._block_read += len(uncompressed)
         self._subblock_size = -1
         return uncompressed
@@ -111,7 +111,7 @@ cdef class HadoopCompressor:
             if uncompressed_length == 0:
                 break
             try:
-                buf = compress(buf)
+                buf = _compress(buf)
             except:
                 break
             compressed_length = len(buf)
@@ -124,6 +124,7 @@ cdef class HadoopCompressor:
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
 
+
 cdef int _CHUNK_MAX = 65536
 cdef int _STREAM_TO_STREAM_BLOCK_SIZE = _CHUNK_MAX
 cdef bytes _STREAM_IDENTIFIER = b"sNaPpY"
@@ -134,6 +135,8 @@ cdef int _RESERVED_UNSKIPPABLE_LEFT = 0x02  # chunk ranges are [inclusive, exclu
 cdef int _RESERVED_UNSKIPPABLE_RIGHT = 0x80
 cdef int _RESERVED_SKIPPABLE_LEFT = 0x80
 cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
+
+cdef double _COMPRESSION_THRESHOLD = 0.125
 
 cdef class Decompressor:
     cdef bytes _buf
@@ -176,7 +179,7 @@ cdef class Decompressor:
             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
             stream_crc, chunk = chunk[:4], chunk[4:4 + size]
             if chunk_type == _COMPRESSED_CHUNK:
-                chunk = uncompress(chunk)
+                chunk = _uncompress(chunk)
             if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
                 raise Exception("crc mismatch: " +
                                 str(pystruct.pack("<L", masked_crc32c(chunk))) +
@@ -187,3 +190,50 @@ cdef class Decompressor:
     def flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
+
+
+cdef class Compressor:
+    cdef bint _header_chunk_written
+
+    def __init__(self):
+        self._header_chunk_written = False
+
+    cpdef bytes add_chunk(self, bytes data, compress=None):
+        cdef bytes compressed_chunk
+        cdef bytes chunk
+        cdef long crc
+        cdef long chunk_type
+        cdef bytes out = b""
+        cdef int i
+        if not self._header_chunk_written:
+            self._header_chunk_written = True
+            out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+                                 + (len(_STREAM_IDENTIFIER) << 8))
+            out += _STREAM_IDENTIFIER
+
+        for i in range(0, len(data), _CHUNK_MAX):
+            chunk = data[i:i + _CHUNK_MAX]
+            crc = masked_crc32c(chunk)
+            if compress is None:
+                compressed_chunk = _compress(chunk)
+                if (len(compressed_chunk) <=
+                    (1.0 - _COMPRESSION_THRESHOLD) * len(chunk)):
+                    chunk = compressed_chunk
+                    chunk_type = _COMPRESSED_CHUNK
+                else:
+                    chunk_type = _UNCOMPRESSED_CHUNK
+            elif compress:
+                chunk = _compress(chunk)
+                chunk_type = _COMPRESSED_CHUNK
+            else:
+                chunk_type = _UNCOMPRESSED_CHUNK
+            out += pystruct.pack("<LL",
+                                 chunk_type + ((len(chunk) + 4) << 8), crc)
+            out += chunk
+        return out
+
+    cpdef bytes compress(self, bytes data):
+        return self.add_chunk(data)
+
+    def flush(self, mode=None):
+        pass
