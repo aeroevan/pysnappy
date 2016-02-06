@@ -1,6 +1,7 @@
 import struct as pystruct
 from pysnappy.crc32c import crc32c, masked_crc32c
-from pysnappy import compress as _compress, uncompress as _uncompress
+from pysnappy.core import compress as _compress
+from pysnappy.core import uncompress as _uncompress
 
 
 cdef class RawDecompressor:

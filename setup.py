@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup, Extension
+from setuptools import setup, find_packages, Extension
 have_cython = False
 try:
     import Cython
@@ -8,7 +8,7 @@ except ImportError:
     pass
 
 
-ext_modules=[]
+ext_modules = []
 if have_cython:
     ext_modules.append(
         Extension("pysnappy.core", sources=["pysnappy/core.pyx"],
@@ -42,7 +42,13 @@ setup(
     url="https://github.com/aeroevan/pysnappy",
     license='MIT',
     test_suite="tests",
+    packages=find_packages(exclude="test"),
     ext_modules=ext_modules,
+    entry_points={
+        'console_scripts': [
+            'pysnappy = pysnappy.cli:main'
+        ]
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: MIT License",
