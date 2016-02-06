@@ -70,15 +70,18 @@ class HadoopTests(unittest.TestCase):
 class Framing2Tests(unittest.TestCase):
     def setUp(self):
         comp = os.path.join(os.path.dirname(__file__), 'iris.framing2.sz')
-        with open(comp, 'rb') as fh:
-            self.compressed = fh.read()
+        self.comp_fh = open(comp, 'rb')
         uncomp = os.path.join(os.path.dirname(__file__), 'iris.csv')
-        with open(uncomp, 'rb') as fh:
-            self.uncompressed = fh.read()
+        self.uncomp_fh = open(uncomp, 'rb')
 
     def test_uncompress(self):
-        h = Decompressor()
-        uncompressed = h.decompress(self.compressed)
-        h.flush()
-        self.assertEqual(self.uncompressed, uncompressed,
-                         "Uncompressed test failure")
+        decompressor = Decompressor()
+        while True:
+            buf = self.comp_fh.read(65536)
+            if not buf:
+                break
+            buf = decompressor.decompress(buf)
+            if buf:
+                buf2 = self.uncomp_fh.read(len(buf))
+                self.assertEqual(buf, buf2, "Uncompress failure")
+        decompressor.flush()
