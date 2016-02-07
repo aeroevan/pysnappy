@@ -39,6 +39,8 @@ setup(
     name="pysnappy",
     version="0.5.0",
     description="Cython bindings to libsnappy",
+    author="Evan McClain",
+    author_email="aeroevan@gmail.com",
     url="https://github.com/aeroevan/pysnappy",
     download_url="https://github.com/aeroevan/pysnappy/tarball/v0.5",
     license='MIT',
