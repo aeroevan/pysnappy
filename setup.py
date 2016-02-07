@@ -40,6 +40,7 @@ setup(
     version="0.5.0",
     description="Cython bindings to libsnappy",
     url="https://github.com/aeroevan/pysnappy",
+    download_url="https://github.com/aeroevan/pysnappy/tarball/v0.5",
     license='MIT',
     test_suite="tests",
     packages=find_packages(exclude="test"),
