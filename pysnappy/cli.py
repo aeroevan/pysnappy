@@ -44,7 +44,7 @@ def stream_compress(fh_in, fh_out, framing, bs):
     while True:
         buf = fh_in.read(bs)
         if buf:
-            buf = compressor.compress(buf)
+            buf = compressor.add_chunk(buf)
         else:
             break
         if buf:
