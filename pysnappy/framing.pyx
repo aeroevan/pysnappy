@@ -1,5 +1,6 @@
+# cython: profile=False
 import struct as pystruct
-from pysnappy.crc32c import crc32c, masked_crc32c
+from pysnappy.crc32c import masked_crc32c
 from pysnappy.core import compress as _compress
 from pysnappy.core import uncompress as _uncompress
 
@@ -24,7 +25,7 @@ cdef class HadoopDecompressor:
     cdef int _block_read
     cdef int _subblock_size
 
-    def __init__(self):
+    def __cinit__(self):
         self._buf = b""
         self._block_size = -1
         self._block_read = 0
@@ -42,7 +43,7 @@ cdef class HadoopDecompressor:
                 break
         return output
 
-    cpdef bytes _decompress_block(self):
+    cdef bytes _decompress_block(self):
         cdef bytes buf
         if self._block_size < 0:
             if len(self._buf) <= 4:
@@ -64,7 +65,7 @@ cdef class HadoopDecompressor:
             self._block_size = -1
         return output
 
-    cpdef bytes _decompress_subblock(self):
+    cdef bytes _decompress_subblock(self):
         cdef bytes compressed
         cdef bytes uncompressed
         if self._subblock_size < 0:
@@ -91,7 +92,7 @@ cdef class HadoopDecompressor:
 cdef class HadoopCompressor:
     cdef int _buffer_size
     cdef bytes _buf
-    def __init__(self, buffer_size=131072):
+    def __cinit__(self, buffer_size=131072):
         self._buffer_size = buffer_size
         self._buf = b""
 
@@ -143,7 +144,7 @@ cdef class Decompressor:
     cdef bytes _buf
     cdef bint _header_found
 
-    def __init__(self):
+    def __cinit__(self):
         self._buf = b""
         self._header_found = False
 
@@ -175,7 +176,6 @@ cdef class Decompressor:
                 continue
             if (_RESERVED_SKIPPABLE_LEFT <= chunk_type and
                     chunk_type < _RESERVED_SKIPPABLE_RIGHT):
-                print("Skippable")
                 continue
             assert chunk_type in (_COMPRESSED_CHUNK, _UNCOMPRESSED_CHUNK)
             stream_crc, chunk = chunk[:4], chunk[4:4 + size]
@@ -196,7 +196,7 @@ cdef class Decompressor:
 cdef class Compressor:
     cdef bint _header_chunk_written
 
-    def __init__(self):
+    def __cinit__(self):
         self._header_chunk_written = False
 
     cpdef bytes add_chunk(self, bytes data, compress=None):

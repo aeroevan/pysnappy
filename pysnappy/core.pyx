@@ -1,6 +1,9 @@
+# cython: profile=False
 from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
+from pysnappy.framing import Compressor, Decompressor
+from pysnappy.framing import HadoopCompressor, HadoopDecompressor
 
-def uncompress(bytes compressed):
+cpdef bytes uncompress(bytes compressed):
     cdef size_t n = len(compressed)
     cdef size_t m
     cdef snappy_status status
@@ -18,7 +21,7 @@ def uncompress(bytes compressed):
         raise Exception("Could not uncompress")
     return uncompressed[:m]
 
-def compress(bytes uncompressed):
+cpdef bytes compress(bytes uncompressed):
     cdef size_t n = len(uncompressed)
     cdef size_t m = snappy_max_compressed_length(n)
     cdef snappy_status status
@@ -32,3 +35,33 @@ def compress(bytes uncompressed):
         raise Exception("Could not compress")
     return compressed[:m]
 
+cpdef void stream_compress(fh_in, fh_out, framing, int bs=65536):
+    if framing == "framing2":
+        compressor = Compressor()
+    else:
+        compressor = HadoopCompressor()
+
+    while True:
+        buf = fh_in.read(bs)
+        if buf:
+            buf = compressor.add_chunk(buf)
+        else:
+            break
+        if buf:
+            fh_out.write(buf)
+
+
+cpdef void stream_decompress(fh_in, fh_out, framing, int bs=65536):
+    if framing == "framing2":
+        decompressor = Decompressor()
+    else:
+        decompressor = HadoopDecompressor()
+
+    while True:
+        buf = fh_in.read(bs)
+        if buf:
+            buf = decompressor.decompress(buf)
+        else:
+            break
+        if buf:
+            fh_out.write(buf)

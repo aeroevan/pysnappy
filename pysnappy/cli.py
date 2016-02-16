@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
-from pysnappy.framing import Compressor, Decompressor
-from pysnappy.framing import HadoopCompressor, HadoopDecompressor
+from pysnappy.core import stream_compress, stream_decompress
 
 
 def main():
@@ -24,47 +23,28 @@ def main():
 
 
 def run(args):
+    _profile = False
+    if _profile:
+        import pstats, cProfile
     fh_in = open(args.file, "rb")
     fh_out = open(args.output, "wb")
     if args.compress:
-        stream_compress(fh_in, fh_out, args.framing, args.bytesize)
+        if _profile:
+            cProfile.runctx("stream_compress(fh_in, fh_out, args.framing, args.bytesize)", globals(), locals(), "Profile.prof")
+        else:
+            stream_compress(fh_in, fh_out, args.framing, args.bytesize)
     else:
-        stream_decompress(fh_in, fh_out, args.framing, args.bytesize)
+        if _profile:
+            cProfile.runctx("stream_decompress(fh_in, fh_out, args.framing, args.bytesize)", globals(), locals(), "Profile.prof")
+        else:
+            stream_decompress(fh_in, fh_out, args.framing, args.bytesize)
+
+    if _profile:
+        s = pstats.Stats("Profile.prof")
+        s.strip_dirs().sort_stats("time").print_stats()
 
     fh_in.close()
     fh_out.close()
-
-
-def stream_compress(fh_in, fh_out, framing, bs):
-    if framing == "framing2":
-        compressor = Compressor()
-    else:
-        compressor = HadoopCompressor()
-
-    while True:
-        buf = fh_in.read(bs)
-        if buf:
-            buf = compressor.add_chunk(buf)
-        else:
-            break
-        if buf:
-            fh_out.write(buf)
-
-
-def stream_decompress(fh_in, fh_out, framing, bs):
-    if framing == "framing2":
-        decompressor = Decompressor()
-    else:
-        decompressor = HadoopDecompressor()
-
-    while True:
-        buf = fh_in.read(bs)
-        if buf:
-            buf = decompressor.decompress(buf)
-        else:
-            break
-        if buf:
-            fh_out.write(buf)
 
 
 if __name__ == "__main__":

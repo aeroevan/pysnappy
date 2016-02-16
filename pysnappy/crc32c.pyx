@@ -1,7 +1,8 @@
+# cython: profile=False
+from libc.stdint cimport uint32_t
 from cpython cimport array
 
-cdef array.array _CRC_TABLE = array.array("l", [
-    0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,
+cdef uint32_t *CRC_TABLE = [0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,
     0x35f1141cL, 0x26a1e7e8L, 0xd4ca64ebL, 0x8ad958cfL, 0x78b2dbccL,
     0x6be22838L, 0x9989ab3bL, 0x4d43cfd0L, 0xbf284cd3L, 0xac78bf27L,
     0x5e133c24L, 0x105ec76fL, 0xe235446cL, 0xf165b798L, 0x030e349bL,
@@ -52,35 +53,33 @@ cdef array.array _CRC_TABLE = array.array("l", [
     0xf36e6f75L, 0x0105ec76L, 0x12551f82L, 0xe03e9c81L, 0x34f4f86aL,
     0xc69f7b69L, 0xd5cf889dL, 0x27a40b9eL, 0x79b737baL, 0x8bdcb4b9L,
     0x988c474dL, 0x6ae7c44eL, 0xbe2da0a5L, 0x4c4623a6L, 0x5f16d052L,
-    0xad7d5351L])
-cdef long[:] CRC_TABLE = _CRC_TABLE
+    0xad7d5351L]
 
 
 # initial CRC value
-cdef long CRC_INIT = 0
+cdef uint32_t CRC_INIT = 0
 
-cdef long _MASK = 0xFFFFFFFFL
+cdef uint32_t _MASK = 0xFFFFFFFFL
 
 
-cpdef long crc_update(long crc, bytes data):
-    cdef bytes buf = data
+cdef uint32_t crc_update(uint32_t crc, bytes data):
     cdef char b
     cdef int table_index
 
     crc = crc ^ _MASK
-    for b in buf:
+    for b in data:
         table_index = (crc ^ b) & 0xff
         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
     return crc ^ _MASK
 
 
-cpdef long crc_finalize(crc):
+cdef uint32_t crc_finalize(crc):
     return crc & _MASK
 
 
-cpdef long crc32c(bytes data):
+cpdef uint32_t crc32c(bytes data):
     return crc_finalize(crc_update(CRC_INIT, data))
 
-cpdef long masked_crc32c(bytes data):
-    cdef long crc = crc32c(data)
+cpdef uint32_t masked_crc32c(bytes data):
+    cdef uint32_t crc = crc32c(data)
     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff
