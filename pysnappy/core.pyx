@@ -1,5 +1,6 @@
 # cython: profile=False
 from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
+from pysnappy.snappy cimport snappy_compress, snappy_uncompress, snappy_uncompressed_length, snappy_max_compressed_length, snappy_status
 from pysnappy.framing import Compressor, Decompressor
 from pysnappy.framing import HadoopCompressor, HadoopDecompressor
 

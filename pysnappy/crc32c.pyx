@@ -1,6 +1,5 @@
 # cython: profile=False
 from libc.stdint cimport uint32_t
-from cpython cimport array
 
 cdef uint32_t *CRC_TABLE = [0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,
     0x35f1141cL, 0x26a1e7e8L, 0xd4ca64ebL, 0x8ad958cfL, 0x78b2dbccL,

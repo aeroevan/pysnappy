@@ -237,9 +237,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__pysnappy__crc32c
 #define __PYX_HAVE_API__pysnappy__crc32c
 #include "stdint.h"
-#include "string.h"
-#include "stdio.h"
-#include "pythread.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -449,17 +446,9 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "pysnappy/crc32c.pyx",
-  "array.pxd",
-  "type.pxd",
-  "bool.pxd",
-  "complex.pxd",
 };
 
 /*--- Type declarations ---*/
-#ifndef _ARRAYARRAY_H
-struct arrayobject;
-typedef struct arrayobject arrayobject;
-#endif
 
 /* --- Runtime support code (head) --- */
 #ifndef CYTHON_REFNANNY
@@ -534,23 +523,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
 static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
     const char *name, int exact);
 
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
-    PyTypeObject* tp = Py_TYPE(obj);
-    if (likely(tp->tp_getattro))
-        return tp->tp_getattro(obj, attr_name);
-#if PY_MAJOR_VERSION < 3
-    if (likely(tp->tp_getattr))
-        return tp->tp_getattr(obj, PyString_AS_STRING(attr_name));
-#endif
-    return PyObject_GetAttr(obj, attr_name);
-}
-#else
-#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
-#endif
-
-static PyObject *__Pyx_GetBuiltinName(PyObject *name);
-
 typedef struct {
     int code_line;
     PyCodeObject* code_object;
@@ -568,116 +540,6 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
-#ifndef _ARRAYARRAY_H
-#define _ARRAYARRAY_H
-typedef struct arraydescr {
-    int typecode;
-    int itemsize;
-    PyObject * (*getitem)(struct arrayobject *, Py_ssize_t);
-    int (*setitem)(struct arrayobject *, Py_ssize_t, PyObject *);
-#if PY_MAJOR_VERSION >= 3
-    char *formats;
-#endif
-} arraydescr;
-struct arrayobject {
-    PyObject_HEAD
-    Py_ssize_t ob_size;
-    union {
-        char *ob_item;
-        float *as_floats;
-        double *as_doubles;
-        int *as_ints;
-        unsigned int *as_uints;
-        unsigned char *as_uchars;
-        signed char *as_schars;
-        char *as_chars;
-        unsigned long *as_ulongs;
-        long *as_longs;
-        short *as_shorts;
-        unsigned short *as_ushorts;
-        Py_UNICODE *as_pyunicodes;
-        void *as_voidptr;
-    } data;
-    Py_ssize_t allocated;
-    struct arraydescr *ob_descr;
-    PyObject *weakreflist;
-#if PY_MAJOR_VERSION >= 3
-        int ob_exports;
-#endif
-};
-#ifndef NO_NEWARRAY_INLINE
-static CYTHON_INLINE PyObject * newarrayobject(PyTypeObject *type, Py_ssize_t size,
-    struct arraydescr *descr) {
-    arrayobject *op;
-    size_t nbytes;
-    if (size < 0) {
-        PyErr_BadInternalCall();
-        return NULL;
-    }
-    nbytes = size * descr->itemsize;
-    if (nbytes / descr->itemsize != (size_t)size) {
-        return PyErr_NoMemory();
-    }
-    op = (arrayobject *) type->tp_alloc(type, 0);
-    if (op == NULL) {
-        return NULL;
-    }
-    op->ob_descr = descr;
-    op->allocated = size;
-    op->weakreflist = NULL;
-    op->ob_size = size;
-    if (size <= 0) {
-        op->data.ob_item = NULL;
-    }
-    else {
-        op->data.ob_item = PyMem_NEW(char, nbytes);
-        if (op->data.ob_item == NULL) {
-            Py_DECREF(op);
-            return PyErr_NoMemory();
-        }
-    }
-    return (PyObject *) op;
-}
-#else
-PyObject* newarrayobject(PyTypeObject *type, Py_ssize_t size,
-    struct arraydescr *descr);
-#endif
-static CYTHON_INLINE int resize(arrayobject *self, Py_ssize_t n) {
-    void *items = (void*) self->data.ob_item;
-    PyMem_Resize(items, char, (size_t)(n * self->ob_descr->itemsize));
-    if (items == NULL) {
-        PyErr_NoMemory();
-        return -1;
-    }
-    self->data.ob_item = (char*) items;
-    self->ob_size = n;
-    self->allocated = n;
-    return 0;
-}
-static CYTHON_INLINE int resize_smart(arrayobject *self, Py_ssize_t n) {
-    void *items = (void*) self->data.ob_item;
-    Py_ssize_t newsize;
-    if (n < self->ob_size) {
-        self->ob_size = n;
-        return 0;
-    }
-    newsize = n + (n / 2) + 1;
-    if (newsize <= self->allocated) {
-        PyErr_NoMemory();
-        return -1;
-    }
-    PyMem_Resize(items, char, (size_t)(newsize * self->ob_descr->itemsize));
-    if (items == NULL) {
-        PyErr_NoMemory();
-        return -1;
-    }
-    self->data.ob_item = (char*) items;
-    self->ob_size = n;
-    self->allocated = newsize;
-    return 0;
-}
-#endif
-
 static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *);
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
@@ -692,111 +554,10 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 static int __Pyx_check_binary_version(void);
 
-#if !defined(__Pyx_PyIdentifier_FromString)
-#if PY_MAJOR_VERSION < 3
-  #define __Pyx_PyIdentifier_FromString(s) PyString_FromString(s)
-#else
-  #define __Pyx_PyIdentifier_FromString(s) PyUnicode_FromString(s)
-#endif
-#endif
-
-static PyObject *__Pyx_ImportModule(const char *name);
-
-static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class_name, size_t size, int strict);
-
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
 /* Module declarations from 'libc.stdint' */
-
-/* Module declarations from 'cpython.version' */
-
-/* Module declarations from '__builtin__' */
-
-/* Module declarations from 'cpython.type' */
-static PyTypeObject *__pyx_ptype_7cpython_4type_type = 0;
-
-/* Module declarations from 'libc.string' */
-
-/* Module declarations from 'libc.stdio' */
-
-/* Module declarations from 'cpython.object' */
-
-/* Module declarations from 'cpython.ref' */
-
-/* Module declarations from 'cpython.exc' */
-
-/* Module declarations from 'cpython.module' */
-
-/* Module declarations from 'cpython.mem' */
-
-/* Module declarations from 'cpython.tuple' */
-
-/* Module declarations from 'cpython.list' */
-
-/* Module declarations from 'cpython.sequence' */
-
-/* Module declarations from 'cpython.mapping' */
-
-/* Module declarations from 'cpython.iterator' */
-
-/* Module declarations from 'cpython.number' */
-
-/* Module declarations from 'cpython.int' */
-
-/* Module declarations from '__builtin__' */
-
-/* Module declarations from 'cpython.bool' */
-static PyTypeObject *__pyx_ptype_7cpython_4bool_bool = 0;
-
-/* Module declarations from 'cpython.long' */
-
-/* Module declarations from 'cpython.float' */
-
-/* Module declarations from '__builtin__' */
-
-/* Module declarations from 'cpython.complex' */
-static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
-
-/* Module declarations from 'cpython.string' */
-
-/* Module declarations from 'cpython.unicode' */
-
-/* Module declarations from 'cpython.dict' */
-
-/* Module declarations from 'cpython.instance' */
-
-/* Module declarations from 'cpython.function' */
-
-/* Module declarations from 'cpython.method' */
-
-/* Module declarations from 'cpython.weakref' */
-
-/* Module declarations from 'cpython.getargs' */
-
-/* Module declarations from 'cpython.pythread' */
-
-/* Module declarations from 'cpython.pystate' */
-
-/* Module declarations from 'cpython.cobject' */
-
-/* Module declarations from 'cpython.oldbuffer' */
-
-/* Module declarations from 'cpython.set' */
-
-/* Module declarations from 'cpython.buffer' */
-
-/* Module declarations from 'cpython.bytes' */
-
-/* Module declarations from 'cpython.pycapsule' */
-
-/* Module declarations from 'cpython' */
-
-/* Module declarations from 'array' */
-
-/* Module declarations from 'cpython.array' */
-static PyTypeObject *__pyx_ptype_7cpython_5array_array = 0;
-static CYTHON_INLINE int __pyx_f_7cpython_5array_extend_buffer(arrayobject *, char *, Py_ssize_t); /*proto*/
 
 /* Module declarations from 'pysnappy.crc32c' */
 static uint32_t *__pyx_v_8pysnappy_6crc32c_CRC_TABLE;
@@ -810,21 +571,16 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_masked_crc32c(PyObject *, int __pyx_sk
 int __pyx_module_is_main_pysnappy__crc32c = 0;
 
 /* Implementation of 'pysnappy.crc32c' */
-static PyObject *__pyx_builtin_MemoryError;
 static char __pyx_k_main[] = "__main__";
 static char __pyx_k_test[] = "__test__";
-static char __pyx_k_MemoryError[] = "MemoryError";
-static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_pf_8pysnappy_6crc32c_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data); /* proto */
 static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data); /* proto */
-static int __pyx_pf_7cpython_5array_5array___getbuffer__(arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info, CYTHON_UNUSED int __pyx_v_flags); /* proto */
-static void __pyx_pf_7cpython_5array_5array_2__releasebuffer__(CYTHON_UNUSED arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_int_2726488792;
 static PyObject *__pyx_int_4294967295;
 
-/* "pysnappy/crc32c.pyx":65
+/* "pysnappy/crc32c.pyx":64
  * 
  * 
  * cdef uint32_t crc_update(uint32_t crc, bytes data):             # <<<<<<<<<<<<<<
@@ -847,7 +603,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("crc_update", 0);
 
-  /* "pysnappy/crc32c.pyx":69
+  /* "pysnappy/crc32c.pyx":68
  *     cdef int table_index
  * 
  *     crc = crc ^ _MASK             # <<<<<<<<<<<<<<
@@ -856,7 +612,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
  */
   __pyx_v_crc = (__pyx_v_crc ^ __pyx_v_8pysnappy_6crc32c__MASK);
 
-  /* "pysnappy/crc32c.pyx":70
+  /* "pysnappy/crc32c.pyx":69
  * 
  *     crc = crc ^ _MASK
  *     for b in data:             # <<<<<<<<<<<<<<
@@ -865,7 +621,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_INCREF(__pyx_v_data);
   __pyx_t_1 = __pyx_v_data;
@@ -875,7 +631,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
     __pyx_t_2 = __pyx_t_5;
     __pyx_v_b = (__pyx_t_2[0]);
 
-    /* "pysnappy/crc32c.pyx":71
+    /* "pysnappy/crc32c.pyx":70
  *     crc = crc ^ _MASK
  *     for b in data:
  *         table_index = (crc ^ b) & 0xff             # <<<<<<<<<<<<<<
@@ -884,7 +640,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
  */
     __pyx_v_table_index = ((__pyx_v_crc ^ __pyx_v_b) & 0xff);
 
-    /* "pysnappy/crc32c.pyx":72
+    /* "pysnappy/crc32c.pyx":71
  *     for b in data:
  *         table_index = (crc ^ b) & 0xff
  *         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK             # <<<<<<<<<<<<<<
@@ -895,7 +651,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pysnappy/crc32c.pyx":73
+  /* "pysnappy/crc32c.pyx":72
  *         table_index = (crc ^ b) & 0xff
  *         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
  *     return crc ^ _MASK             # <<<<<<<<<<<<<<
@@ -905,7 +661,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
   __pyx_r = (__pyx_v_crc ^ __pyx_v_8pysnappy_6crc32c__MASK);
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":65
+  /* "pysnappy/crc32c.pyx":64
  * 
  * 
  * cdef uint32_t crc_update(uint32_t crc, bytes data):             # <<<<<<<<<<<<<<
@@ -923,7 +679,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
   return __pyx_r;
 }
 
-/* "pysnappy/crc32c.pyx":76
+/* "pysnappy/crc32c.pyx":75
  * 
  * 
  * cdef uint32_t crc_finalize(crc):             # <<<<<<<<<<<<<<
@@ -942,24 +698,24 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_finalize(PyObject *__pyx_v_crc) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("crc_finalize", 0);
 
-  /* "pysnappy/crc32c.pyx":77
+  /* "pysnappy/crc32c.pyx":76
  * 
  * cdef uint32_t crc_finalize(crc):
  *     return crc & _MASK             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_8pysnappy_6crc32c__MASK); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_8pysnappy_6crc32c__MASK); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_And(__pyx_v_crc, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyNumber_And(__pyx_v_crc, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_uint32_t(__pyx_t_2); if (unlikely((__pyx_t_3 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 77; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_As_uint32_t(__pyx_t_2); if (unlikely((__pyx_t_3 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_3;
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":76
+  /* "pysnappy/crc32c.pyx":75
  * 
  * 
  * cdef uint32_t crc_finalize(crc):             # <<<<<<<<<<<<<<
@@ -978,7 +734,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_finalize(PyObject *__pyx_v_crc) {
   return __pyx_r;
 }
 
-/* "pysnappy/crc32c.pyx":80
+/* "pysnappy/crc32c.pyx":79
  * 
  * 
  * cpdef uint32_t crc32c(bytes data):             # <<<<<<<<<<<<<<
@@ -996,20 +752,20 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc32c(PyObject *__pyx_v_data, CYTHON_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("crc32c", 0);
 
-  /* "pysnappy/crc32c.pyx":81
+  /* "pysnappy/crc32c.pyx":80
  * 
  * cpdef uint32_t crc32c(bytes data):
  *     return crc_finalize(crc_update(CRC_INIT, data))             # <<<<<<<<<<<<<<
  * 
  * cpdef uint32_t masked_crc32c(bytes data):
  */
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_crc_update(__pyx_v_8pysnappy_6crc32c_CRC_INIT, __pyx_v_data)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_crc_update(__pyx_v_8pysnappy_6crc32c_CRC_INIT, __pyx_v_data)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_f_8pysnappy_6crc32c_crc_finalize(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":80
+  /* "pysnappy/crc32c.pyx":79
  * 
  * 
  * cpdef uint32_t crc32c(bytes data):             # <<<<<<<<<<<<<<
@@ -1036,7 +792,7 @@ static PyObject *__pyx_pw_8pysnappy_6crc32c_1crc32c(PyObject *__pyx_self, PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("crc32c (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8pysnappy_6crc32c_crc32c(__pyx_self, ((PyObject*)__pyx_v_data));
 
   /* function exit code */
@@ -1057,7 +813,7 @@ static PyObject *__pyx_pf_8pysnappy_6crc32c_crc32c(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("crc32c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1074,7 +830,7 @@ static PyObject *__pyx_pf_8pysnappy_6crc32c_crc32c(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "pysnappy/crc32c.pyx":83
+/* "pysnappy/crc32c.pyx":82
  *     return crc_finalize(crc_update(CRC_INIT, data))
  * 
  * cpdef uint32_t masked_crc32c(bytes data):             # <<<<<<<<<<<<<<
@@ -1095,7 +851,7 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_masked_crc32c(PyObject *__pyx_v_data, 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("masked_crc32c", 0);
 
-  /* "pysnappy/crc32c.pyx":84
+  /* "pysnappy/crc32c.pyx":83
  * 
  * cpdef uint32_t masked_crc32c(bytes data):
  *     cdef uint32_t crc = crc32c(data)             # <<<<<<<<<<<<<<
@@ -1103,25 +859,25 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_masked_crc32c(PyObject *__pyx_v_data, 
  */
   __pyx_v_crc = __pyx_f_8pysnappy_6crc32c_crc32c(__pyx_v_data, 0);
 
-  /* "pysnappy/crc32c.pyx":85
+  /* "pysnappy/crc32c.pyx":84
  * cpdef uint32_t masked_crc32c(bytes data):
  *     cdef uint32_t crc = crc32c(data)
  *     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyInt_From_long(((__pyx_v_crc >> 15) | (__pyx_v_crc << 17))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_long(((__pyx_v_crc >> 15) | (__pyx_v_crc << 17))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_int_2726488792); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_int_2726488792); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_And(__pyx_t_2, __pyx_int_4294967295); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyNumber_And(__pyx_t_2, __pyx_int_4294967295); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_uint32_t(__pyx_t_1); if (unlikely((__pyx_t_3 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_As_uint32_t(__pyx_t_1); if (unlikely((__pyx_t_3 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_3;
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":83
+  /* "pysnappy/crc32c.pyx":82
  *     return crc_finalize(crc_update(CRC_INIT, data))
  * 
  * cpdef uint32_t masked_crc32c(bytes data):             # <<<<<<<<<<<<<<
@@ -1149,7 +905,7 @@ static PyObject *__pyx_pw_8pysnappy_6crc32c_3masked_crc32c(PyObject *__pyx_self,
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("masked_crc32c (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_8pysnappy_6crc32c_2masked_crc32c(__pyx_self, ((PyObject*)__pyx_v_data));
 
   /* function exit code */
@@ -1170,7 +926,7 @@ static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("masked_crc32c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_masked_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_masked_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1185,655 +941,6 @@ static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObjec
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
-}
-
-/* "array.pxd":91
- *             __data_union data
- * 
- *         def __getbuffer__(self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
- *             # This implementation of getbuffer is geared towards Cython
- *             # requirements, and does not yet fullfill the PEP.
- */
-
-/* Python wrapper */
-static CYTHON_UNUSED int __pyx_pw_7cpython_5array_5array_1__getbuffer__(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /*proto*/
-static CYTHON_UNUSED int __pyx_pw_7cpython_5array_5array_1__getbuffer__(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__getbuffer__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7cpython_5array_5array___getbuffer__(((arrayobject *)__pyx_v_self), ((Py_buffer *)__pyx_v_info), ((int)__pyx_v_flags));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_7cpython_5array_5array___getbuffer__(arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info, CYTHON_UNUSED int __pyx_v_flags) {
-  PyObject *__pyx_v_item_count = NULL;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  char *__pyx_t_2;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  Py_ssize_t __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__getbuffer__", 0);
-  if (__pyx_v_info != NULL) {
-    __pyx_v_info->obj = Py_None; __Pyx_INCREF(Py_None);
-    __Pyx_GIVEREF(__pyx_v_info->obj);
-  }
-
-  /* "array.pxd":96
- *             # In particular strided access is always provided regardless
- *             # of flags
- *             item_count = Py_SIZE(self)             # <<<<<<<<<<<<<<
- * 
- *             info.suboffsets = NULL
- */
-  __pyx_t_1 = PyInt_FromSsize_t(Py_SIZE(((PyObject *)__pyx_v_self))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_item_count = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "array.pxd":98
- *             item_count = Py_SIZE(self)
- * 
- *             info.suboffsets = NULL             # <<<<<<<<<<<<<<
- *             info.buf = self.data.as_chars
- *             info.readonly = 0
- */
-  __pyx_v_info->suboffsets = NULL;
-
-  /* "array.pxd":99
- * 
- *             info.suboffsets = NULL
- *             info.buf = self.data.as_chars             # <<<<<<<<<<<<<<
- *             info.readonly = 0
- *             info.ndim = 1
- */
-  __pyx_t_2 = __pyx_v_self->data.as_chars;
-  __pyx_v_info->buf = __pyx_t_2;
-
-  /* "array.pxd":100
- *             info.suboffsets = NULL
- *             info.buf = self.data.as_chars
- *             info.readonly = 0             # <<<<<<<<<<<<<<
- *             info.ndim = 1
- *             info.itemsize = self.ob_descr.itemsize   # e.g. sizeof(float)
- */
-  __pyx_v_info->readonly = 0;
-
-  /* "array.pxd":101
- *             info.buf = self.data.as_chars
- *             info.readonly = 0
- *             info.ndim = 1             # <<<<<<<<<<<<<<
- *             info.itemsize = self.ob_descr.itemsize   # e.g. sizeof(float)
- *             info.len = info.itemsize * item_count
- */
-  __pyx_v_info->ndim = 1;
-
-  /* "array.pxd":102
- *             info.readonly = 0
- *             info.ndim = 1
- *             info.itemsize = self.ob_descr.itemsize   # e.g. sizeof(float)             # <<<<<<<<<<<<<<
- *             info.len = info.itemsize * item_count
- * 
- */
-  __pyx_t_3 = __pyx_v_self->ob_descr->itemsize;
-  __pyx_v_info->itemsize = __pyx_t_3;
-
-  /* "array.pxd":103
- *             info.ndim = 1
- *             info.itemsize = self.ob_descr.itemsize   # e.g. sizeof(float)
- *             info.len = info.itemsize * item_count             # <<<<<<<<<<<<<<
- * 
- *             info.shape = <Py_ssize_t*> PyMem_Malloc(sizeof(Py_ssize_t) + 2)
- */
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_info->itemsize); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_1, __pyx_v_item_count); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_4); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_v_info->len = __pyx_t_5;
-
-  /* "array.pxd":105
- *             info.len = info.itemsize * item_count
- * 
- *             info.shape = <Py_ssize_t*> PyMem_Malloc(sizeof(Py_ssize_t) + 2)             # <<<<<<<<<<<<<<
- *             if not info.shape:
- *                 raise MemoryError()
- */
-  __pyx_v_info->shape = ((Py_ssize_t *)PyMem_Malloc(((sizeof(Py_ssize_t)) + 2)));
-
-  /* "array.pxd":106
- * 
- *             info.shape = <Py_ssize_t*> PyMem_Malloc(sizeof(Py_ssize_t) + 2)
- *             if not info.shape:             # <<<<<<<<<<<<<<
- *                 raise MemoryError()
- *             info.shape[0] = item_count      # constant regardless of resizing
- */
-  __pyx_t_6 = ((!(__pyx_v_info->shape != 0)) != 0);
-  if (__pyx_t_6) {
-
-    /* "array.pxd":107
- *             info.shape = <Py_ssize_t*> PyMem_Malloc(sizeof(Py_ssize_t) + 2)
- *             if not info.shape:
- *                 raise MemoryError()             # <<<<<<<<<<<<<<
- *             info.shape[0] = item_count      # constant regardless of resizing
- *             info.strides = &info.itemsize
- */
-    PyErr_NoMemory(); {__pyx_filename = __pyx_f[1]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-
-    /* "array.pxd":106
- * 
- *             info.shape = <Py_ssize_t*> PyMem_Malloc(sizeof(Py_ssize_t) + 2)
- *             if not info.shape:             # <<<<<<<<<<<<<<
- *                 raise MemoryError()
- *             info.shape[0] = item_count      # constant regardless of resizing
- */
-  }
-
-  /* "array.pxd":108
- *             if not info.shape:
- *                 raise MemoryError()
- *             info.shape[0] = item_count      # constant regardless of resizing             # <<<<<<<<<<<<<<
- *             info.strides = &info.itemsize
- * 
- */
-  __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_v_item_count); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  (__pyx_v_info->shape[0]) = __pyx_t_5;
-
-  /* "array.pxd":109
- *                 raise MemoryError()
- *             info.shape[0] = item_count      # constant regardless of resizing
- *             info.strides = &info.itemsize             # <<<<<<<<<<<<<<
- * 
- *             info.format = <char*> (info.shape + 1)
- */
-  __pyx_v_info->strides = (&__pyx_v_info->itemsize);
-
-  /* "array.pxd":111
- *             info.strides = &info.itemsize
- * 
- *             info.format = <char*> (info.shape + 1)             # <<<<<<<<<<<<<<
- *             info.format[0] = self.ob_descr.typecode
- *             info.format[1] = 0
- */
-  __pyx_v_info->format = ((char *)(__pyx_v_info->shape + 1));
-
-  /* "array.pxd":112
- * 
- *             info.format = <char*> (info.shape + 1)
- *             info.format[0] = self.ob_descr.typecode             # <<<<<<<<<<<<<<
- *             info.format[1] = 0
- *             info.obj = self
- */
-  __pyx_t_3 = __pyx_v_self->ob_descr->typecode;
-  (__pyx_v_info->format[0]) = __pyx_t_3;
-
-  /* "array.pxd":113
- *             info.format = <char*> (info.shape + 1)
- *             info.format[0] = self.ob_descr.typecode
- *             info.format[1] = 0             # <<<<<<<<<<<<<<
- *             info.obj = self
- * 
- */
-  (__pyx_v_info->format[1]) = 0;
-
-  /* "array.pxd":114
- *             info.format[0] = self.ob_descr.typecode
- *             info.format[1] = 0
- *             info.obj = self             # <<<<<<<<<<<<<<
- * 
- *         def __releasebuffer__(self, Py_buffer* info):
- */
-  __Pyx_INCREF(((PyObject *)__pyx_v_self));
-  __Pyx_GIVEREF(((PyObject *)__pyx_v_self));
-  __Pyx_GOTREF(__pyx_v_info->obj);
-  __Pyx_DECREF(__pyx_v_info->obj);
-  __pyx_v_info->obj = ((PyObject *)__pyx_v_self);
-
-  /* "array.pxd":91
- *             __data_union data
- * 
- *         def __getbuffer__(self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
- *             # This implementation of getbuffer is geared towards Cython
- *             # requirements, and does not yet fullfill the PEP.
- */
-
-  /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("cpython.array.array.__getbuffer__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  if (__pyx_v_info != NULL && __pyx_v_info->obj != NULL) {
-    __Pyx_GOTREF(__pyx_v_info->obj);
-    __Pyx_DECREF(__pyx_v_info->obj); __pyx_v_info->obj = NULL;
-  }
-  goto __pyx_L2;
-  __pyx_L0:;
-  if (__pyx_v_info != NULL && __pyx_v_info->obj == Py_None) {
-    __Pyx_GOTREF(Py_None);
-    __Pyx_DECREF(Py_None); __pyx_v_info->obj = NULL;
-  }
-  __pyx_L2:;
-  __Pyx_XDECREF(__pyx_v_item_count);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "array.pxd":116
- *             info.obj = self
- * 
- *         def __releasebuffer__(self, Py_buffer* info):             # <<<<<<<<<<<<<<
- *             PyMem_Free(info.shape)
- * 
- */
-
-/* Python wrapper */
-static CYTHON_UNUSED void __pyx_pw_7cpython_5array_5array_3__releasebuffer__(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info); /*proto*/
-static CYTHON_UNUSED void __pyx_pw_7cpython_5array_5array_3__releasebuffer__(PyObject *__pyx_v_self, Py_buffer *__pyx_v_info) {
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__releasebuffer__ (wrapper)", 0);
-  __pyx_pf_7cpython_5array_5array_2__releasebuffer__(((arrayobject *)__pyx_v_self), ((Py_buffer *)__pyx_v_info));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-static void __pyx_pf_7cpython_5array_5array_2__releasebuffer__(CYTHON_UNUSED arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info) {
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__releasebuffer__", 0);
-
-  /* "array.pxd":117
- * 
- *         def __releasebuffer__(self, Py_buffer* info):
- *             PyMem_Free(info.shape)             # <<<<<<<<<<<<<<
- * 
- *     array newarrayobject(PyTypeObject* type, Py_ssize_t size, arraydescr *descr)
- */
-  PyMem_Free(__pyx_v_info->shape);
-
-  /* "array.pxd":116
- *             info.obj = self
- * 
- *         def __releasebuffer__(self, Py_buffer* info):             # <<<<<<<<<<<<<<
- *             PyMem_Free(info.shape)
- * 
- */
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-/* "array.pxd":128
- * 
- * 
- * cdef inline array clone(array template, Py_ssize_t length, bint zero):             # <<<<<<<<<<<<<<
- *     """ fast creation of a new array, given a template array.
- *     type will be same as template.
- */
-
-static CYTHON_INLINE arrayobject *__pyx_f_7cpython_5array_clone(arrayobject *__pyx_v_template, Py_ssize_t __pyx_v_length, int __pyx_v_zero) {
-  arrayobject *__pyx_v_op = NULL;
-  arrayobject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("clone", 0);
-
-  /* "array.pxd":132
- *     type will be same as template.
- *     if zero is true, new array will be initialized with zeroes."""
- *     op = newarrayobject(Py_TYPE(template), length, template.ob_descr)             # <<<<<<<<<<<<<<
- *     if zero and op is not None:
- *         memset(op.data.as_chars, 0, length * op.ob_descr.itemsize)
- */
-  __pyx_t_1 = ((PyObject *)newarrayobject(Py_TYPE(((PyObject *)__pyx_v_template)), __pyx_v_length, __pyx_v_template->ob_descr)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_op = ((arrayobject *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "array.pxd":133
- *     if zero is true, new array will be initialized with zeroes."""
- *     op = newarrayobject(Py_TYPE(template), length, template.ob_descr)
- *     if zero and op is not None:             # <<<<<<<<<<<<<<
- *         memset(op.data.as_chars, 0, length * op.ob_descr.itemsize)
- *     return op
- */
-  __pyx_t_3 = (__pyx_v_zero != 0);
-  if (__pyx_t_3) {
-  } else {
-    __pyx_t_2 = __pyx_t_3;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_3 = (((PyObject *)__pyx_v_op) != Py_None);
-  __pyx_t_4 = (__pyx_t_3 != 0);
-  __pyx_t_2 = __pyx_t_4;
-  __pyx_L4_bool_binop_done:;
-  if (__pyx_t_2) {
-
-    /* "array.pxd":134
- *     op = newarrayobject(Py_TYPE(template), length, template.ob_descr)
- *     if zero and op is not None:
- *         memset(op.data.as_chars, 0, length * op.ob_descr.itemsize)             # <<<<<<<<<<<<<<
- *     return op
- * 
- */
-    memset(__pyx_v_op->data.as_chars, 0, (__pyx_v_length * __pyx_v_op->ob_descr->itemsize));
-
-    /* "array.pxd":133
- *     if zero is true, new array will be initialized with zeroes."""
- *     op = newarrayobject(Py_TYPE(template), length, template.ob_descr)
- *     if zero and op is not None:             # <<<<<<<<<<<<<<
- *         memset(op.data.as_chars, 0, length * op.ob_descr.itemsize)
- *     return op
- */
-  }
-
-  /* "array.pxd":135
- *     if zero and op is not None:
- *         memset(op.data.as_chars, 0, length * op.ob_descr.itemsize)
- *     return op             # <<<<<<<<<<<<<<
- * 
- * cdef inline array copy(array self):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_op));
-  __pyx_r = __pyx_v_op;
-  goto __pyx_L0;
-
-  /* "array.pxd":128
- * 
- * 
- * cdef inline array clone(array template, Py_ssize_t length, bint zero):             # <<<<<<<<<<<<<<
- *     """ fast creation of a new array, given a template array.
- *     type will be same as template.
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cpython.array.clone", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_op);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "array.pxd":137
- *     return op
- * 
- * cdef inline array copy(array self):             # <<<<<<<<<<<<<<
- *     """ make a copy of an array. """
- *     op = newarrayobject(Py_TYPE(self), Py_SIZE(self), self.ob_descr)
- */
-
-static CYTHON_INLINE arrayobject *__pyx_f_7cpython_5array_copy(arrayobject *__pyx_v_self) {
-  arrayobject *__pyx_v_op = NULL;
-  arrayobject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("copy", 0);
-
-  /* "array.pxd":139
- * cdef inline array copy(array self):
- *     """ make a copy of an array. """
- *     op = newarrayobject(Py_TYPE(self), Py_SIZE(self), self.ob_descr)             # <<<<<<<<<<<<<<
- *     memcpy(op.data.as_chars, self.data.as_chars, Py_SIZE(op) * op.ob_descr.itemsize)
- *     return op
- */
-  __pyx_t_1 = ((PyObject *)newarrayobject(Py_TYPE(((PyObject *)__pyx_v_self)), Py_SIZE(((PyObject *)__pyx_v_self)), __pyx_v_self->ob_descr)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 139; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_op = ((arrayobject *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "array.pxd":140
- *     """ make a copy of an array. """
- *     op = newarrayobject(Py_TYPE(self), Py_SIZE(self), self.ob_descr)
- *     memcpy(op.data.as_chars, self.data.as_chars, Py_SIZE(op) * op.ob_descr.itemsize)             # <<<<<<<<<<<<<<
- *     return op
- * 
- */
-  memcpy(__pyx_v_op->data.as_chars, __pyx_v_self->data.as_chars, (Py_SIZE(((PyObject *)__pyx_v_op)) * __pyx_v_op->ob_descr->itemsize));
-
-  /* "array.pxd":141
- *     op = newarrayobject(Py_TYPE(self), Py_SIZE(self), self.ob_descr)
- *     memcpy(op.data.as_chars, self.data.as_chars, Py_SIZE(op) * op.ob_descr.itemsize)
- *     return op             # <<<<<<<<<<<<<<
- * 
- * cdef inline int extend_buffer(array self, char* stuff, Py_ssize_t n) except -1:
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_op));
-  __pyx_r = __pyx_v_op;
-  goto __pyx_L0;
-
-  /* "array.pxd":137
- *     return op
- * 
- * cdef inline array copy(array self):             # <<<<<<<<<<<<<<
- *     """ make a copy of an array. """
- *     op = newarrayobject(Py_TYPE(self), Py_SIZE(self), self.ob_descr)
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cpython.array.copy", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_op);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "array.pxd":143
- *     return op
- * 
- * cdef inline int extend_buffer(array self, char* stuff, Py_ssize_t n) except -1:             # <<<<<<<<<<<<<<
- *     """ efficent appending of new stuff of same type
- *     (e.g. of same array type)
- */
-
-static CYTHON_INLINE int __pyx_f_7cpython_5array_extend_buffer(arrayobject *__pyx_v_self, char *__pyx_v_stuff, Py_ssize_t __pyx_v_n) {
-  Py_ssize_t __pyx_v_itemsize;
-  Py_ssize_t __pyx_v_origsize;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("extend_buffer", 0);
-
-  /* "array.pxd":147
- *     (e.g. of same array type)
- *     n: number of elements (not number of bytes!) """
- *     cdef Py_ssize_t itemsize = self.ob_descr.itemsize             # <<<<<<<<<<<<<<
- *     cdef Py_ssize_t origsize = Py_SIZE(self)
- *     resize_smart(self, origsize + n)
- */
-  __pyx_t_1 = __pyx_v_self->ob_descr->itemsize;
-  __pyx_v_itemsize = __pyx_t_1;
-
-  /* "array.pxd":148
- *     n: number of elements (not number of bytes!) """
- *     cdef Py_ssize_t itemsize = self.ob_descr.itemsize
- *     cdef Py_ssize_t origsize = Py_SIZE(self)             # <<<<<<<<<<<<<<
- *     resize_smart(self, origsize + n)
- *     memcpy(self.data.as_chars + origsize * itemsize, stuff, n * itemsize)
- */
-  __pyx_v_origsize = Py_SIZE(((PyObject *)__pyx_v_self));
-
-  /* "array.pxd":149
- *     cdef Py_ssize_t itemsize = self.ob_descr.itemsize
- *     cdef Py_ssize_t origsize = Py_SIZE(self)
- *     resize_smart(self, origsize + n)             # <<<<<<<<<<<<<<
- *     memcpy(self.data.as_chars + origsize * itemsize, stuff, n * itemsize)
- *     return 0
- */
-  __pyx_t_1 = resize_smart(__pyx_v_self, (__pyx_v_origsize + __pyx_v_n)); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-
-  /* "array.pxd":150
- *     cdef Py_ssize_t origsize = Py_SIZE(self)
- *     resize_smart(self, origsize + n)
- *     memcpy(self.data.as_chars + origsize * itemsize, stuff, n * itemsize)             # <<<<<<<<<<<<<<
- *     return 0
- * 
- */
-  memcpy((__pyx_v_self->data.as_chars + (__pyx_v_origsize * __pyx_v_itemsize)), __pyx_v_stuff, (__pyx_v_n * __pyx_v_itemsize));
-
-  /* "array.pxd":151
- *     resize_smart(self, origsize + n)
- *     memcpy(self.data.as_chars + origsize * itemsize, stuff, n * itemsize)
- *     return 0             # <<<<<<<<<<<<<<
- * 
- * cdef inline int extend(array self, array other) except -1:
- */
-  __pyx_r = 0;
-  goto __pyx_L0;
-
-  /* "array.pxd":143
- *     return op
- * 
- * cdef inline int extend_buffer(array self, char* stuff, Py_ssize_t n) except -1:             # <<<<<<<<<<<<<<
- *     """ efficent appending of new stuff of same type
- *     (e.g. of same array type)
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("cpython.array.extend_buffer", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "array.pxd":153
- *     return 0
- * 
- * cdef inline int extend(array self, array other) except -1:             # <<<<<<<<<<<<<<
- *     """ extend array with data from another array; types must match. """
- *     if self.ob_descr.typecode != other.ob_descr.typecode:
- */
-
-static CYTHON_INLINE int __pyx_f_7cpython_5array_extend(arrayobject *__pyx_v_self, arrayobject *__pyx_v_other) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("extend", 0);
-
-  /* "array.pxd":155
- * cdef inline int extend(array self, array other) except -1:
- *     """ extend array with data from another array; types must match. """
- *     if self.ob_descr.typecode != other.ob_descr.typecode:             # <<<<<<<<<<<<<<
- *         PyErr_BadArgument()
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))
- */
-  __pyx_t_1 = ((__pyx_v_self->ob_descr->typecode != __pyx_v_other->ob_descr->typecode) != 0);
-  if (__pyx_t_1) {
-
-    /* "array.pxd":156
- *     """ extend array with data from another array; types must match. """
- *     if self.ob_descr.typecode != other.ob_descr.typecode:
- *         PyErr_BadArgument()             # <<<<<<<<<<<<<<
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))
- * 
- */
-    __pyx_t_2 = PyErr_BadArgument(); if (unlikely(__pyx_t_2 == 0)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-
-    /* "array.pxd":155
- * cdef inline int extend(array self, array other) except -1:
- *     """ extend array with data from another array; types must match. """
- *     if self.ob_descr.typecode != other.ob_descr.typecode:             # <<<<<<<<<<<<<<
- *         PyErr_BadArgument()
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))
- */
-  }
-
-  /* "array.pxd":157
- *     if self.ob_descr.typecode != other.ob_descr.typecode:
- *         PyErr_BadArgument()
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))             # <<<<<<<<<<<<<<
- * 
- * cdef inline void zero(array self):
- */
-  __pyx_t_2 = __pyx_f_7cpython_5array_extend_buffer(__pyx_v_self, __pyx_v_other->data.as_chars, Py_SIZE(((PyObject *)__pyx_v_other))); if (unlikely(__pyx_t_2 == -1)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 157; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_t_2;
-  goto __pyx_L0;
-
-  /* "array.pxd":153
- *     return 0
- * 
- * cdef inline int extend(array self, array other) except -1:             # <<<<<<<<<<<<<<
- *     """ extend array with data from another array; types must match. """
- *     if self.ob_descr.typecode != other.ob_descr.typecode:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("cpython.array.extend", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "array.pxd":159
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))
- * 
- * cdef inline void zero(array self):             # <<<<<<<<<<<<<<
- *     """ set all elements of array to zero. """
- *     memset(self.data.as_chars, 0, Py_SIZE(self) * self.ob_descr.itemsize)
- */
-
-static CYTHON_INLINE void __pyx_f_7cpython_5array_zero(arrayobject *__pyx_v_self) {
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("zero", 0);
-
-  /* "array.pxd":161
- * cdef inline void zero(array self):
- *     """ set all elements of array to zero. """
- *     memset(self.data.as_chars, 0, Py_SIZE(self) * self.ob_descr.itemsize)             # <<<<<<<<<<<<<<
- */
-  memset(__pyx_v_self->data.as_chars, 0, (Py_SIZE(((PyObject *)__pyx_v_self)) * __pyx_v_self->ob_descr->itemsize));
-
-  /* "array.pxd":159
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))
- * 
- * cdef inline void zero(array self):             # <<<<<<<<<<<<<<
- *     """ set all elements of array to zero. """
- *     memset(self.data.as_chars, 0, Py_SIZE(self) * self.ob_descr.itemsize)
- */
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
 }
 
 static PyMethodDef __pyx_methods[] = {
@@ -1861,16 +968,12 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
-  __pyx_L1_error:;
-  return -1;
 }
 
 static int __Pyx_InitCachedConstants(void) {
@@ -1977,16 +1080,6 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   /*--- Function export code ---*/
   /*--- Type init code ---*/
   /*--- Type import code ---*/
-  __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
-  #if CYTHON_COMPILING_IN_PYPY
-  sizeof(PyTypeObject),
-  #else
-  sizeof(PyHeapTypeObject),
-  #endif
-  0); if (unlikely(!__pyx_ptype_7cpython_4type_type)) {__pyx_filename = __pyx_f[2]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7cpython_4bool_bool = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "bool", sizeof(PyBoolObject), 0); if (unlikely(!__pyx_ptype_7cpython_4bool_bool)) {__pyx_filename = __pyx_f[3]; __pyx_lineno = 8; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), 0); if (unlikely(!__pyx_ptype_7cpython_7complex_complex)) {__pyx_filename = __pyx_f[4]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_7cpython_5array_array = __Pyx_ImportType("array", "array", sizeof(arrayobject), 0); if (unlikely(!__pyx_ptype_7cpython_5array_array)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   /*--- Execution code ---*/
@@ -1994,8 +1087,8 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   if (__Pyx_patch_abc() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
 
-  /* "pysnappy/crc32c.pyx":5
- * from cpython cimport array
+  /* "pysnappy/crc32c.pyx":4
+ * from libc.stdint cimport uint32_t
  * 
  * cdef uint32_t *CRC_TABLE = [0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,             # <<<<<<<<<<<<<<
  *     0x35f1141cL, 0x26a1e7e8L, 0xd4ca64ebL, 0x8ad958cfL, 0x78b2dbccL,
@@ -2259,7 +1352,7 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   __pyx_t_1[255] = 0xad7d5351L;
   __pyx_v_8pysnappy_6crc32c_CRC_TABLE = __pyx_t_1;
 
-  /* "pysnappy/crc32c.pyx":60
+  /* "pysnappy/crc32c.pyx":59
  * 
  * # initial CRC value
  * cdef uint32_t CRC_INIT = 0             # <<<<<<<<<<<<<<
@@ -2268,7 +1361,7 @@ PyMODINIT_FUNC PyInit_crc32c(void)
  */
   __pyx_v_8pysnappy_6crc32c_CRC_INIT = 0;
 
-  /* "pysnappy/crc32c.pyx":62
+  /* "pysnappy/crc32c.pyx":61
  * cdef uint32_t CRC_INIT = 0
  * 
  * cdef uint32_t _MASK = 0xFFFFFFFFL             # <<<<<<<<<<<<<<
@@ -2280,20 +1373,12 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   /* "pysnappy/crc32c.pyx":1
  * # cython: profile=False             # <<<<<<<<<<<<<<
  * from libc.stdint cimport uint32_t
- * from cpython cimport array
+ * 
  */
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "array.pxd":159
- *     return extend_buffer(self, other.data.as_chars, Py_SIZE(other))
- * 
- * cdef inline void zero(array self):             # <<<<<<<<<<<<<<
- *     """ set all elements of array to zero. """
- *     memset(self.data.as_chars, 0, Py_SIZE(self) * self.ob_descr.itemsize)
- */
 
   /*--- Wrapped vars code ---*/
 
@@ -2425,19 +1510,6 @@ static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, in
     }
     __Pyx_RaiseArgumentTypeInvalid(name, obj, type);
     return 0;
-}
-
-static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
-    PyObject* result = __Pyx_PyObject_GetAttrStr(__pyx_b, name);
-    if (unlikely(!result)) {
-        PyErr_Format(PyExc_NameError,
-#if PY_MAJOR_VERSION >= 3
-            "name '%U' is not defined", name);
-#else
-            "name '%.200s' is not defined", PyString_AS_STRING(name));
-#endif
-    }
-    return result;
 }
 
 static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
@@ -3426,87 +2498,6 @@ static int __Pyx_check_binary_version(void) {
     }
     return 0;
 }
-
-#ifndef __PYX_HAVE_RT_ImportModule
-#define __PYX_HAVE_RT_ImportModule
-static PyObject *__Pyx_ImportModule(const char *name) {
-    PyObject *py_name = 0;
-    PyObject *py_module = 0;
-    py_name = __Pyx_PyIdentifier_FromString(name);
-    if (!py_name)
-        goto bad;
-    py_module = PyImport_Import(py_name);
-    Py_DECREF(py_name);
-    return py_module;
-bad:
-    Py_XDECREF(py_name);
-    return 0;
-}
-#endif
-
-#ifndef __PYX_HAVE_RT_ImportType
-#define __PYX_HAVE_RT_ImportType
-static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class_name,
-    size_t size, int strict)
-{
-    PyObject *py_module = 0;
-    PyObject *result = 0;
-    PyObject *py_name = 0;
-    char warning[200];
-    Py_ssize_t basicsize;
-#ifdef Py_LIMITED_API
-    PyObject *py_basicsize;
-#endif
-    py_module = __Pyx_ImportModule(module_name);
-    if (!py_module)
-        goto bad;
-    py_name = __Pyx_PyIdentifier_FromString(class_name);
-    if (!py_name)
-        goto bad;
-    result = PyObject_GetAttr(py_module, py_name);
-    Py_DECREF(py_name);
-    py_name = 0;
-    Py_DECREF(py_module);
-    py_module = 0;
-    if (!result)
-        goto bad;
-    if (!PyType_Check(result)) {
-        PyErr_Format(PyExc_TypeError,
-            "%.200s.%.200s is not a type object",
-            module_name, class_name);
-        goto bad;
-    }
-#ifndef Py_LIMITED_API
-    basicsize = ((PyTypeObject *)result)->tp_basicsize;
-#else
-    py_basicsize = PyObject_GetAttrString(result, "__basicsize__");
-    if (!py_basicsize)
-        goto bad;
-    basicsize = PyLong_AsSsize_t(py_basicsize);
-    Py_DECREF(py_basicsize);
-    py_basicsize = 0;
-    if (basicsize == (Py_ssize_t)-1 && PyErr_Occurred())
-        goto bad;
-#endif
-    if (!strict && (size_t)basicsize > size) {
-        PyOS_snprintf(warning, sizeof(warning),
-            "%s.%s size changed, may indicate binary incompatibility",
-            module_name, class_name);
-        if (PyErr_WarnEx(NULL, warning, 0) < 0) goto bad;
-    }
-    else if ((size_t)basicsize != size) {
-        PyErr_Format(PyExc_ValueError,
-            "%.200s.%.200s has the wrong size, try recompiling",
-            module_name, class_name);
-        goto bad;
-    }
-    return (PyTypeObject *)result;
-bad:
-    Py_XDECREF(py_module);
-    Py_XDECREF(result);
-    return NULL;
-}
-#endif
 
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
