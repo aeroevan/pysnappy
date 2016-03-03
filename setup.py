@@ -23,7 +23,7 @@ if have_cython:
     )
 else:
     ext_modules.append(
-        Extension("pysnappy", sources=["pysnappy/core.c"],
+        Extension("pysnappy.core", sources=["pysnappy/core.c"],
                   libraries=["snappy"])
     )
     ext_modules.append(
