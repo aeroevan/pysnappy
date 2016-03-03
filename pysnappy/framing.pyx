@@ -9,14 +9,14 @@ cdef class RawDecompressor:
     cpdef bytes decompress(self, bytes data):
         return _uncompress(data)
     def flush(self):
-        pass
+        return b""
 
 
 cdef class RawCompressor:
     cpdef bytes compress(self, bytes data):
         return _compress(data)
     def flush(self):
-        pass
+        return b""
 
 
 cdef class HadoopDecompressor:
@@ -87,6 +87,7 @@ cdef class HadoopDecompressor:
     def flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
+        return b""
 
 
 cdef class HadoopCompressor:
@@ -125,6 +126,7 @@ cdef class HadoopCompressor:
     def flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
+        return b""
 
 
 cdef int _CHUNK_MAX = 65536
@@ -191,6 +193,7 @@ cdef class Decompressor:
     def flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
+        return b""
 
 
 cdef class Compressor:
@@ -237,4 +240,4 @@ cdef class Compressor:
         return self.add_chunk(data)
 
     def flush(self, mode=None):
-        pass
+        return b""
