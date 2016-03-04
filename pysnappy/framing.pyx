@@ -97,7 +97,7 @@ cdef class HadoopCompressor:
         self._buffer_size = buffer_size
         self._buf = b""
 
-    cpdef bytes compress(self, bytes data):
+    cpdef bytes add_chunk(self, bytes data):
         cdef bytes output = b""
         cdef bytes buf
         cdef int uncompressed_length
@@ -122,6 +122,9 @@ cdef class HadoopCompressor:
             output += pystruct.pack(">i", compressed_length)
             output += buf
         return output
+
+    cpdef bytes compress(self, bytes data):
+        return self.add_chunk(data)
 
     def flush(self):
         if len(self._buf) > 0:
