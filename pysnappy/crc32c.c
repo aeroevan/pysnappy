@@ -513,6 +513,23 @@ static const char *__pyx_f[] = {
 #define __Pyx_CLEAR(r)    do { PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);} while(0)
 #define __Pyx_XCLEAR(r)   do { if((r) != NULL) {PyObject* tmp = ((PyObject*)(r)); r = NULL; __Pyx_DECREF(tmp);}} while(0)
 
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_getattro))
+        return tp->tp_getattro(obj, attr_name);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_getattr))
+        return tp->tp_getattr(obj, PyString_AS_STRING(attr_name));
+#endif
+    return PyObject_GetAttr(obj, attr_name);
+}
+#else
+#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
+#endif
+
+static PyObject *__Pyx_GetBuiltinName(PyObject *name);
+
 static CYTHON_INLINE void __Pyx_ErrRestore(PyObject *type, PyObject *value, PyObject *tb);
 static CYTHON_INLINE void __Pyx_ErrFetch(PyObject **type, PyObject **value, PyObject **tb);
 
@@ -540,13 +557,13 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
-static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *);
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 static CYTHON_INLINE uint32_t __Pyx_PyInt_As_uint32_t(PyObject *);
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value);
 
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
@@ -554,94 +571,94 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 static int __Pyx_check_binary_version(void);
 
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
+
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
 /* Module declarations from 'libc.stdint' */
 
+/* Module declarations from 'cython' */
+
 /* Module declarations from 'pysnappy.crc32c' */
 static uint32_t *__pyx_v_8pysnappy_6crc32c_CRC_TABLE;
 static uint32_t __pyx_v_8pysnappy_6crc32c_CRC_INIT;
 static uint32_t __pyx_v_8pysnappy_6crc32c__MASK;
-static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t, PyObject *); /*proto*/
-static uint32_t __pyx_f_8pysnappy_6crc32c_crc_finalize(PyObject *); /*proto*/
-static uint32_t __pyx_f_8pysnappy_6crc32c_crc32c(PyObject *, int __pyx_skip_dispatch); /*proto*/
 static uint32_t __pyx_f_8pysnappy_6crc32c_masked_crc32c(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static CYTHON_INLINE uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t, char *, size_t); /*proto*/
+static CYTHON_INLINE uint32_t __pyx_f_8pysnappy_6crc32c_crc_finalize(uint32_t); /*proto*/
+static CYTHON_INLINE uint32_t __pyx_f_8pysnappy_6crc32c_crc32c(char *, size_t); /*proto*/
 #define __Pyx_MODULE_NAME "pysnappy.crc32c"
 int __pyx_module_is_main_pysnappy__crc32c = 0;
 
 /* Implementation of 'pysnappy.crc32c' */
+static PyObject *__pyx_builtin_range;
 static char __pyx_k_main[] = "__main__";
 static char __pyx_k_test[] = "__test__";
+static char __pyx_k_range[] = "range";
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_pf_8pysnappy_6crc32c_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data); /* proto */
-static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data); /* proto */
+static PyObject *__pyx_pf_8pysnappy_6crc32c_masked_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data); /* proto */
 static PyObject *__pyx_int_2726488792;
 static PyObject *__pyx_int_4294967295;
 
-/* "pysnappy/crc32c.pyx":64
- * 
- * 
- * cdef uint32_t crc_update(uint32_t crc, bytes data):             # <<<<<<<<<<<<<<
+/* "pysnappy/crc32c.pyx":78
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc_update(uint32_t crc, char *data, size_t n) nogil:             # <<<<<<<<<<<<<<
  *     cdef char b
  *     cdef int table_index
  */
 
-static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObject *__pyx_v_data) {
+static CYTHON_INLINE uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, char *__pyx_v_data, size_t __pyx_v_n) {
   char __pyx_v_b;
   int __pyx_v_table_index;
+  size_t __pyx_v_i;
   uint32_t __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  char *__pyx_t_2;
-  char *__pyx_t_3;
-  char *__pyx_t_4;
-  char *__pyx_t_5;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("crc_update", 0);
+  size_t __pyx_t_1;
+  size_t __pyx_t_2;
 
-  /* "pysnappy/crc32c.pyx":68
- *     cdef int table_index
+  /* "pysnappy/crc32c.pyx":83
+ *     cdef size_t i
  * 
  *     crc = crc ^ _MASK             # <<<<<<<<<<<<<<
- *     for b in data:
- *         table_index = (crc ^ b) & 0xff
+ *     for i in range(n):
+ *         b = data[i]
  */
   __pyx_v_crc = (__pyx_v_crc ^ __pyx_v_8pysnappy_6crc32c__MASK);
 
-  /* "pysnappy/crc32c.pyx":69
+  /* "pysnappy/crc32c.pyx":84
  * 
  *     crc = crc ^ _MASK
- *     for b in data:             # <<<<<<<<<<<<<<
+ *     for i in range(n):             # <<<<<<<<<<<<<<
+ *         b = data[i]
+ *         table_index = (crc ^ b) & 0xff
+ */
+  __pyx_t_1 = __pyx_v_n;
+  for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
+    __pyx_v_i = __pyx_t_2;
+
+    /* "pysnappy/crc32c.pyx":85
+ *     crc = crc ^ _MASK
+ *     for i in range(n):
+ *         b = data[i]             # <<<<<<<<<<<<<<
  *         table_index = (crc ^ b) & 0xff
  *         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
  */
-  if (unlikely(__pyx_v_data == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' is not iterable");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  }
-  __Pyx_INCREF(__pyx_v_data);
-  __pyx_t_1 = __pyx_v_data;
-  __pyx_t_3 = PyBytes_AS_STRING(__pyx_t_1);
-  __pyx_t_4 = (__pyx_t_3 + PyBytes_GET_SIZE(__pyx_t_1));
-  for (__pyx_t_5 = __pyx_t_3; __pyx_t_5 < __pyx_t_4; __pyx_t_5++) {
-    __pyx_t_2 = __pyx_t_5;
-    __pyx_v_b = (__pyx_t_2[0]);
+    __pyx_v_b = (__pyx_v_data[__pyx_v_i]);
 
-    /* "pysnappy/crc32c.pyx":70
- *     crc = crc ^ _MASK
- *     for b in data:
+    /* "pysnappy/crc32c.pyx":86
+ *     for i in range(n):
+ *         b = data[i]
  *         table_index = (crc ^ b) & 0xff             # <<<<<<<<<<<<<<
  *         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
  *     return crc ^ _MASK
  */
     __pyx_v_table_index = ((__pyx_v_crc ^ __pyx_v_b) & 0xff);
 
-    /* "pysnappy/crc32c.pyx":71
- *     for b in data:
+    /* "pysnappy/crc32c.pyx":87
+ *         b = data[i]
  *         table_index = (crc ^ b) & 0xff
  *         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK             # <<<<<<<<<<<<<<
  *     return crc ^ _MASK
@@ -649,9 +666,8 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
  */
     __pyx_v_crc = (((__pyx_v_8pysnappy_6crc32c_CRC_TABLE[__pyx_v_table_index]) ^ (__pyx_v_crc >> 8)) & __pyx_v_8pysnappy_6crc32c__MASK);
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pysnappy/crc32c.pyx":72
+  /* "pysnappy/crc32c.pyx":88
  *         table_index = (crc ^ b) & 0xff
  *         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
  *     return crc ^ _MASK             # <<<<<<<<<<<<<<
@@ -661,234 +677,154 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_crc_update(uint32_t __pyx_v_crc, PyObj
   __pyx_r = (__pyx_v_crc ^ __pyx_v_8pysnappy_6crc32c__MASK);
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":64
- * 
- * 
- * cdef uint32_t crc_update(uint32_t crc, bytes data):             # <<<<<<<<<<<<<<
+  /* "pysnappy/crc32c.pyx":78
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc_update(uint32_t crc, char *data, size_t n) nogil:             # <<<<<<<<<<<<<<
  *     cdef char b
  *     cdef int table_index
  */
 
   /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_WriteUnraisable("pysnappy.crc32c.crc_update", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
-  __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "pysnappy/crc32c.pyx":75
- * 
- * 
- * cdef uint32_t crc_finalize(crc):             # <<<<<<<<<<<<<<
+/* "pysnappy/crc32c.pyx":93
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc_finalize(uint32_t crc) nogil:             # <<<<<<<<<<<<<<
  *     return crc & _MASK
  * 
  */
 
-static uint32_t __pyx_f_8pysnappy_6crc32c_crc_finalize(PyObject *__pyx_v_crc) {
+static CYTHON_INLINE uint32_t __pyx_f_8pysnappy_6crc32c_crc_finalize(uint32_t __pyx_v_crc) {
   uint32_t __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  uint32_t __pyx_t_3;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("crc_finalize", 0);
 
-  /* "pysnappy/crc32c.pyx":76
- * 
- * cdef uint32_t crc_finalize(crc):
+  /* "pysnappy/crc32c.pyx":94
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc_finalize(uint32_t crc) nogil:
  *     return crc & _MASK             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_v_8pysnappy_6crc32c__MASK); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_And(__pyx_v_crc, __pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_uint32_t(__pyx_t_2); if (unlikely((__pyx_t_3 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 76; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_3;
+  __pyx_r = (__pyx_v_crc & __pyx_v_8pysnappy_6crc32c__MASK);
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":75
- * 
- * 
- * cdef uint32_t crc_finalize(crc):             # <<<<<<<<<<<<<<
+  /* "pysnappy/crc32c.pyx":93
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc_finalize(uint32_t crc) nogil:             # <<<<<<<<<<<<<<
  *     return crc & _MASK
  * 
  */
 
   /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_WriteUnraisable("pysnappy.crc32c.crc_finalize", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
-  __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "pysnappy/crc32c.pyx":79
- * 
- * 
- * cpdef uint32_t crc32c(bytes data):             # <<<<<<<<<<<<<<
- *     return crc_finalize(crc_update(CRC_INIT, data))
+/* "pysnappy/crc32c.pyx":99
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc32c(char *data, size_t n) nogil:             # <<<<<<<<<<<<<<
+ *     return crc_finalize(crc_update(CRC_INIT, data, n))
  * 
  */
 
-static PyObject *__pyx_pw_8pysnappy_6crc32c_1crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data); /*proto*/
-static uint32_t __pyx_f_8pysnappy_6crc32c_crc32c(PyObject *__pyx_v_data, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static CYTHON_INLINE uint32_t __pyx_f_8pysnappy_6crc32c_crc32c(char *__pyx_v_data, size_t __pyx_v_n) {
   uint32_t __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("crc32c", 0);
 
-  /* "pysnappy/crc32c.pyx":80
+  /* "pysnappy/crc32c.pyx":100
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc32c(char *data, size_t n) nogil:
+ *     return crc_finalize(crc_update(CRC_INIT, data, n))             # <<<<<<<<<<<<<<
  * 
- * cpdef uint32_t crc32c(bytes data):
- *     return crc_finalize(crc_update(CRC_INIT, data))             # <<<<<<<<<<<<<<
- * 
- * cpdef uint32_t masked_crc32c(bytes data):
+ * @cython.wraparound(False)
  */
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_crc_update(__pyx_v_8pysnappy_6crc32c_CRC_INIT, __pyx_v_data)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 80; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_f_8pysnappy_6crc32c_crc_finalize(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_f_8pysnappy_6crc32c_crc_finalize(__pyx_f_8pysnappy_6crc32c_crc_update(__pyx_v_8pysnappy_6crc32c_CRC_INIT, __pyx_v_data, __pyx_v_n));
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":79
- * 
- * 
- * cpdef uint32_t crc32c(bytes data):             # <<<<<<<<<<<<<<
- *     return crc_finalize(crc_update(CRC_INIT, data))
+  /* "pysnappy/crc32c.pyx":99
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
+ * cdef inline uint32_t crc32c(char *data, size_t n) nogil:             # <<<<<<<<<<<<<<
+ *     return crc_finalize(crc_update(CRC_INIT, data, n))
  * 
  */
 
   /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_WriteUnraisable("pysnappy.crc32c.crc32c", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
-  __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8pysnappy_6crc32c_1crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data); /*proto*/
-static PyObject *__pyx_pw_8pysnappy_6crc32c_1crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data) {
-  CYTHON_UNUSED int __pyx_lineno = 0;
-  CYTHON_UNUSED const char *__pyx_filename = NULL;
-  CYTHON_UNUSED int __pyx_clineno = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("crc32c (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_pf_8pysnappy_6crc32c_crc32c(__pyx_self, ((PyObject*)__pyx_v_data));
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8pysnappy_6crc32c_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("crc32c", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pysnappy.crc32c.crc32c", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pysnappy/crc32c.pyx":82
- *     return crc_finalize(crc_update(CRC_INIT, data))
- * 
+/* "pysnappy/crc32c.pyx":104
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
  * cpdef uint32_t masked_crc32c(bytes data):             # <<<<<<<<<<<<<<
- *     cdef uint32_t crc = crc32c(data)
+ *     cdef uint32_t crc = crc32c(data, len(data))
  *     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff
  */
 
-static PyObject *__pyx_pw_8pysnappy_6crc32c_3masked_crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data); /*proto*/
+static PyObject *__pyx_pw_8pysnappy_6crc32c_1masked_crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data); /*proto*/
 static uint32_t __pyx_f_8pysnappy_6crc32c_masked_crc32c(PyObject *__pyx_v_data, CYTHON_UNUSED int __pyx_skip_dispatch) {
   uint32_t __pyx_v_crc;
   uint32_t __pyx_r;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  uint32_t __pyx_t_3;
+  char *__pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  uint32_t __pyx_t_5;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("masked_crc32c", 0);
 
-  /* "pysnappy/crc32c.pyx":83
- * 
+  /* "pysnappy/crc32c.pyx":105
+ * @cython.boundscheck(False)
  * cpdef uint32_t masked_crc32c(bytes data):
- *     cdef uint32_t crc = crc32c(data)             # <<<<<<<<<<<<<<
+ *     cdef uint32_t crc = crc32c(data, len(data))             # <<<<<<<<<<<<<<
  *     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff
  */
-  __pyx_v_crc = __pyx_f_8pysnappy_6crc32c_crc32c(__pyx_v_data, 0);
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_data); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(__pyx_v_data == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_2 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_v_crc = __pyx_f_8pysnappy_6crc32c_crc32c(__pyx_t_1, __pyx_t_2);
 
-  /* "pysnappy/crc32c.pyx":84
+  /* "pysnappy/crc32c.pyx":106
  * cpdef uint32_t masked_crc32c(bytes data):
- *     cdef uint32_t crc = crc32c(data)
+ *     cdef uint32_t crc = crc32c(data, len(data))
  *     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyInt_From_long(((__pyx_v_crc >> 15) | (__pyx_v_crc << 17))); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_int_2726488792); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_And(__pyx_t_2, __pyx_int_4294967295); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_uint32_t(__pyx_t_1); if (unlikely((__pyx_t_3 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = __Pyx_PyInt_From_long(((__pyx_v_crc >> 15) | (__pyx_v_crc << 17))); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = PyNumber_Add(__pyx_t_3, __pyx_int_2726488792); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_And(__pyx_t_4, __pyx_int_4294967295); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_5 = __Pyx_PyInt_As_uint32_t(__pyx_t_3); if (unlikely((__pyx_t_5 == (uint32_t)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "pysnappy/crc32c.pyx":82
- *     return crc_finalize(crc_update(CRC_INIT, data))
- * 
+  /* "pysnappy/crc32c.pyx":104
+ * @cython.wraparound(False)
+ * @cython.boundscheck(False)
  * cpdef uint32_t masked_crc32c(bytes data):             # <<<<<<<<<<<<<<
- *     cdef uint32_t crc = crc32c(data)
+ *     cdef uint32_t crc = crc32c(data, len(data))
  *     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_WriteUnraisable("pysnappy.crc32c.masked_crc32c", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
   __pyx_r = 0;
   __pyx_L0:;
@@ -897,16 +833,16 @@ static uint32_t __pyx_f_8pysnappy_6crc32c_masked_crc32c(PyObject *__pyx_v_data, 
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8pysnappy_6crc32c_3masked_crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data); /*proto*/
-static PyObject *__pyx_pw_8pysnappy_6crc32c_3masked_crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data) {
+static PyObject *__pyx_pw_8pysnappy_6crc32c_1masked_crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data); /*proto*/
+static PyObject *__pyx_pw_8pysnappy_6crc32c_1masked_crc32c(PyObject *__pyx_self, PyObject *__pyx_v_data) {
   CYTHON_UNUSED int __pyx_lineno = 0;
   CYTHON_UNUSED const char *__pyx_filename = NULL;
   CYTHON_UNUSED int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("masked_crc32c (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_r = __pyx_pf_8pysnappy_6crc32c_2masked_crc32c(__pyx_self, ((PyObject*)__pyx_v_data));
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_r = __pyx_pf_8pysnappy_6crc32c_masked_crc32c(__pyx_self, ((PyObject*)__pyx_v_data));
 
   /* function exit code */
   goto __pyx_L0;
@@ -917,7 +853,7 @@ static PyObject *__pyx_pw_8pysnappy_6crc32c_3masked_crc32c(PyObject *__pyx_self,
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data) {
+static PyObject *__pyx_pf_8pysnappy_6crc32c_masked_crc32c(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -926,7 +862,7 @@ static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("masked_crc32c", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_masked_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyInt_From_uint32_t(__pyx_f_8pysnappy_6crc32c_masked_crc32c(__pyx_v_data, 0)); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -944,8 +880,7 @@ static PyObject *__pyx_pf_8pysnappy_6crc32c_2masked_crc32c(CYTHON_UNUSED PyObjec
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"crc32c", (PyCFunction)__pyx_pw_8pysnappy_6crc32c_1crc32c, METH_O, 0},
-  {"masked_crc32c", (PyCFunction)__pyx_pw_8pysnappy_6crc32c_3masked_crc32c, METH_O, 0},
+  {"masked_crc32c", (PyCFunction)__pyx_pw_8pysnappy_6crc32c_1masked_crc32c, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -969,11 +904,15 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
+  __pyx_L1_error:;
+  return -1;
 }
 
 static int __Pyx_InitCachedConstants(void) {
@@ -1078,6 +1017,7 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   /*--- Global init code ---*/
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("masked_crc32c", (void (*)(void))__pyx_f_8pysnappy_6crc32c_masked_crc32c, "uint32_t (PyObject *, int __pyx_skip_dispatch)") < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   /*--- Type init code ---*/
   /*--- Type import code ---*/
   /*--- Variable import code ---*/
@@ -1087,7 +1027,7 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   if (__Pyx_patch_abc() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
 
-  /* "pysnappy/crc32c.pyx":4
+  /* "pysnappy/crc32c.pyx":5
  * from libc.stdint cimport uint32_t
  * 
  * cdef uint32_t *CRC_TABLE = [0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,             # <<<<<<<<<<<<<<
@@ -1352,7 +1292,7 @@ PyMODINIT_FUNC PyInit_crc32c(void)
   __pyx_t_1[255] = 0xad7d5351L;
   __pyx_v_8pysnappy_6crc32c_CRC_TABLE = __pyx_t_1;
 
-  /* "pysnappy/crc32c.pyx":59
+  /* "pysnappy/crc32c.pyx":60
  * 
  * # initial CRC value
  * cdef uint32_t CRC_INIT = 0             # <<<<<<<<<<<<<<
@@ -1361,7 +1301,7 @@ PyMODINIT_FUNC PyInit_crc32c(void)
  */
   __pyx_v_8pysnappy_6crc32c_CRC_INIT = 0;
 
-  /* "pysnappy/crc32c.pyx":61
+  /* "pysnappy/crc32c.pyx":62
  * cdef uint32_t CRC_INIT = 0
  * 
  * cdef uint32_t _MASK = 0xFFFFFFFFL             # <<<<<<<<<<<<<<
@@ -1372,8 +1312,8 @@ PyMODINIT_FUNC PyInit_crc32c(void)
 
   /* "pysnappy/crc32c.pyx":1
  * # cython: profile=False             # <<<<<<<<<<<<<<
+ * cimport cython
  * from libc.stdint cimport uint32_t
- * 
  */
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
@@ -1418,6 +1358,19 @@ end:
     return (__Pyx_RefNannyAPIStruct *)r;
 }
 #endif
+
+static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
+    PyObject* result = __Pyx_PyObject_GetAttrStr(__pyx_b, name);
+    if (unlikely(!result)) {
+        PyErr_Format(PyExc_NameError,
+#if PY_MAJOR_VERSION >= 3
+            "name '%U' is not defined", name);
+#else
+            "name '%.200s' is not defined", PyString_AS_STRING(name));
+#endif
+    }
+    return result;
+}
 
 static CYTHON_INLINE void __Pyx_ErrRestore(PyObject *type, PyObject *value, PyObject *tb) {
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1696,19 +1649,19 @@ bad:
   #include "longintrepr.h"
 #endif
 
-static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
-    const char neg_one = (char) -1, const_zero = (char) 0;
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
     if (likely(PyInt_Check(x))) {
-        if (sizeof(char) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(char, long, PyInt_AS_LONG(x))
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
         } else {
             long val = PyInt_AS_LONG(x);
             if (is_unsigned && unlikely(val < 0)) {
                 goto raise_neg_overflow;
             }
-            return (char) val;
+            return (size_t) val;
         }
     } else
 #endif
@@ -1717,32 +1670,32 @@ static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
 #if CYTHON_USE_PYLONG_INTERNALS
             const digit* digits = ((PyLongObject*)x)->ob_digit;
             switch (Py_SIZE(x)) {
-                case  0: return (char) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(char, digit, digits[0])
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
                 case 2:
-                    if (8 * sizeof(char) > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) >= 2 * PyLong_SHIFT) {
-                            return (char) (((((char)digits[1]) << PyLong_SHIFT) | (char)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
                         }
                     }
                     break;
                 case 3:
-                    if (8 * sizeof(char) > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) >= 3 * PyLong_SHIFT) {
-                            return (char) (((((((char)digits[2]) << PyLong_SHIFT) | (char)digits[1]) << PyLong_SHIFT) | (char)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
                         }
                     }
                     break;
                 case 4:
-                    if (8 * sizeof(char) > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) >= 4 * PyLong_SHIFT) {
-                            return (char) (((((((((char)digits[3]) << PyLong_SHIFT) | (char)digits[2]) << PyLong_SHIFT) | (char)digits[1]) << PyLong_SHIFT) | (char)digits[0]));
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
                         }
                     }
                     break;
@@ -1756,83 +1709,83 @@ static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
             {
                 int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
                 if (unlikely(result < 0))
-                    return (char) -1;
+                    return (size_t) -1;
                 if (unlikely(result == 1))
                     goto raise_neg_overflow;
             }
 #endif
-            if (sizeof(char) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(char, unsigned long, PyLong_AsUnsignedLong(x))
-            } else if (sizeof(char) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(char, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
             }
         } else {
 #if CYTHON_USE_PYLONG_INTERNALS
             const digit* digits = ((PyLongObject*)x)->ob_digit;
             switch (Py_SIZE(x)) {
-                case  0: return (char) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(char, sdigit, -(sdigit) digits[0])
-                case  1: __PYX_VERIFY_RETURN_INT(char,  digit, +digits[0])
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, -(sdigit) digits[0])
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
                 case -2:
-                    if (8 * sizeof(char) - 1 > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) - 1 > 2 * PyLong_SHIFT) {
-                            return (char) (((char)-1)*(((((char)digits[1]) << PyLong_SHIFT) | (char)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
                         }
                     }
                     break;
                 case 2:
-                    if (8 * sizeof(char) > 1 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) - 1 > 2 * PyLong_SHIFT) {
-                            return (char) ((((((char)digits[1]) << PyLong_SHIFT) | (char)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
                         }
                     }
                     break;
                 case -3:
-                    if (8 * sizeof(char) - 1 > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) - 1 > 3 * PyLong_SHIFT) {
-                            return (char) (((char)-1)*(((((((char)digits[2]) << PyLong_SHIFT) | (char)digits[1]) << PyLong_SHIFT) | (char)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
                         }
                     }
                     break;
                 case 3:
-                    if (8 * sizeof(char) > 2 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) - 1 > 3 * PyLong_SHIFT) {
-                            return (char) ((((((((char)digits[2]) << PyLong_SHIFT) | (char)digits[1]) << PyLong_SHIFT) | (char)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
                         }
                     }
                     break;
                 case -4:
-                    if (8 * sizeof(char) - 1 > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) - 1 > 4 * PyLong_SHIFT) {
-                            return (char) (((char)-1)*(((((((((char)digits[3]) << PyLong_SHIFT) | (char)digits[2]) << PyLong_SHIFT) | (char)digits[1]) << PyLong_SHIFT) | (char)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
                         }
                     }
                     break;
                 case 4:
-                    if (8 * sizeof(char) > 3 * PyLong_SHIFT) {
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
                         if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(char) - 1 > 4 * PyLong_SHIFT) {
-                            return (char) ((((((((((char)digits[3]) << PyLong_SHIFT) | (char)digits[2]) << PyLong_SHIFT) | (char)digits[1]) << PyLong_SHIFT) | (char)digits[0])));
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
                         }
                     }
                     break;
             }
 #endif
-            if (sizeof(char) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(char, long, PyLong_AsLong(x))
-            } else if (sizeof(char) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(char, PY_LONG_LONG, PyLong_AsLongLong(x))
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
             }
         }
         {
@@ -1840,7 +1793,7 @@ static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
             PyErr_SetString(PyExc_RuntimeError,
                             "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
 #else
-            char val;
+            size_t val;
             PyObject *v = __Pyx_PyNumber_Int(x);
  #if PY_MAJOR_VERSION < 3
             if (likely(v) && !PyLong_Check(v)) {
@@ -1860,48 +1813,48 @@ static CYTHON_INLINE char __Pyx_PyInt_As_char(PyObject *x) {
                     return val;
             }
 #endif
-            return (char) -1;
+            return (size_t) -1;
         }
     } else {
-        char val;
+        size_t val;
         PyObject *tmp = __Pyx_PyNumber_Int(x);
-        if (!tmp) return (char) -1;
-        val = __Pyx_PyInt_As_char(tmp);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
         Py_DECREF(tmp);
         return val;
     }
 raise_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to char");
-    return (char) -1;
+        "value too large to convert to size_t");
+    return (size_t) -1;
 raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to char");
-    return (char) -1;
+        "can't convert negative value to size_t");
+    return (size_t) -1;
 }
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
-    const uint32_t neg_one = (uint32_t) -1, const_zero = (uint32_t) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(uint32_t) < sizeof(long)) {
+        if (sizeof(long) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
         }
     } else {
-        if (sizeof(uint32_t) <= sizeof(long)) {
+        if (sizeof(long) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
         }
     }
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
+        return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
 }
@@ -2090,28 +2043,28 @@ raise_neg_overflow:
     return (uint32_t) -1;
 }
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = (long) 0;
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_uint32_t(uint32_t value) {
+    const uint32_t neg_one = (uint32_t) -1, const_zero = (uint32_t) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
+        if (sizeof(uint32_t) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
+        } else if (sizeof(uint32_t) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(uint32_t) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
         }
     } else {
-        if (sizeof(long) <= sizeof(long)) {
+        if (sizeof(uint32_t) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(uint32_t) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
         }
     }
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
+        return _PyLong_FromByteArray(bytes, sizeof(uint32_t),
                                      little, !is_unsigned);
     }
 }
@@ -2497,6 +2450,42 @@ static int __Pyx_check_binary_version(void) {
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
+}
+
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
+    }
+    tmp.fp = f;
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(tmp.p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(tmp.p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {

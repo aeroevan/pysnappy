@@ -1,4 +1,5 @@
 # cython: profile=False
+cimport cython
 from libc.stdint cimport uint32_t
 
 cdef uint32_t *CRC_TABLE = [0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,
@@ -61,24 +62,45 @@ cdef uint32_t CRC_INIT = 0
 cdef uint32_t _MASK = 0xFFFFFFFFL
 
 
-cdef uint32_t crc_update(uint32_t crc, bytes data):
+#cdef uint32_t crc_update(uint32_t crc, bytes data):
+#    cdef char b
+#    cdef int table_index
+#
+#    crc = crc ^ _MASK
+#    for b in data:
+#        table_index = (crc ^ b) & 0xff
+#        crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
+#    return crc ^ _MASK
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef inline uint32_t crc_update(uint32_t crc, char *data, size_t n) nogil:
     cdef char b
     cdef int table_index
+    cdef size_t i
 
     crc = crc ^ _MASK
-    for b in data:
+    for i in range(n):
+        b = data[i]
         table_index = (crc ^ b) & 0xff
         crc = (CRC_TABLE[table_index] ^ (crc >> 8)) & _MASK
     return crc ^ _MASK
 
 
-cdef uint32_t crc_finalize(crc):
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef inline uint32_t crc_finalize(uint32_t crc) nogil:
     return crc & _MASK
 
 
-cpdef uint32_t crc32c(bytes data):
-    return crc_finalize(crc_update(CRC_INIT, data))
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef inline uint32_t crc32c(char *data, size_t n) nogil:
+    return crc_finalize(crc_update(CRC_INIT, data, n))
 
+@cython.wraparound(False)
+@cython.boundscheck(False)
 cpdef uint32_t masked_crc32c(bytes data):
-    cdef uint32_t crc = crc32c(data)
+    cdef uint32_t crc = crc32c(data, len(data))
     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff

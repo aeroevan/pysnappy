@@ -1,8 +1,8 @@
 # cython: profile=False
-from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
+from libc.stdlib cimport malloc, free
 from pysnappy.snappy cimport snappy_compress, snappy_uncompress, snappy_uncompressed_length, snappy_max_compressed_length, snappy_status
-from pysnappy.framing import Compressor, Decompressor
-from pysnappy.framing import HadoopCompressor, HadoopDecompressor
+from pysnappy.framing cimport Compressor, Decompressor
+from pysnappy.framing cimport HadoopCompressor, HadoopDecompressor
 
 cpdef bytes uncompress(bytes compressed):
     cdef size_t n = len(compressed)
@@ -13,12 +13,14 @@ cpdef bytes uncompress(bytes compressed):
         compressed, n, &m)
     if status != 0:
         raise Exception("Could not determine uncompressed length")
-    uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
+    #uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
+    uncompressed = <char*>malloc(m * sizeof(char*))
     if not uncompressed:
         raise MemoryError("Could not allocate uncompressed buffer")
-    status = snappy_uncompress(compressed, n, uncompressed, &m)
+    status = snappy_uncompress(compressed[:n], n, uncompressed, &m)
     if status != 0:
-        PyMem_Free(uncompressed)
+        #PyMem_Free(uncompressed)
+        free(uncompressed)
         raise Exception("Could not uncompress")
     return uncompressed[:m]
 
@@ -27,12 +29,12 @@ cpdef bytes compress(bytes uncompressed):
     cdef size_t m = snappy_max_compressed_length(n)
     cdef snappy_status status
     cdef char* compressed
-    compressed = <char*>PyMem_Malloc(m * sizeof(char*))
+    compressed = <char*>malloc(m * sizeof(char*))
     if not compressed:
         raise MemoryError("Could not allocate compressed buffer")
     status = snappy_compress(uncompressed, n, compressed, &m)
     if status != 0:
-        PyMem_Free(compressed)
+        free(compressed)
         raise Exception("Could not compress")
     return compressed[:m]
 

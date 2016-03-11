@@ -1,29 +1,25 @@
 # cython: profile=False
 import struct as pystruct
-from pysnappy.crc32c import masked_crc32c
-from pysnappy.core import compress as _compress
-from pysnappy.core import uncompress as _uncompress
+from pysnappy.crc32c cimport masked_crc32c
+from pysnappy.core cimport compress as _compress
+from pysnappy.core cimport uncompress as _uncompress
 
 
 cdef class RawDecompressor:
     cpdef bytes decompress(self, bytes data):
         return _uncompress(data)
-    def flush(self):
+    cpdef flush(self):
         return b""
 
 
 cdef class RawCompressor:
     cpdef bytes compress(self, bytes data):
         return _compress(data)
-    def flush(self):
+    cpdef flush(self):
         return b""
 
 
 cdef class HadoopDecompressor:
-    cdef bytes _buf
-    cdef int _block_size
-    cdef int _block_read
-    cdef int _subblock_size
 
     def __cinit__(self):
         self._buf = b""
@@ -45,13 +41,13 @@ cdef class HadoopDecompressor:
 
     cdef bytes _decompress_block(self):
         cdef bytes buf
+        cdef bytes output = b""
         if self._block_size < 0:
             if len(self._buf) <= 4:
                 return b""
             self._block_size = pystruct.unpack(
                 ">i", self._buf[:4])[0]
             self._buf = self._buf[4:]
-        cdef bytes output = b""
         while self._block_read < self._block_size:
             buf = self._decompress_subblock()
             if len(buf) > 0:
@@ -84,15 +80,13 @@ cdef class HadoopDecompressor:
         self._subblock_size = -1
         return uncompressed
 
-    def flush(self):
+    cpdef flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
         return b""
 
 
 cdef class HadoopCompressor:
-    cdef int _buffer_size
-    cdef bytes _buf
     def __cinit__(self, buffer_size=131072):
         self._buffer_size = buffer_size
         self._buf = b""
@@ -126,7 +120,7 @@ cdef class HadoopCompressor:
     cpdef bytes compress(self, bytes data):
         return self.add_chunk(data)
 
-    def flush(self):
+    cpdef flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
         return b""
@@ -146,8 +140,6 @@ cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
 cdef double _COMPRESSION_THRESHOLD = 0.125
 
 cdef class Decompressor:
-    cdef bytes _buf
-    cdef bint _header_found
 
     def __cinit__(self):
         self._buf = b""
@@ -193,14 +185,13 @@ cdef class Decompressor:
                                 str(stream_crc))
             output += chunk
 
-    def flush(self):
+    cpdef flush(self):
         if len(self._buf) > 0:
             raise Exception("Chunk truncated")
         return b""
 
 
 cdef class Compressor:
-    cdef bint _header_chunk_written
 
     def __cinit__(self):
         self._header_chunk_written = False
@@ -242,5 +233,5 @@ cdef class Compressor:
     cpdef bytes compress(self, bytes data):
         return self.add_chunk(data)
 
-    def flush(self, mode=None):
+    cpdef flush(self, mode=None):
         return b""
