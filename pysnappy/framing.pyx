@@ -1,5 +1,5 @@
 # cython: profile=False
-import struct as pystruct
+from struct import pack, unpack
 from pysnappy.crc32c cimport masked_crc32c
 from pysnappy.core cimport compress as _compress
 from pysnappy.core cimport uncompress as _uncompress
@@ -45,7 +45,7 @@ cdef class HadoopDecompressor:
         if self._block_size < 0:
             if len(self._buf) <= 4:
                 return b""
-            self._block_size = pystruct.unpack(
+            self._block_size = unpack(
                 ">i", self._buf[:4])[0]
             self._buf = self._buf[4:]
         while self._block_read < self._block_size:
@@ -67,7 +67,7 @@ cdef class HadoopDecompressor:
         if self._subblock_size < 0:
             if len(self._buf) <= 4:
                 return b""
-            self._subblock_size = pystruct.unpack(
+            self._subblock_size = unpack(
                 ">i", self._buf[:4])[0]
             self._buf = self._buf[4:]
         # Only attempt to decompress complete subblocks.
@@ -112,8 +112,8 @@ cdef class HadoopCompressor:
             except:
                 break
             compressed_length = len(buf)
-            output += pystruct.pack(">i", uncompressed_length)
-            output += pystruct.pack(">i", compressed_length)
+            output += pack(">i", uncompressed_length)
+            output += pack(">i", compressed_length)
             output += buf
         return output
 
@@ -155,7 +155,7 @@ cdef class Decompressor:
         while True:
             if len(self._buf) < 4:
                 return output
-            chunk_type = pystruct.unpack("<L", self._buf[:4])[0]
+            chunk_type = unpack("<L", self._buf[:4])[0]
             size = (chunk_type >> 8)
             chunk_type &= 0xff
             if not self._header_found:
@@ -178,9 +178,9 @@ cdef class Decompressor:
             stream_crc, chunk = chunk[:4], chunk[4:4 + size]
             if chunk_type == _COMPRESSED_CHUNK:
                 chunk = _uncompress(chunk)
-            if pystruct.pack("<L", masked_crc32c(chunk)) != stream_crc:
+            if pack("<L", masked_crc32c(chunk)) != stream_crc:
                 raise Exception("crc mismatch: " +
-                                str(pystruct.pack("<L", masked_crc32c(chunk))) +
+                                str(pack("<L", masked_crc32c(chunk))) +
                                 " expected: " +
                                 str(stream_crc))
             output += chunk
@@ -205,7 +205,7 @@ cdef class Compressor:
         cdef int i
         if not self._header_chunk_written:
             self._header_chunk_written = True
-            out += pystruct.pack("<L", _IDENTIFIER_CHUNK
+            out += pack("<L", _IDENTIFIER_CHUNK
                                  + (len(_STREAM_IDENTIFIER) << 8))
             out += _STREAM_IDENTIFIER
 
@@ -225,7 +225,7 @@ cdef class Compressor:
                 chunk_type = _COMPRESSED_CHUNK
             else:
                 chunk_type = _UNCOMPRESSED_CHUNK
-            out += pystruct.pack("<LL",
+            out += pack("<LL",
                                  chunk_type + ((len(chunk) + 4) << 8), crc)
             out += chunk
         return out
