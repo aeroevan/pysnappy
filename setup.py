@@ -37,12 +37,12 @@ else:
 
 setup(
     name="pysnappy",
-    version="0.6.0",
+    version="0.6.1",
     description="Cython bindings to libsnappy",
     author="Evan McClain",
     author_email="aeroevan@gmail.com",
     url="https://github.com/aeroevan/pysnappy",
-    download_url="https://github.com/aeroevan/pysnappy/tarball/v0.6.0",
+    download_url="https://github.com/aeroevan/pysnappy/tarball/v0.6.1",
     license='MIT',
     test_suite="tests",
     packages=find_packages(exclude="test"),
@@ -61,7 +61,7 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Cython"
     ]
 )
