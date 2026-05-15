@@ -2,6 +2,72 @@
 cimport cython
 from libc.stdint cimport uint32_t
 
+
+cdef extern from *:
+    """
+    #include <stdint.h>
+    #include <stddef.h>
+
+    #if (defined(__x86_64__) || defined(__i386__)) && defined(__GNUC__)
+      #define PYSNAPPY_HW_CRC32C 1
+      #include <nmmintrin.h>
+    #endif
+
+    #if defined(PYSNAPPY_HW_CRC32C)
+
+    __attribute__((target("sse4.2")))
+    static uint32_t pysnappy_crc32c_hw(uint32_t crc,
+                                       const unsigned char *data,
+                                       size_t n) {
+        crc = ~crc;
+        while (n && ((uintptr_t)data & 7)) {
+            crc = _mm_crc32_u8(crc, *data);
+            data++;
+            n--;
+        }
+        while (n >= 8) {
+            crc = (uint32_t)_mm_crc32_u64(
+                (uint64_t)crc, *(const uint64_t *)data);
+            data += 8;
+            n -= 8;
+        }
+        if (n >= 4) {
+            crc = _mm_crc32_u32(crc, *(const uint32_t *)data);
+            data += 4;
+            n -= 4;
+        }
+        while (n > 0) {
+            crc = _mm_crc32_u8(crc, *data);
+            data++;
+            n--;
+        }
+        return ~crc;
+    }
+
+    static int pysnappy_crc32c_have_hw(void) {
+        static int cached = -1;
+        if (cached < 0) {
+            cached = __builtin_cpu_supports("sse4.2") ? 1 : 0;
+        }
+        return cached;
+    }
+
+    #else
+
+    static int pysnappy_crc32c_have_hw(void) { return 0; }
+    static uint32_t pysnappy_crc32c_hw(uint32_t crc,
+                                       const unsigned char *data,
+                                       size_t n) {
+        (void)crc; (void)data; (void)n;
+        return 0;
+    }
+
+    #endif
+    """
+    int pysnappy_crc32c_have_hw() nogil
+    uint32_t pysnappy_crc32c_hw(
+        uint32_t crc, const unsigned char *data, size_t n) nogil
+
 cdef uint32_t *CRC_TABLE = [0x00000000L, 0xf26b8303L, 0xe13b70f7L, 0x1350f3f4L, 0xc79a971fL,
     0x35f1141cL, 0x26a1e7e8L, 0xd4ca64ebL, 0x8ad958cfL, 0x78b2dbccL,
     0x6be22838L, 0x9989ab3bL, 0x4d43cfd0L, 0xbf284cd3L, 0xac78bf27L,
@@ -97,6 +163,8 @@ cdef inline uint32_t crc_finalize(uint32_t crc) nogil:
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef inline uint32_t crc32c(char *data, size_t n) nogil:
+    if pysnappy_crc32c_have_hw():
+        return pysnappy_crc32c_hw(0, <const unsigned char*>data, n)
     return crc_finalize(crc_update(CRC_INIT, data, n))
 
 @cython.wraparound(False)
@@ -104,3 +172,12 @@ cdef inline uint32_t crc32c(char *data, size_t n) nogil:
 cpdef uint32_t masked_crc32c(bytes data):
     cdef uint32_t crc = crc32c(data, len(data))
     return (((crc >> 15) | (crc << 17)) + 0xa282ead8) & 0xffffffff
+
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef uint32_t masked_crc32c_buf(const char* data, size_t n) nogil:
+    cdef uint32_t crc = crc32c(<char*>data, n)
+    return <uint32_t>(
+        (((crc >> 15) | (crc << 17)) + <uint32_t>0xa282ead8) & <uint32_t>0xffffffff
+    )

@@ -8,23 +8,25 @@ cdef class RawCompressor:
     cpdef flush(self)
 
 cdef class HadoopDecompressor:
-    cdef bytes _buf
+    cdef bytearray _buf
+    cdef Py_ssize_t _buf_pos
     cdef int _block_size
     cdef int _block_read
     cdef int _subblock_size
 
     cpdef bytes decompress(self, bytes)
 
-    cdef bytes _decompress_block(self)
+    cdef bint _decompress_block(self, bytearray output) except -1
 
-    cdef bytes _decompress_subblock(self)
+    cdef bint _decompress_subblock(self, bytearray output) except -1
 
     cpdef flush(self)
 
 
 cdef class HadoopCompressor:
     cdef int _buffer_size
-    cdef bytes _buf
+    cdef bint _single_subblock
+    cdef bytearray _buf
 
     cpdef bytes add_chunk(self, bytes)
 
@@ -46,7 +48,7 @@ cdef int _RESERVED_SKIPPABLE_RIGHT = 0xff
 cdef double _COMPRESSION_THRESHOLD = 0.125
 
 cdef class Decompressor:
-    cdef bytes _buf
+    cdef bytearray _buf
     cdef bint _header_found
 
     cpdef bytes decompress(self, bytes)

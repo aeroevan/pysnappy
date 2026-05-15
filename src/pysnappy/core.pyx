@@ -1,42 +1,107 @@
 # cython: profile=False
-from libc.stdlib cimport malloc, free
-from pysnappy.snappy cimport snappy_compress, snappy_uncompress, snappy_uncompressed_length, snappy_max_compressed_length, snappy_status
+from cpython.bytes cimport PyBytes_FromStringAndSize, PyBytes_AsString
+from cpython.bytearray cimport (
+    PyByteArray_AS_STRING,
+    PyByteArray_GET_SIZE,
+    PyByteArray_Resize,
+)
+from pysnappy.snappy cimport (
+    snappy_compress,
+    snappy_uncompress,
+    snappy_uncompressed_length,
+    snappy_max_compressed_length,
+    snappy_status,
+)
 from pysnappy.framing cimport Compressor, Decompressor
 from pysnappy.framing cimport HadoopCompressor, HadoopDecompressor
 
-cpdef bytes uncompress(bytes compressed):
-    cdef size_t n = len(compressed)
-    cdef size_t m
+
+cdef size_t _raw_compress(
+    const char* src, size_t n, char* dst, size_t cap
+) except? 0:
+    cdef size_t out_len = cap
     cdef snappy_status status
-    cdef char* uncompressed
-    status = snappy_uncompressed_length(
-        compressed, n, &m)
+    with nogil:
+        status = snappy_compress(src, n, dst, &out_len)
+    if status != 0:
+        raise Exception("Could not compress")
+    return out_len
+
+
+cdef void _raw_uncompress(
+    const char* src, size_t n, char* dst, size_t cap
+) except *:
+    cdef size_t out_len = cap
+    cdef snappy_status status
+    with nogil:
+        status = snappy_uncompress(src, n, dst, &out_len)
+    if status != 0:
+        raise Exception("Could not uncompress")
+
+
+cdef size_t _max_compressed_len(size_t n) nogil:
+    return snappy_max_compressed_length(n)
+
+
+cdef bytes _compress_buf(const char* src, size_t n):
+    cdef size_t cap = snappy_max_compressed_length(n)
+    cdef bytes result = PyBytes_FromStringAndSize(NULL, <Py_ssize_t>cap)
+    cdef size_t out_len = _raw_compress(src, n, PyBytes_AsString(result), cap)
+    if out_len == cap:
+        return result
+    return result[:out_len]
+
+
+cdef bytes _uncompress_buf(const char* src, size_t n):
+    cdef size_t cap
+    cdef snappy_status status = snappy_uncompressed_length(src, n, &cap)
     if status != 0:
         raise Exception("Could not determine uncompressed length")
-    #uncompressed = <char*>PyMem_Malloc(m * sizeof(char*))
-    uncompressed = <char*>malloc(m * sizeof(char*))
-    if not uncompressed:
-        raise MemoryError("Could not allocate uncompressed buffer")
-    status = snappy_uncompress(compressed[:n], n, uncompressed, &m)
+    cdef bytes result = PyBytes_FromStringAndSize(NULL, <Py_ssize_t>cap)
+    _raw_uncompress(src, n, PyBytes_AsString(result), cap)
+    return result
+
+
+cdef Py_ssize_t _compress_append(
+    const char* src, size_t n, bytearray dst
+) except -1:
+    """Snappy-compress `src` and append to `dst`. Returns bytes appended."""
+    cdef Py_ssize_t old_size = PyByteArray_GET_SIZE(dst)
+    cdef size_t cap = snappy_max_compressed_length(n)
+    if PyByteArray_Resize(dst, old_size + <Py_ssize_t>cap) != 0:
+        raise MemoryError()
+    cdef char* dst_ptr = PyByteArray_AS_STRING(dst) + old_size
+    cdef size_t out_len = _raw_compress(src, n, dst_ptr, cap)
+    if PyByteArray_Resize(dst, old_size + <Py_ssize_t>out_len) != 0:
+        raise MemoryError()
+    return <Py_ssize_t>out_len
+
+
+cdef Py_ssize_t _uncompress_append(
+    const char* src, size_t n, bytearray dst
+) except -1:
+    """Snappy-uncompress `src` and append to `dst`. Returns bytes appended."""
+    cdef size_t cap
+    cdef snappy_status status = snappy_uncompressed_length(src, n, &cap)
     if status != 0:
-        #PyMem_Free(uncompressed)
-        free(uncompressed)
-        raise Exception("Could not uncompress")
-    return uncompressed[:m]
+        raise Exception("Could not determine uncompressed length")
+    cdef Py_ssize_t old_size = PyByteArray_GET_SIZE(dst)
+    if PyByteArray_Resize(dst, old_size + <Py_ssize_t>cap) != 0:
+        raise MemoryError()
+    cdef char* dst_ptr = PyByteArray_AS_STRING(dst) + old_size
+    _raw_uncompress(src, n, dst_ptr, cap)
+    return <Py_ssize_t>cap
+
 
 cpdef bytes compress(bytes uncompressed):
-    cdef size_t n = len(uncompressed)
-    cdef size_t m = snappy_max_compressed_length(n)
-    cdef snappy_status status
-    cdef char* compressed
-    compressed = <char*>malloc(m * sizeof(char*))
-    if not compressed:
-        raise MemoryError("Could not allocate compressed buffer")
-    status = snappy_compress(uncompressed, n, compressed, &m)
-    if status != 0:
-        free(compressed)
-        raise Exception("Could not compress")
-    return compressed[:m]
+    return _compress_buf(
+        PyBytes_AsString(uncompressed), <size_t>len(uncompressed))
+
+
+cpdef bytes uncompress(bytes compressed):
+    return _uncompress_buf(
+        PyBytes_AsString(compressed), <size_t>len(compressed))
+
 
 cpdef void stream_compress(fh_in, fh_out, framing, int bs=65536):
     if framing == "framing2":
