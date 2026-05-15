@@ -1,6 +1,6 @@
 [project]
 name = "pysnappy"
-version = "0.8.0"
+version = "0.8.1"
 description = "Cython wrapper around Google's Snappy compression library, with pure-Cython implementations of the framing2 (.sz) and Hadoop framing formats and CRC32C."
 readme = "README.md"
 authors = [
