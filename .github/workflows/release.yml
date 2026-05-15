@@ -40,7 +40,7 @@ jobs:
               -DCMAKE_BUILD_TYPE=Release
             cmake --build snappy-build --parallel
             cmake --install snappy-build
-          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_REQUIRES: pytest python-snappy
           CIBW_TEST_COMMAND: pytest {project}/tests
 
       - uses: actions/upload-artifact@v4
