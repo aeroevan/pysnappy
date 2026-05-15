@@ -43,4 +43,4 @@ add_custom_command(
 python_add_library(framing MODULE src/pysnappy/framing.c WITH_SOABI)
 
 
-install(TARGETS core crc32c framing DESTINATION .)
+install(TARGETS core crc32c framing DESTINATION pysnappy)
