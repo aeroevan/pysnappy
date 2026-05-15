@@ -90,3 +90,96 @@ class TestFraming2:
         result = d.decompress(compressed)
         d.flush()
         assert result == uncompressed
+
+
+snappy = pytest.importorskip("snappy")
+
+
+class TestPythonSnappyInterop:
+    """Cross-compatibility round trips with python-snappy (which delegates
+    to cramjam). Catches on-wire drift between the two implementations."""
+
+    def test_raw_pysnappy_to_snappy(self, uncompressed):
+        assert snappy.decompress(pysnappy.compress(uncompressed)) == uncompressed
+
+    def test_raw_snappy_to_pysnappy(self, uncompressed):
+        assert pysnappy.uncompress(snappy.compress(uncompressed)) == uncompressed
+
+    def test_framing2_pysnappy_to_snappy(self, uncompressed):
+        c = Compressor()
+        compressed = c.compress(uncompressed)
+        c.flush()
+        d = snappy.StreamDecompressor()
+        result = d.decompress(compressed) + d.flush()
+        assert result == uncompressed
+
+    def test_framing2_snappy_to_pysnappy(self, uncompressed):
+        c = snappy.StreamCompressor()
+        compressed = c.add_chunk(uncompressed)
+        d = Decompressor()
+        result = d.decompress(compressed)
+        d.flush()
+        assert result == uncompressed
+
+    def test_framing2_pysnappy_to_snappy_multi_buffer(self, uncompressed):
+        data = uncompressed * 256
+        c = Compressor()
+        compressed = c.compress(data)
+        c.flush()
+        d = snappy.StreamDecompressor()
+        result = d.decompress(compressed) + d.flush()
+        assert result == data
+
+    def test_framing2_snappy_to_pysnappy_multi_buffer(self, uncompressed):
+        data = uncompressed * 256
+        c = snappy.StreamCompressor()
+        compressed = c.add_chunk(data)
+        d = Decompressor()
+        result = d.decompress(compressed)
+        d.flush()
+        assert result == data
+
+    def test_hadoop_pysnappy_to_snappy(self, uncompressed):
+        c = HadoopCompressor()
+        compressed = c.compress(uncompressed)
+        c.flush()
+        d = snappy.HadoopStreamDecompressor()
+        result = d.decompress(compressed) + d.flush()
+        assert result == uncompressed
+
+    def test_hadoop_snappy_to_pysnappy(self, uncompressed):
+        c = snappy.HadoopStreamCompressor()
+        compressed = c.add_chunk(uncompressed)
+        d = HadoopDecompressor()
+        result = d.decompress(compressed)
+        d.flush()
+        assert result == uncompressed
+
+    def test_hadoop_pysnappy_to_snappy_multi_buffer(self, uncompressed):
+        # Force multi-subblock output from pysnappy and confirm python-snappy
+        # tolerates it (it concatenates subblocks within a single block).
+        data = uncompressed * 256
+        c = HadoopCompressor()
+        compressed = c.compress(data)
+        c.flush()
+        d = snappy.HadoopStreamDecompressor()
+        result = d.decompress(compressed) + d.flush()
+        assert result == data
+
+    def test_hadoop_snappy_to_pysnappy_multi_buffer(self, uncompressed):
+        data = uncompressed * 256
+        c = snappy.HadoopStreamCompressor()
+        compressed = c.add_chunk(data)
+        d = HadoopDecompressor()
+        result = d.decompress(compressed)
+        d.flush()
+        assert result == data
+
+    def test_hadoop_single_subblock_pysnappy_to_snappy(self, uncompressed):
+        data = uncompressed * 256
+        c = HadoopCompressor(single_subblock=True)
+        compressed = c.compress(data)
+        c.flush()
+        d = snappy.HadoopStreamDecompressor()
+        result = d.decompress(compressed) + d.flush()
+        assert result == data

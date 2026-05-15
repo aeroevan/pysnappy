@@ -10,7 +10,7 @@ requires-python = ">=3.11"
 dependencies = []
 
 [dependency-groups]
-dev = ["pytest"]
+dev = ["pytest", "python-snappy"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
