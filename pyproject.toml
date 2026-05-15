@@ -1,7 +1,7 @@
 [project]
 name = "pysnappy"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.7.0"
+description = "Cython wrapper around Google's Snappy compression library, with pure-Cython implementations of the framing2 (.sz) and Hadoop framing formats and CRC32C."
 readme = "README.md"
 authors = [
     { name = "Evan McClain", email = "aeroevan@gmail.com" }
