@@ -1,5 +1,6 @@
-cpdef bytes uncompress(bytes)
-cpdef bytes compress(bytes)
+cpdef bytes uncompress(data)
+cpdef bytes decompress(data)
+cpdef bytes compress(data, encoding=*)
 
 cdef bytes _compress_buf(const char* src, size_t n)
 cdef bytes _uncompress_buf(const char* src, size_t n)

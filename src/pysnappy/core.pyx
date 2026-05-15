@@ -93,14 +93,22 @@ cdef Py_ssize_t _uncompress_append(
     return <Py_ssize_t>cap
 
 
-cpdef bytes compress(bytes uncompressed):
-    return _compress_buf(
-        PyBytes_AsString(uncompressed), <size_t>len(uncompressed))
+cpdef bytes compress(data, encoding="utf-8"):
+    cdef bytes buf
+    if isinstance(data, str):
+        buf = (<str>data).encode(encoding)
+    else:
+        buf = data
+    return _compress_buf(PyBytes_AsString(buf), <size_t>len(buf))
 
 
-cpdef bytes uncompress(bytes compressed):
-    return _uncompress_buf(
-        PyBytes_AsString(compressed), <size_t>len(compressed))
+cpdef bytes uncompress(data):
+    cdef bytes buf = data
+    return _uncompress_buf(PyBytes_AsString(buf), <size_t>len(buf))
+
+
+cpdef bytes decompress(data):
+    return uncompress(data)
 
 
 cpdef void stream_compress(fh_in, fh_out, framing, int bs=65536):

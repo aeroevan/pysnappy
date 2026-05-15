@@ -1,2 +1,2 @@
 #!/usr/bin/env python
-from pysnappy.core import compress, uncompress
+from pysnappy.core import compress, decompress, uncompress
