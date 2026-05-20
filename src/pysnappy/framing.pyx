@@ -131,7 +131,7 @@ cdef class HadoopCompressor:
         cdef size_t cap
         cdef size_t compressed_size
         cdef bytearray output
-        cdef Py_ssize_t pos
+        cdef Py_ssize_t pos = 0
         cdef Py_ssize_t total
         cdef Py_ssize_t chunk_size
         cdef Py_ssize_t header_pos
