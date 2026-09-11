@@ -9,6 +9,9 @@ authors = [
 requires-python = ">=3.11"
 dependencies = []
 
+[project.scripts]
+pysnappy = "pysnappy.cli:main"
+
 [dependency-groups]
 dev = ["pytest", "python-snappy"]
 
